@@ -1,20 +1,29 @@
+//Require Common Express modules
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-//Path for grabbing local paths
 var path = require('path');
 
+//Require our sayonaraConfig
+var sayonaraConfig = require('./sayonaraConfig');
+
+//Mongoose for MongoDB
+var mongoose = require('mongoose');
+
+//Our api routes
 var routes = require('./routes/index');
 
 var app = express();
 
+//Connect to our DB
+mongoose.connect(sayonaraConfig.dbUrl);
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
