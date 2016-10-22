@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 //Get our admin view
 
 // The Admin App Root
-app.get('/admin', function(req, res) {
+app.get('/admin/', function(req, res) {
 	res.sendFile(path.resolve('../SayonaraAdmin/dist/index.html'));
 });
 //Relative paths for the admin app
