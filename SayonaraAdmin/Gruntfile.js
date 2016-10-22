@@ -257,18 +257,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// Renames files for browser caching purposes
-		filerev: {
-			dist: {
-				src: [
-					'<%= yeoman.dist %>/scripts/{,*/}*.js',
-					'<%= yeoman.dist %>/styles/{,*/}*.css',
-					'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-					'<%= yeoman.dist %>/styles/fonts/*'
-				]
-			}
-		},
-
 		// Reads HTML for usemin blocks to enable smart builds that automatically
 		// concat, minify and revision files. Creates configurations in memory so
 		// additional tasks can operate on them
@@ -288,7 +276,7 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// Performs rewrites based on filerev and the useminPrepare configuration
+		// Performs rewrites based on the useminPrepare configuration
 		usemin: {
 			html: ['<%= yeoman.dist %>/{,*/}*.html'],
 			css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
@@ -299,6 +287,15 @@ module.exports = function(grunt) {
 					'<%= yeoman.dist %>/images',
 					'<%= yeoman.dist %>/styles'
 				],
+				blockReplacements: {
+					css: function(block) {
+						//Allow relative roots, use the sayonara admin root
+						return '<link rel="stylesheet" href="admin/' + block.dest + '"/>';
+					},
+					js: function(block) {
+						return '<script src="admin/' + block.dest + '"></script>';
+					}
+				},
 				patterns: {
 					js: [
 						[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']
@@ -306,32 +303,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
-		// The following *-min tasks will produce minified files in the dist folder
-		// By default, your `index.html`'s <!-- Usemin block --> will take care of
-		// minification. These next options are pre-configured if you do not wish
-		// to use the Usemin blocks.
-		// cssmin: {
-		//   dist: {
-		//     files: {
-		//       '<%= yeoman.dist %>/styles/main.css': [
-		//         '.tmp/styles/{,*/}*.css'
-		//       ]
-		//     }
-		//   }
-		// },
-		// uglify: {
-		//   dist: {
-		//     files: {
-		//       '<%= yeoman.dist %>/scripts/scripts.js': [
-		//         '<%= yeoman.dist %>/scripts/scripts.js'
-		//       ]
-		//     }
-		//   }
-		// },
-		// concat: {
-		//   dist: {}
-		// },
 
 		imagemin: {
 			dist: {
@@ -474,20 +445,6 @@ module.exports = function(grunt) {
 		]);
 	});
 
-	grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
-		grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-		grunt.task.run(['serve:' + target]);
-	});
-
-	grunt.registerTask('test', [
-		'clean:server',
-		'wiredep',
-		'concurrent:test',
-		'postcss',
-		'connect:test',
-		'karma'
-	]);
-
 	grunt.registerTask('build', [
 		'clean:dist',
 		'wiredep',
@@ -501,7 +458,6 @@ module.exports = function(grunt) {
 		'cdnify',
 		'cssmin',
 		'uglify',
-		'filerev',
 		'usemin',
 		'htmlmin'
 	]);
