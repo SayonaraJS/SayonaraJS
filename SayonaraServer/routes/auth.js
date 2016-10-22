@@ -18,9 +18,10 @@ var password = require('password-hash-and-salt');
 router.post('/create', function(req, res) {
 
 	//Get the required fields
-	if (!req.body.email || !req.body.password) {
+	if (!req.body ||
+		!req.body.email ||
+		!req.body.password) {
 		res.status(400).send('Uh Oh, Something went wrong.');
-		return;
 	}
 
 	var userEmail = req.body.email;
@@ -73,13 +74,17 @@ router.post('/create', function(req, res) {
 router.post('/login', function(req, res) {
 
 	//Get the required fields
-	if (!req.body.email || !req.body.password) res.status(400).send('Uh Oh, Something went wrong.');
+	if (!req.body ||
+		!req.body.email ||
+		!req.body.password) {
+		res.status(400).send('Uh Oh, Something went wrong.');
+	}
 
 	var userEmail = req.body.email;
 	var userPass = req.body.password;
 
 	User.findOne({
-		email: username
+		email: userEmail
 	}, function(err, user) {
 		if (err) {
 			res.status(500).json(err);
@@ -91,7 +96,7 @@ router.post('/login', function(req, res) {
 		}
 
 		// Verifying a hash
-		password(userPass).verifyAgainst(user.hash, function(error, verified) {
+		password(userPass).verifyAgainst(JSON.parse(user.hash), function(error, verified) {
 			if (error) res.status(500).json(err);
 			if (!verified) {
 				//Passwords did not match

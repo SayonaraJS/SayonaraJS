@@ -3,7 +3,7 @@
 
 var sayonaraConfig = {
 	appPort: '8000',
-	dbUrl: 'mongodb://localhost/sayonara-default',
+	dbUrl: 'mongodb://localhost/sayonara',
 	authSecret: 'listredcomputercup1%',
 	authIssuer: 'Sayonara',
 	siteName: 'Sayonara Default'
