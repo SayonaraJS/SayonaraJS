@@ -14,10 +14,14 @@ var Permissions = mongoose.model('Permissions');
 
 //Recycled functions
 module.exports = {
+	generalServerError: function(err, res, message) {
+		//TODO: Fucntion to handle our general mongoose and express errors
+
+	},
 	definedPermissions: {
 		admin: 'admin',
 		pages: 'pages',
-		entryType: false,
+		entryType: 'entryTypes',
 		entries: 'entries'
 	},
 	validateUser: function(req, neededPermissions) {
@@ -31,7 +35,7 @@ module.exports = {
 		//Return a promise
 		return new Promise(function(resolve, reject) {
 			// check header or url parameters or post parameters for token
-			var token = req.body.token || req.query.token || req.headers['x-access-token'];
+			var token = req.body.token || req.query.token || req.headers['token'] || req.headers['x-access-token'];
 
 			// decode token
 			if (token) {

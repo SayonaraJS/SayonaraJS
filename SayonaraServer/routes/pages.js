@@ -11,6 +11,7 @@ var routeHelpers = require('./routeHelpers');
 // User models
 var mongoose = require('mongoose');
 var Page = mongoose.model('Page');
+var EntryType = mongoose.model('EntryType');
 
 
 //Create a new Page
@@ -43,8 +44,69 @@ router.post('/create', function(req, res) {
 });
 
 //Get all Pages
+router.get('/all', function(req, res) {
+	//Validate our JWT and permissions
+	var permissions = [routeHelpers.definedPermissions.pages];
+	routeHelpers.validateUser(req, permissions).then(function(result) {
+
+		//Find all pages
+		Page.find({}, function(err, pages) {
+			if (err) {
+				res.status(500).json(err);
+				return;
+			}
+			var pagesMap = {};
+
+			pages.forEach(function(page) {
+				pagesMap[page._id] = page;
+			});
+
+			res.send(pagesMap);
+		});
+	}, function(error) {
+		res.status(error.status).send(error.message);
+	});
+});
 
 //Get a page (All the way down to entries)
+router.get('/id/:id', function(req, res) {
+	//Validate our JWT and permissions
+	var permissions = [routeHelpers.definedPermissions.pages];
+	routeHelpers.validateUser(req, permissions).then(function(result) {
+
+		//Find all pages
+		Page.find({
+			_id: req.params.id
+		}, function(err, pages) {
+			if (err) {
+				res.status(500).json(err);
+				return;
+			}
+			if (!pages) res.status(404).send('Id not found');
+
+			//Get the entry types for the pages
+			EntryType.find({
+				'_id': {
+					$in: pages.entryTypes
+				}
+			}, function(err, entryTypes) {
+				if (err) {
+					res.status(500).json(err);
+					return;
+				}
+				if (!entryTypes) res.status(200).json(pages);
+
+				//Log our entry types
+				console.log('Entry Types: ' + entryTypes);
+				//TODO: Add Support for Entry Types
+				res.status(200).send('successful so far!');
+			})
+
+		});
+	}, function(error) {
+		res.status(error.status).send(error.message);
+	});
+});
 
 //Update a page
 

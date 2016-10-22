@@ -7,6 +7,10 @@ var entrySchema = new Schema({
 		type: String,
 		required: true
 	},
+	entryType: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true
+	},
 	date: {
 		type: Date,
 		default: Date.now()

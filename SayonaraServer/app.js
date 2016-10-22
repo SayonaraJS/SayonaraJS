@@ -38,6 +38,10 @@ require('./models/pages');
 //Our api routes
 var appAuth = require('./routes/auth');
 app.use('/api/auth', appAuth);
+var appCategory = require('./routes/categories');
+app.use('/api/category', appCategory);
+var appEntry = require('./routes/entries');
+app.use('/api/entry', appEntry);
 var appPages = require('./routes/pages');
 app.use('/api/pages', appPages);
 
