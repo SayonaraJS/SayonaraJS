@@ -13,6 +13,8 @@ var Permissions = mongoose.model('Permissions');
 //Password Hashing
 var password = require('password-hash-and-salt');
 
+//JWTs
+var jwt = require('jsonwebtoken');
 
 //Signup/Create users
 router.post('/create', function(req, res) {
@@ -33,23 +35,29 @@ router.post('/create', function(req, res) {
 	}, function(err, user) {
 		if (err) {
 			res.status(500).json(err);
+			return;
 		}
 
 		//User Already has the email
 		if (user) {
-			res.status(409).send('Uh Oh, Something went wrong.');
+			res.status(409).send('User already exists with that username.');
+			return;
 		}
 
 		//Hash the password
 		password(userPass).hash(function(error, hash) {
-			if (error) res.status(500).json(err);
+			if (error) {
+				res.status(500).json(err);
+				return;
+			}
 
 			//Create a new set of permissions
 			var newPermissions = new Permissions({});
 
 			newPermissions.save(function(err) {
 				if (err) {
-					done(err);
+					res.status(500).json(err);
+					return;
 				}
 				//Create new mongoose user
 				var user = new User({
@@ -62,8 +70,20 @@ router.post('/create', function(req, res) {
 				user.save(function(err) {
 					if (err) {
 						res.status(500).send('Uh Oh, Something went wrong.');
+						return;
 					}
-					res.status(200).send('Success!')
+
+					//Success! Finally return a JWT to the user
+					// create a JWT, expires in one week
+					var jwtToken = jwt.sign(user, sayonaraConfig.authSecret, {
+						expiresIn: '7 days'
+					});
+
+					res.status(200).json({
+						success: true,
+						message: 'Success!',
+						token: jwtToken
+					});
 				});
 			});
 		});
@@ -78,6 +98,7 @@ router.post('/login', function(req, res) {
 		!req.body.email ||
 		!req.body.password) {
 		res.status(400).send('Uh Oh, Something went wrong.');
+		return;
 	}
 
 	var userEmail = req.body.email;
@@ -88,11 +109,13 @@ router.post('/login', function(req, res) {
 	}, function(err, user) {
 		if (err) {
 			res.status(500).json(err);
+			return;
 		}
 
 		//No user with the email
 		if (!user) {
-			res.status(404).send('Uh Oh, Something went wrong.');
+			res.status(404).send('User could not be found.');
+			return;
 		}
 
 		// Verifying a hash
@@ -100,11 +123,21 @@ router.post('/login', function(req, res) {
 			if (error) res.status(500).json(err);
 			if (!verified) {
 				//Passwords did not match
-				res.status(401).send('Uh Oh, Something went wrong.');
+				res.status(401).send('Incorrect Password.');
+				return;
 			} else {
 				//Passwords Matched!
-				//Return jwt
-				res.status(200).send('Success!')
+				//Success! Finally return a JWT to the user
+				// create a JWT, expires in one week
+				var jwtToken = jwt.sign(user, sayonaraConfig.authSecret, {
+					expiresIn: '7 days'
+				});
+
+				res.status(200).json({
+					success: true,
+					message: 'Success!',
+					token: jwtToken
+				});
 			}
 		});
 	});
