@@ -15,6 +15,7 @@
     "mongoose": "^4.6.4",
     "morgan": "^1.7.0",
     "password-hash-and-salt": "^0.1.4",
+    "promise": "^7.1.1",
     "serve-favicon": "~2.3.0"
   }
 }

@@ -12,6 +12,10 @@ var userSchema = new Schema({
 		type: String,
 		required: true
 	},
+	dateJoined: {
+		type: Date,
+		default: Date.now()
+	},
 	permissions: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true

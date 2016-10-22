@@ -29,10 +29,17 @@ var mongoose = require('mongoose');
 //Models for mongoose
 require('./models/permissions');
 require('./models/users');
+require('./models/categories');
+require('./models/entries');
+require('./models/entryFields');
+require('./models/entryType');
+require('./models/pages');
 
 //Our api routes
 var appAuth = require('./routes/auth');
 app.use('/api/auth', appAuth);
+var appPages = require('./routes/pages');
+app.use('/api/pages', appPages);
 
 //Connect to our DB
 mongoose.connect(sayonaraConfig.dbUrl);

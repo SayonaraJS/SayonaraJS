@@ -7,6 +7,10 @@ var permSchema = new Schema({
 		type: Boolean,
 		default: true
 	},
+	entryTypes: {
+		type: Boolean,
+		default: true
+	},
 	pages: {
 		type: Boolean,
 		default: true

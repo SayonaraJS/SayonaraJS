@@ -1,6 +1,12 @@
 //Sayonara configuration
 var sayonaraConfig = require('../sayonaraConfig');
 
+//Password Hashing
+var password = require('password-hash-and-salt');
+
+//JWTs
+var jwt = require('jsonwebtoken');
+
 //Create our router
 var express = require('express');
 var router = express.Router();
@@ -9,12 +15,6 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Permissions = mongoose.model('Permissions');
-
-//Password Hashing
-var password = require('password-hash-and-salt');
-
-//JWTs
-var jwt = require('jsonwebtoken');
 
 //Signup/Create users
 router.post('/create', function(req, res) {
