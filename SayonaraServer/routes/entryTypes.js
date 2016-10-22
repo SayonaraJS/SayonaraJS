@@ -8,7 +8,7 @@ var routeHelpers = require('./routeHelpers');
 // User models
 var mongoose = require('mongoose');
 var EntryType = mongoose.model('EntryType');
-var EntryField = mongoose.model('EntryField');
+var Page = mongoose.model('Page');
 
 //Create Entry Types
 router.post('/create', function(req, res) {
@@ -48,7 +48,7 @@ router.post('/create', function(req, res) {
 });
 
 //Get all Entry types
-route.get('/all', function(req, res) {
+router.get('/all', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.entryType];
 	routeHelpers.validateUser(req, permissions).then(function(result) {

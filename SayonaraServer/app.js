@@ -31,7 +31,6 @@ require('./models/permissions');
 require('./models/users');
 require('./models/categories');
 require('./models/entries');
-require('./models/entryFields');
 require('./models/entryType');
 require('./models/pages');
 
