@@ -16,7 +16,8 @@ var pagesSchema = new Schema({
 		type: String,
 		default: '<h1>Sayonara, New Page</h1>'
 	},
-	entryTypes: [mongoose.Schema.Types.ObjectId]
+	entryTypes: [mongoose.Schema.Types.ObjectId],
+	categories: [mongoose.Schema.Types.ObjectId]
 });
 
 //Models

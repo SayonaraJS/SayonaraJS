@@ -82,7 +82,6 @@ router.put('/id/:id', function(req, res) {
 });
 
 //Delete a category
-//Update a category
 router.delete('/id/:id', function(req, res) {
 
 	//Check for required fields
@@ -111,7 +110,7 @@ router.delete('/id/:id', function(req, res) {
 					if (entries) {
 						//Remove the category from all of the entries
 						entries.forEach(function(entry) {
-							entry.splice(entry.indexOf(category.id), 1);
+							entry.categories.splice(entry.categories.indexOf(category.id), 1);
 						});
 
 						//Save the entries

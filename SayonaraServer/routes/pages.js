@@ -30,6 +30,12 @@ router.post('/create', function(req, res) {
 			title: req.body.title
 		});
 
+		//Check for any optional fields
+		if (req.body.date) newPage.date = req.body.date;
+		if (req.body.content) newPage.content = req.body.content;
+		if (req.body.entryTypes) newPage.entryTypes = req.body.entryTypes;
+		if (req.body.categories) newPage.categories = req.body.categories;
+
 		newPage.save(function(err) {
 			if (err) {
 				res.status(500).send('Error saving the page.');
@@ -96,10 +102,30 @@ router.get('/id/:id', function(req, res) {
 				}
 				if (!entryTypes) res.status(200).json(pages);
 
-				//Log our entry types
-				console.log('Entry Types: ' + entryTypes);
-				//TODO: Add Support for Entry Types
-				res.status(200).send('successful so far!');
+				//Set the entry types to the page
+				pages.entryTypes = entryTypes;
+
+				//Get the entries of the EntryType
+				Entry.find({
+					'_id': {
+						$in: pages.entryTypes.entries
+					}
+				}, function(err, entries) {
+					if (err) {
+						res.status(500).json(err);
+						return;
+					}
+					if (!entries) res.status(200).json(pages);
+
+					//Replace the entry types entries with the actual entry
+					for (var i = 0; i < pages.entryTypes.entries.length; i++) {
+						var fullEntry = entires[pages.entryTypes.entries[i]];
+						pages.entryTypes.entries[i] = fullEntry;
+					}
+
+					//Return the pages
+					res.status(200).json(pages);
+				});
 			})
 
 		});
@@ -109,7 +135,69 @@ router.get('/id/:id', function(req, res) {
 });
 
 //Update a page
+router.put('/id/:id', function(req, res) {
+
+	//Check for required fields
+	if (!req.body) res.status(400).send('Missing parameters');
+
+	//Validate our JWT and permissions
+	var permissions = [routeHelpers.definedPermissions.pages];
+	routeHelpers.validateUser(req, permissions).then(function(result) {
+
+		//Perform the action
+		//Find the page
+		Page.findOne({
+			_id: req.param.id
+		}, function(err, page) {
+			//Check for any optional fields
+			if (req.body.date) page.date = req.body.date;
+			if (req.body.content) page.content = req.body.content;
+			if (req.body.entryTypes) page.entryTypes = req.body.entryTypes;
+			if (req.body.categories) page.categories = req.body.categories;
+
+			page.save(function(err) {
+				if (err) {
+					res.status(500).send('Error saving the page.');
+					return;
+				}
+				res.status(200).json(page);
+			})
+		})
+	}, function(error) {
+		res.status(error.status).send(error.message);
+	});
+
+});
 
 //Delete a page
+//Update a page
+router.delete('/id/:id', function(req, res) {
+
+	//Check for required fields
+	if (!req.body) res.status(400).send('Missing parameters');
+
+	//Validate our JWT and permissions
+	var permissions = [routeHelpers.definedPermissions.pages];
+	routeHelpers.validateUser(req, permissions).then(function(result) {
+
+		//Perform the action
+		//Find the page
+		Page.findOne({
+			_id: req.param.id
+		}, function(err, page) {
+
+			page.remove(function(err) {
+				if (err) {
+					res.status(500).send('Error deleting the page.');
+					return;
+				}
+				res.status(200).send('Deleted!');
+			})
+		})
+	}, function(error) {
+		res.status(error.status).send(error.message);
+	});
+
+});
 
 module.exports = router;

@@ -198,6 +198,8 @@ router.put('/id/:id', function(req, res) {
 	});
 });
 
+//TODO: Upload a file, and update an entry
+
 //Delete an entry
 router.delete('/id/:id', function(req, res) {
 
@@ -255,4 +257,3 @@ router.delete('/id/:id', function(req, res) {
 });
 
 module.exports = router;
-ts = router;

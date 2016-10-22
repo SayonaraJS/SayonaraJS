@@ -9,9 +9,17 @@ var entryTypeSchema = new Schema({
 		required: true
 	},
 	entries: [mongoose.Schema.Types.ObjectId],
-	fields: {
-		type: mongoose.Schema.Types.ObjectId,
-		required: true
+	hasContent: {
+		type: Boolean,
+		default: true
+	},
+	hasEmbedCodes: {
+		type: Boolean,
+		default: false
+	},
+	hasUploadUrls: {
+		type: Boolean,
+		default: false
 	}
 });
 
