@@ -2,8 +2,11 @@
 //For New Sayonara users, we highly reccomend you do NOT upload your sayonaraConfig file to git
 
 var sayonaraConfig = {
-	dbURL: 'mongodb://localhost/sayonara-default',
-	authSecret: 'listredcomputercup1%'
+	appPort: '8000',
+	dbUrl: 'mongodb://localhost/sayonara-default',
+	authSecret: 'listredcomputercup1%',
+	authIssuer: 'Sayonara',
+	siteName: 'Sayonara Default'
 };
 
 module.exports = sayonaraConfig;

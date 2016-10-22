@@ -1,36 +1,22 @@
-//Mongoose schemas for users and their permissions
-var permSchema = new Schema({
-	entries: {
-		type: Boolean,
-		default: true
-	},
-	pages: {
-		type: Boolean,
-		default: true
-	},
-	admin: {
-		type: Boolean,
-		default: true
-	}
-});
+//Mongoose schemas for users
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var permSchema = require('./permissions');
 
 var userSchema = new Schema({
 	email: {
 		type: String,
 		required: true
 	},
-	password: {
+	hash: {
 		type: String,
 		required: true
 	},
-	permissions: permSchema
+	permissions: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true
+	}
 });
 
 //Models
-var perm = mongoose.model('Permissions', permSchema);
-var user = mongoose.model('User', userSchema);
-
-module.exports = {
-	userModel: user,
-	permModel: perm
-};
+module.exports = mongoose.model('User', userSchema);
