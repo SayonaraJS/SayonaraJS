@@ -16,7 +16,8 @@ var entrySchema = new Schema({
 		default: Date.now()
 	},
 	content: {
-		type: String
+		type: String,
+		default: '<h1>Sayonara, New Entry</h1>'
 	},
 	embedCodes: [String],
 	uploadUrls: [String],
