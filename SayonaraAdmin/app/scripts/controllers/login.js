@@ -28,7 +28,7 @@ angular.module('sayonaraAdminApp')
 				//Success
 
 				//Pass the JWT to the auth service to be saved
-				sayonaraAuthService.saveUser(success.token);
+				sayonaraAuthService.saveUser(success);
 
 				//Alert the user
 				adminNotify.showAlert('Welcome Back!');

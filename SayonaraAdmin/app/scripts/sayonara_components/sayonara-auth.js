@@ -10,8 +10,12 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 	}
 
 	//Function to set the sayonaraUser token from json object
-	var setSayonaraUserToken = function(token) {
-		localStorage.setItem(sayonaraAuthKey, JSON.stringify(token));
+	var setSayonaraUserToken = function(payload) {
+		var sayonaraAuth = {
+			token: payload.token,
+			permissions: payload.permissions
+		};
+		localStorage.setItem(sayonaraAuthKey, JSON.stringify(sayonaraAuth));
 	}
 
 	//Function to logout the user

@@ -127,17 +127,29 @@ router.post('/login', function(req, res) {
 				return;
 			} else {
 				//Passwords Matched!
-				//Success! Finally return a JWT to the user
-				// create a JWT, expires in one week
-				var jwtToken = jwt.sign(user, sayonaraConfig.authSecret, {
-					expiresIn: '7 days'
-				});
 
-				res.status(200).json({
-					success: true,
-					message: 'Success!',
-					token: jwtToken
-				});
+				//Get the users permissions
+				Permissions.findOne({
+					_id: user.permissions
+				}, function(err, permissions) {
+					if (!user) {
+						res.status(404).send('User could not be found.');
+						return;
+					}
+
+					//Success! Finally return a JWT to the user
+					// create a JWT, expires in one week
+					var jwtToken = jwt.sign(user, sayonaraConfig.authSecret, {
+						expiresIn: '7 days'
+					});
+
+					res.status(200).json({
+						success: true,
+						message: 'Success!',
+						token: jwtToken,
+						permissions: permissions
+					});
+				})
 			}
 		});
 	});
