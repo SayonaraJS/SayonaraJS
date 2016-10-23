@@ -1,0 +1,20 @@
+<h1>{{page.title}}</h1>
+
+<!-- The title of the page -->
+<md-input-container class="editInput">
+  <label>Title</label>
+  <input type="input" ng-model="page.title" />
+</md-input-container>
+
+<!-- The content of the page -->
+<entry-field-content ng-model="page.content"></entry-field-content>
+
+<!-- Save button -->
+<div class="centerText">
+  <md-button class="center md-raised md-primary" ng-disabled="page.title.length < 1" ng-click="savePage()">Save Page</md-button>
+</div>
+
+<!-- Delete button -->
+<div class="centerText" ng-if="urlId">
+  <md-button class="center md-raised md-accent" ng-click="deletePage()">Delete Page</md-button>
+</div>

@@ -11,6 +11,7 @@ var routeHelpers = require('./routeHelpers');
 // User models
 var mongoose = require('mongoose');
 var Page = mongoose.model('Page');
+var Entry = mongoose.model('Entry');
 var EntryType = mongoose.model('EntryType');
 
 
@@ -41,7 +42,7 @@ router.post('/create', function(req, res) {
 				res.status(500).send('Error saving the page.');
 				return;
 			}
-			res.status(200).send('Success!');
+			res.status(200).json(newPage);
 		})
 	}, function(error) {
 		res.status(error.status).send(error.message);
@@ -50,23 +51,17 @@ router.post('/create', function(req, res) {
 });
 
 //Get all Pages
+//Not Authenticated since used by public website
 router.get('/all', function(req, res) {
-	//Validate our JWT and permissions
-	var permissions = [routeHelpers.definedPermissions.pages];
-	routeHelpers.validateUser(req, permissions).then(function(result) {
+	//Find all pages
+	Page.find({}, function(err, pages) {
+		if (err) {
+			res.status(500).json(err);
+			return;
+		}
 
-		//Find all pages
-		Page.find({}, function(err, pages) {
-			if (err) {
-				res.status(500).json(err);
-				return;
-			}
-
-			//Return the pages
-			res.send(pages);
-		});
-	}, function(error) {
-		res.status(error.status).send(error.message);
+		//Return the pages
+		res.send(pages);
 	});
 });
 
@@ -77,7 +72,7 @@ router.get('/id/:id', function(req, res) {
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
 		//Find all pages
-		Page.find({
+		Page.findOne({
 			_id: req.params.id
 		}, function(err, pages) {
 			if (err) {
@@ -107,11 +102,10 @@ router.get('/id/:id', function(req, res) {
 						$in: pages.entryTypes.entries
 					}
 				}, function(err, entries) {
-					if (err) {
-						res.status(500).json(err);
+					if (err || !entries) {
+						res.status(200).json(pages)
 						return;
-					}
-					if (!entries) res.status(200).json(pages);
+					};
 
 					//Replace the entry types entries with the actual entry
 					for (var i = 0; i < pages.entryTypes.entries.length; i++) {
@@ -143,10 +137,15 @@ router.put('/id/:id', function(req, res) {
 		//Perform the action
 		//Find the page
 		Page.findOne({
-			_id: req.param.id
+			_id: req.params.id
 		}, function(err, page) {
+			if (!page) {
+				res.status(404).send('Page could not be found');
+				return;
+			}
 			//Check for any optional fields
 			if (req.body.date) page.date = req.body.date;
+			if (req.body.title) page.title = req.body.title;
 			if (req.body.content) page.content = req.body.content;
 			if (req.body.entryTypes) page.entryTypes = req.body.entryTypes;
 			if (req.body.categories) page.categories = req.body.categories;
@@ -166,7 +165,6 @@ router.put('/id/:id', function(req, res) {
 });
 
 //Delete a page
-//Update a page
 router.delete('/id/:id', function(req, res) {
 
 	//Check for required fields
@@ -179,9 +177,12 @@ router.delete('/id/:id', function(req, res) {
 		//Perform the action
 		//Find the page
 		Page.findOne({
-			_id: req.param.id
+			_id: req.params.id
 		}, function(err, page) {
-
+			if (!page) {
+				res.status(404).send('Page could not be found');
+				return;
+			}
 			page.remove(function(err) {
 				if (err) {
 					res.status(500).send('Error deleting the page.');

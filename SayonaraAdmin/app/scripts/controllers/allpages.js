@@ -8,7 +8,7 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-	.controller('AllpagesCtrl', function($scope, adminNotify, sayonaraPageService) {
+	.controller('AllpagesCtrl', function($scope, $location, adminNotify, sayonaraPageService) {
 		this.awesomeThings = [
 			'HTML5 Boilerplate',
 			'AngularJS',
@@ -29,4 +29,12 @@ angular.module('sayonaraAdminApp')
 			//Hanlde the error
 			adminNotify.error(error);
 		});
+
+		//navigate to edit a page
+		$scope.goToPage = function(id) {
+			if (id) $location.path('/page/edit').search('id', id)
+			else $location.path('/page/edit')
+		}
+
+
 	});

@@ -5,7 +5,7 @@
 </div>
 
 <div class="centerText">
-  <md-button class="center md-raised md-primary" ng-click="console.log(newPage)">New Page</md-button>
+  <md-button class="center md-raised md-primary" ng-click="goToPage()">New Page</md-button>
 </div>
 
 <!-- Ng-for through all the pages -->
@@ -22,7 +22,7 @@
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="end center">
-      <md-button class="md-raised" ng-click="goToPage(page.id)">Edit</md-button>
+      <md-button class="md-raised" ng-click="goToPage(page._id)">Edit</md-button>
     </md-card-actions>
   </md-card>
 </div>

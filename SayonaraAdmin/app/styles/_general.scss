@@ -17,3 +17,8 @@
     width: 95%;
 
 }
+
+.container {
+    @extend .center;
+    width: 90%;
+}

@@ -17,6 +17,7 @@ angular
 		'ngSanitize',
 		'ngMaterial',
 		'angular-loading-bar',
+		'ui.tinymce',
 		'sayonaraAuth',
 		'sayonaraPages'
 	])
@@ -41,6 +42,11 @@ angular
 				templateUrl: 'views/allpages.html',
 				controller: 'AllpagesCtrl',
 				controllerAs: 'allPages'
+			})
+			.when('/page/edit', {
+				templateUrl: 'views/pageedit.html',
+				controller: 'PageeditCtrl',
+				controllerAs: 'pageEdit'
 			})
 			.otherwise({
 				redirectTo: '/'
