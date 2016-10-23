@@ -1,0 +1,28 @@
+<!-- Derived from the following codepen: http://codepen.io/ThomasBurleson/pen/wBgVpa -->
+<div layout="column" class="loginBox md-whiteframe-z1">
+  <md-toolbar>
+    <h2 class="md-toolbar-tools"><span>Login</span></h2>
+  </md-toolbar>
+
+  <md-content layout="column" class="md-padding">
+    <form ng-submit="submitLogin()">
+
+      <md-input-container class="authInput">
+        <label>Email</label>
+        <input type="email" ng-model="email" />
+      </md-input-container>
+
+      <md-input-container class="authInput">
+        <label>Password</label>
+        <input type="password" ng-model="password" />
+      </md-input-container>
+
+      <div layout="row" layout-align="center center" style="padding-top:20px;">
+
+        <md-button type="submit" class="md-raised md-primary" ng-disabled="$scope.email.length < 1 || $scope.password.length < 1">Login</md-button>
+        <div flex="flex"></div>
+        <!-- <md-button href="" md-no-ink="md-no-ink">Forgot Password</md-button> -->
+      </div>
+    </form>
+  </md-content>
+</div>

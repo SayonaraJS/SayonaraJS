@@ -10,6 +10,10 @@ var path = require('path');
 //Declare our app
 var app = express();
 
+//CORS for cross-origin requests
+var cors = require('cors');
+app.use(cors());
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('dev'));

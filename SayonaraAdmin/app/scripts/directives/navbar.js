@@ -32,7 +32,6 @@ angular.module('sayonaraAdminApp')
 
 				//Function to check if we are logged in
 				scope.isLoggedIn = function() {
-
 					//Simply return Sayonara's auth service
 					return sayonaraAuthService.isLoggedIn();
 				}

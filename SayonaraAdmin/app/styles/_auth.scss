@@ -1,0 +1,16 @@
+.loginBox {
+
+    @extend .center;
+  max-width:  90%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 500px;
+}
+
+.authInput {
+    width: 100%;
+}
+
+.stretch input  {
+  width: 100%;
+}

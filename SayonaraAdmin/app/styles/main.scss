@@ -1,3 +1,9 @@
 //This is used a a file to import our styles
+
+//General Styles and Variables
 @import 'variables';
+@import 'general';
+
+//Pages and Components
 @import 'navbar';
+@import 'auth';

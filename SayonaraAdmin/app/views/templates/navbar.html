@@ -9,10 +9,8 @@
 
   <!-- Desktop Width nav -->
   <div ng-if="!isMobile()" class="desktopNavContainer">
-    <md-nav-item md-nav-href="#/login" ng-if="!isLoggedIn()" name="login">Log in</md-nav-item>
-
-    <md-nav-item md-nav-href="#/" ng-if="!isLoggedIn()" name="home">Home</md-nav-item>
-    <md-nav-item md-nav-href="#/about" ng-if="!isLoggedIn()" name="about">About</md-nav-item>
+    <md-nav-item md-nav-href="#/" ng-if="isLoggedIn()" name="home">Home</md-nav-item>
+    <md-nav-item md-nav-href="#/about" ng-if="isLoggedIn()" name="about">About</md-nav-item>
     <md-nav-item md-nav-click="logout()" ng-if="isLoggedIn()" name="dashboard">Log Out</md-nav-item>
   </div>
 </md-nav-bar>
@@ -25,10 +23,6 @@
   </md-toolbar>
 
   <md-content layout-margin>
-    <md-button ng-href="#/" ng-click="toggleSideNav()" ng-if="!isLoggedIn()" class="sideNavItem">
-      Log In
-    </md-button>
-
 
     <md-button ng-href="#/" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
       Home

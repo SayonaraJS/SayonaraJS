@@ -1,4 +1,4 @@
-angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', function($location) {
+angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', function($location, sayonaraApiAuth) {
 
 	//Define the value for our jwt
 	var sayonaraAuthKey = 'sayonaraToken';
@@ -26,7 +26,21 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 		}
 	}
 
+	//Function to call the api to log in
+	var sayonaraApiLogin = function(email, password) {
+
+		//Create a payload
+		var payload = {
+			email: email,
+			password: password
+		}
+
+		//Pass into the api, return the promise
+		return sayonaraApiAuth.loginUser(payload);
+	}
+
 	return {
-		isLoggedIn: sayonaraIsLoggedIn
+		isLoggedIn: sayonaraIsLoggedIn,
+		loginUser: sayonaraApiLogin
 	};
 });
