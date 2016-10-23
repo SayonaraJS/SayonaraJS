@@ -1,0 +1,41 @@
+<!-- Client for settings up Sayonara -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sayonara Setup</title>
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <!-- Angular Logic -->
+    <script>
+        (function() {
+            var app = angular.module("sandBox", []);
+            app.controller("pageOne", ["$scope", function($scope) {
+                $scope.sandBox = 'angular application!';
+            }]);
+        })();
+    </script>
+
+    <!-- Styles -->
+    <style>
+        .center: {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .centerText: {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body ng-app="sandBox">
+    <div ng-controller="pageOne">
+        Hello! This is a cool {{sandBox}}
+    </div>
+</body>
+
+</html>

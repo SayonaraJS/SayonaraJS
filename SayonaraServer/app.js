@@ -55,45 +55,51 @@ mongoose.connection.on('disconnected', function() {
 	console.log('Mongoose disconnected through ' + sayonaraConfig.dbUrl);
 });
 
-//Get our admin view
-// The Admin App Root
-app.get('/admin', function(req, res) {
-	res.sendFile(path.resolve('../SayonaraAdmin/dist/index.html'));
-});
-//Relative paths for the admin app
-//Regex for /admin/[anything here]
-app.get(/(\/admin\/).*/, function(req, res) {
-	var pathString = '../SayonaraAdmin/dist' + req.url.split('/admin')[1];
-	res.sendFile(path.resolve(pathString));
-});
+//Check if we need to setup
+require('./setup/sayonaraSetupModel');
+require('./setup/setupSayonara')(app, function(app) {
+	//Callback to be run after sayonara is done setting up
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
-});
+	//Get our admin view
+	// The Admin App Root
+	app.get('/admin', function(req, res) {
+		res.sendFile(path.resolve('../SayonaraAdmin/dist/index.html'));
+	});
+	//Relative paths for the admin app
+	//Regex for /admin/[anything here]
+	app.get(/(\/admin\/).*/, function(req, res) {
+		var pathString = '../SayonaraAdmin/dist' + req.url.split('/admin')[1];
+		res.sendFile(path.resolve(pathString));
+	});
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
+	// catch 404 and forward to error handler
+	app.use(function(req, res, next) {
+		var err = new Error('Not Found');
+		err.status = 404;
+		next(err);
+	});
+
+	// development error handler
+	// will print stacktrace
+	if (app.get('env') === 'development') {
+		app.use(function(err, req, res, next) {
+			res.status(err.status || 500).json({
+				"Error": (err.status || 500)
+			});
+		});
+	}
+
+	// production error handler
+	// no stacktraces leaked to user
 	app.use(function(err, req, res, next) {
 		res.status(err.status || 500).json({
 			"Error": (err.status || 500)
 		});
 	});
-}
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-	res.status(err.status || 500).json({
-		"Error": (err.status || 500)
-	});
+	//Serve the application
+	app.listen(sayonaraConfig.appPort);
+	console.log("App listening on port " + sayonaraConfig.appPort);
+
+	module.exports = app;
 });
-
-//Serve the application
-app.listen(sayonaraConfig.appPort);
-console.log("App listening on port " + sayonaraConfig.appPort);
-
-module.exports = app;
