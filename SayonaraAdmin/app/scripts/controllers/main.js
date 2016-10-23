@@ -8,10 +8,10 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+	.controller('MainCtrl', function() {
+		this.awesomeThings = [
+			'HTML5 Boilerplate',
+			'AngularJS',
+			'Karma'
+		];
+	});

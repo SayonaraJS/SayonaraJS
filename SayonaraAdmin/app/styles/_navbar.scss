@@ -1,0 +1,23 @@
+//Styles for the responsive navbar directive
+.navLogo {
+    line-height: 48px;
+    margin-left: 5px;
+}
+
+.navMobileButton {
+    //!important because we are overidding angular material
+    height: 46px !important;
+    margin-left: -5px !important;
+}
+
+.desktopNavContainer {
+    display: inherit;
+}
+
+.navSideBar {
+
+    .sideNavItem {
+        display: block;
+        text-align: left;
+    }
+}
