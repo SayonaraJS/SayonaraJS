@@ -32,13 +32,13 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 
 	//Function to grab and store our JWT for the user
 	var getSayonaraUser = function() {
-		if (localStorage.getItem(sayonaraAuthKey)) return localStorage.getItem('sayonaraToken');
+		if (localStorage.getItem(sayonaraAuthKey)) return JSON.parse(localStorage.getItem('sayonaraToken'));
 		else return false;
 	}
 
 	//Function to get the current login status of the user
 	var sayonaraIsLoggedIn = function(redirectPath) {
-		if (getSayonaraUserToken()) return true;
+		if (getSayonaraUser()) return true;
 		else {
 			//Check if we have a redirect url
 			if (redirectPath) {

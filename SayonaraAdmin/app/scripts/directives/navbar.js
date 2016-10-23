@@ -21,6 +21,7 @@ angular.module('sayonaraAdminApp')
 					//Default to dashboard
 					if (route == '/') scope.currentNavItem = 'home';
 					else if (route == '/about') scope.currentNavItem = 'about';
+					else if (route.includes('page')) scope.currentNavItem = 'pages';
 					else scope.currentNavItem = '';
 				}
 				setNav();

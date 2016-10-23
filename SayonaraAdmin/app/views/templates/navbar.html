@@ -11,6 +11,7 @@
   <div ng-if="!isMobile()" class="desktopNavContainer">
     <md-nav-item md-nav-href="#/" ng-if="isLoggedIn()" name="home">Home</md-nav-item>
     <md-nav-item md-nav-href="#/about" ng-if="isLoggedIn()" name="about">About</md-nav-item>
+    <md-nav-item md-nav-href="#/allpages" ng-if="isLoggedIn()" name="pages">Pages</md-nav-item>
     <md-nav-item md-nav-click="logout()" ng-if="isLoggedIn()" name="dashboard">Log Out</md-nav-item>
   </div>
 </md-nav-bar>
@@ -27,8 +28,11 @@
     <md-button ng-href="#/" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
       Home
     </md-button>
-    <md-button ng-href="#/" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
+    <md-button ng-href="#/about" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
       About
+    </md-button>
+    <md-button ng-href="#/allpages" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
+      Pages
     </md-button>
     <md-button ng-click="toggleSideNav();logout()" ng-if="isLoggedIn()" class="sideNavItem">
       Log Out

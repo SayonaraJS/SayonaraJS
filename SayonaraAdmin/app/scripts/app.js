@@ -17,7 +17,8 @@ angular
 		'ngSanitize',
 		'ngTouch',
 		'ngMaterial',
-		'sayonaraAuth'
+		'sayonaraAuth',
+		'sayonaraPages'
 	])
 	.config(function($routeProvider) {
 		$routeProvider
@@ -35,6 +36,11 @@ angular
 				templateUrl: 'views/login.html',
 				controller: 'LoginCtrl',
 				controllerAs: 'login'
+			})
+			.when('/allpages', {
+				templateUrl: 'views/allpages.html',
+				controller: 'AllpagesCtrl',
+				controllerAs: 'allPages'
 			})
 			.otherwise({
 				redirectTo: '/'

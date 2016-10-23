@@ -12,7 +12,17 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				params: {},
 				isArray: false
 			}
-		})
+		}),
+		allPages: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/pages/all', {}, {
+				get: {
+					method: 'GET',
+					params: {},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		}
 	}
 });
 
@@ -30,5 +40,23 @@ module.service('sayonaraApiAuth', function(sayonaraApiEndpoints) {
 	//Returns for functions we are exposing
 	return {
 		loginUser: authLogin
+	}
+});
+
+module.service('sayonaraApiPages', function(sayonaraApiEndpoints) {
+
+	//Perform actions based on our endpoints
+
+	//Get all pages
+	var getAllPages = function(headers) {
+		//Send the request to the endpoint
+		//Using the payload as headers
+		return sayonaraApiEndpoints.allPages(headers).get().$promise;
+	}
+
+
+	//Returns for functions we are exposing
+	return {
+		getAllPages: getAllPages
 	}
 });
