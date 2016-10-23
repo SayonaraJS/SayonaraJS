@@ -7,34 +7,116 @@
 
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+
+    <!-- Angular Loading bar -->
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css' type='text/css' media='all' />
+    <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js'></script>
+
+
     <!-- Angular Logic -->
     <script>
         (function() {
-            var app = angular.module("sandBox", []);
-            app.controller("pageOne", ["$scope", function($scope) {
-                $scope.sandBox = 'angular application!';
+            var app = angular.module("sayonara", ['angular-loading-bar']);
+            app.controller("setup", ["$scope", "$http", "$location", function($scope, $http, $location) {
+
+                //Our form values
+                $scope.submitDisabled = false;
+                $scope.email = '';
+                $scope.password = '';
+
+                $scope.setupSayonara = function() {
+
+                    //Disable the submit button
+                    $scope.submitDisabled = true;
+
+
+                    //Create our payload
+                    var payload = {
+                        email: $scope.email,
+                        password: $scope.password
+                    };
+
+                    //send post request to api
+                    var setupApiUrl = '/setupsayonara'
+                    $http({
+                        method: 'POST',
+                        data: payload,
+                        url: setupApiUrl
+                    }).then(function successCallback(response) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        $scope.setupResponse = response;
+                    }, function errorCallback(error) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        $scope.setupResponse = response;
+                    });
+                }
             }]);
         })();
     </script>
 
     <!-- Styles -->
     <style>
-        .center: {
-            margin-left: auto;
-            margin-right: auto;
+        body {
+            background-color: whitesmoke;
         }
 
-        .centerText: {
+        .center {
             margin-left: auto;
             margin-right: auto;
             text-align: center;
         }
+
+        .noMargin {
+            height: 10px;
+        }
+
+        .sayonaraImage {
+            width: 80%;
+            height: auto;
+        }
     </style>
 </head>
 
-<body ng-app="sandBox">
-    <div ng-controller="pageOne">
-        Hello! This is a cool {{sandBox}}
+<body ng-app="sayonara">
+    <div class="center" ng-controller="setup">
+
+        <!-- Sayonara Logo Header -->
+        <img class='center sayonaraImage' alt="Sayonara Logo" src='setup/sayonaraLogo.gif' />
+
+        <h1>Welcome to the Sayonara Setup!</h1>
+        <div class="center description">
+            Thank you for choosing Sayonara for your framework! Before you get started, We need to set some things up. Below, you shall create your first admin user, which can then log into the panel using the /admin route. Check the javascript console in chance
+            of any weird errors.
+        </div>
+
+        <form class="sayonaraForm" ng-submit="setupSayonara()">
+            <h4>Admin Email:</h4>
+            <h4 class="noMargin">{{email}}</h4>
+            <input type="text" ng-model="email">
+            </input>
+
+            <h4>Admin Password (Will be shown for confirmaion):</h4>
+            <h4 class="noMargin">{{password}}</h4>
+            <input type="text" ng-model="password"></input>
+
+            <br>
+            <br>
+            <button type="submit" value="Submit" ng-disabled="email.length < 1 || password.length < 1 || submitDisabled">
+                Sayonara!
+            </button>
+
+            <h3 ng-show="setupResponse">Result:</h3>
+            <div>
+                {{setupResponse.data.message}}
+            </div>
+
+            <h3 ng-show="setupResponse">Json Response:</h3>
+            <div>
+                {{setupResponse}}
+            </div>
+        </form>
     </div>
 </body>
 

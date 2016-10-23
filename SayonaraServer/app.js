@@ -27,6 +27,7 @@ var sayonaraConfig = require('./sayonaraConfig');
 var mongoose = require('mongoose');
 
 //Models for mongoose
+require('./setup/sayonaraSetupModel');
 require('./models/permissions');
 require('./models/users');
 require('./models/categories');
@@ -56,7 +57,6 @@ mongoose.connection.on('disconnected', function() {
 });
 
 //Check if we need to setup
-require('./setup/sayonaraSetupModel');
 require('./setup/setupSayonara')(app, function(app) {
 	//Callback to be run after sayonara is done setting up
 
