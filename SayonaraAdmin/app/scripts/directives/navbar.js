@@ -36,6 +36,12 @@ angular.module('sayonaraAdminApp')
 					return sayonaraAuthService.isLoggedIn('/login');
 				}
 
+				//Funtion to get user permissions
+				scope.getPermissions = function() {
+					//Simply return sayonara's atuh permissions
+					return sayonaraAuthService.getUser();
+				}
+
 				//Function to log out
 				scope.logout = function() {
 					//Have the auth service logout the user
