@@ -1,0 +1,47 @@
+<!-- Main Nav Bar for the app -->
+<md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+
+  <!-- Nav for desktop and Mobile -->
+  <md-button class="md-icon-button navMobileButton" aria-label="More" ng-if="isMobile()" ng-click="toggleSideNav()">
+    <md-icon class="material-icons md-light md-48">more_vert</md-icon>
+  </md-button>
+  <span class="md-headline navLogo">Sayonara Admin</span>
+
+  <!-- Desktop Width nav -->
+  <div ng-if="!isMobile()" class="desktopNavContainer">
+    <md-nav-item md-nav-href="#/" ng-if="isLoggedIn()" name="home">Home</md-nav-item>
+    <md-nav-item md-nav-href="#/about" ng-if="isLoggedIn()" name="about">About</md-nav-item>
+    <md-nav-item md-nav-href="#/allpages" ng-if="isLoggedIn()" name="pages">Pages</md-nav-item>
+    <md-nav-item md-nav-click="logout()" ng-if="isLoggedIn()" name="dashboard">Log Out</md-nav-item>
+  </div>
+</md-nav-bar>
+
+<!-- Side nav for mobile devices -->
+<md-sidenav class="md-sidenav-left navSideBar" md-component-id="left" md-whiteframe="4" ng-if="isMobile()">
+
+  <md-toolbar class="md-theme-indigo">
+    <h1 class="md-toolbar-tools">Navigation</h1>
+  </md-toolbar>
+
+  <md-content layout-margin>
+
+    <md-button ng-href="#/" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
+      Home
+    </md-button>
+    <md-button ng-href="#/about" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
+      About
+    </md-button>
+    <md-button ng-href="#/allpages" ng-click="toggleSideNav()" ng-if="isLoggedIn()" class="sideNavItem">
+      Pages
+    </md-button>
+    <md-button ng-click="toggleSideNav();logout()" ng-if="isLoggedIn()" class="sideNavItem">
+      Log Out
+    </md-button>
+
+    <!-- Close the sideNav -->
+    <md-button ng-click="toggleSideNav()" class="md-accent sideNavItem">
+      Return to Page
+    </md-button>
+  </md-content>
+
+</md-sidenav>

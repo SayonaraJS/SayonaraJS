@@ -37,18 +37,18 @@ module.exports = function(grunt) {
 				tasks: ['wiredep']
 			},
 			js: {
-				files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+				files: ['<%= yeoman.app %>/scripts/**/*.js'],
 				tasks: ['newer:jshint:all', 'newer:jscs:all'],
 				options: {
 					livereload: '<%= connect.options.livereload %>'
 				}
 			},
 			jsTest: {
-				files: ['test/spec/{,*/}*.js'],
+				files: ['test/spec/**/**.js'],
 				tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
 			},
 			compass: {
-				files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+				files: ['<%= yeoman.app %>/styles/**/**.{scss,sass}'],
 				tasks: ['compass:server', 'postcss:server']
 			},
 			gruntfile: {
@@ -59,9 +59,9 @@ module.exports = function(grunt) {
 					livereload: '<%= connect.options.livereload %>'
 				},
 				files: [
-					'<%= yeoman.app %>/{,*/}*.html',
-					'.tmp/styles/{,*/}*.css',
-					'<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+					'<%= yeoman.app %>/**/**.html',
+					'.tmp/styles/**/**.css',
+					'<%= yeoman.app %>/images/**/**.{png,jpg,jpeg,gif,webp,svg}'
 				]
 			}
 		},
@@ -126,14 +126,14 @@ module.exports = function(grunt) {
 			all: {
 				src: [
 					'Gruntfile.js',
-					'<%= yeoman.app %>/scripts/{,*/}*.js'
+					'<%= yeoman.app %>/scripts/**/**.js'
 				]
 			},
 			test: {
 				options: {
 					jshintrc: 'test/.jshintrc'
 				},
-				src: ['test/spec/{,*/}*.js']
+				src: ['test/spec/**/**.js']
 			}
 		},
 
@@ -146,11 +146,11 @@ module.exports = function(grunt) {
 			all: {
 				src: [
 					'Gruntfile.js',
-					'<%= yeoman.app %>/scripts/{,*/}*.js'
+					'<%= yeoman.app %>/scripts/**/**.js'
 				]
 			},
 			test: {
-				src: ['test/spec/{,*/}*.js']
+				src: ['test/spec/**/**.js']
 			}
 		},
 
@@ -161,8 +161,8 @@ module.exports = function(grunt) {
 					dot: true,
 					src: [
 						'.tmp',
-						'<%= yeoman.dist %>/{,*/}*',
-						'!<%= yeoman.dist %>/.git{,*/}*'
+						'<%= yeoman.dist %>/**/**',
+						'!<%= yeoman.dist %>/.git**/**'
 					]
 				}]
 			},
@@ -185,7 +185,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: '.tmp/styles/',
-					src: '{,*/}*.css',
+					src: '**/**.css',
 					dest: '.tmp/styles/'
 				}]
 			},
@@ -193,7 +193,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: '.tmp/styles/',
-					src: '{,*/}*.css',
+					src: '**/**.css',
 					dest: '.tmp/styles/'
 				}]
 			}
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
 				}
 			},
 			sass: {
-				src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+				src: ['<%= yeoman.app %>/styles/**/**.{scss,sass}'],
 				ignorePath: /(\.\.\/){1,2}bower_components\//
 			}
 		},
@@ -277,9 +277,9 @@ module.exports = function(grunt) {
 
 		// Performs rewrites based on the useminPrepare configuration
 		usemin: {
-			html: ['<%= yeoman.dist %>/{,*/}*.html'],
-			css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-			js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
+			html: ['<%= yeoman.dist %>/**/**.html'],
+			css: ['<%= yeoman.dist %>/styles/**/**.css'],
+			js: ['<%= yeoman.dist %>/scripts/**/**.js'],
 			options: {
 				assetsDirs: [
 					'<%= yeoman.dist %>',
@@ -308,7 +308,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.app %>/images',
-					src: '{,*/}*.{png,jpg,jpeg,gif}',
+					src: '**/**.{png,jpg,jpeg,gif}',
 					dest: '<%= yeoman.dist %>/images'
 				}]
 			}
@@ -319,7 +319,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.app %>/images',
-					src: '{,*/}*.svg',
+					src: '**/**.svg',
 					dest: '<%= yeoman.dist %>/images'
 				}]
 			}
@@ -350,7 +350,7 @@ module.exports = function(grunt) {
 					usemin: 'scripts/scripts.js'
 				},
 				cwd: '<%= yeoman.app %>',
-				src: 'views/{,*/}*.html',
+				src: 'views/**/**.html',
 				dest: '.tmp/templateCache.js'
 			}
 		},
@@ -379,8 +379,24 @@ module.exports = function(grunt) {
 					src: [
 						'*.{ico,png,txt}',
 						'*.html',
-						'images/{,*/}*.{webp}',
-						'styles/fonts/{,*/}*.*'
+						'images/**/**.{webp}',
+						'styles/fonts/**/**.*'
+					]
+				}, {
+					expand: true,
+					dot: true,
+					cwd: '<%= yeoman.app %>',
+					dest: '<%= yeoman.dist %>',
+					src: [
+						'scripts/sayonara_components/**'
+					]
+				}, {
+					expand: true,
+					dot: true,
+					cwd: '<%= yeoman.app %>',
+					dest: '<%= yeoman.dist %>',
+					src: [
+						'views/templates/**'
 					]
 				}, {
 					expand: true,
@@ -393,7 +409,7 @@ module.exports = function(grunt) {
 				expand: true,
 				cwd: '<%= yeoman.app %>/styles',
 				dest: '.tmp/styles/',
-				src: '{,*/}*.css'
+				src: '**/**.css'
 			}
 		},
 
@@ -418,9 +434,29 @@ module.exports = function(grunt) {
 				configFile: 'test/karma.conf.js',
 				singleRun: true
 			}
+		},
+
+		//String replace for sayonara server
+		replace: {
+			dist: {
+				src: ['<%= yeoman.app %>/**/*.html', '<%= yeoman.app %>/**/*.js'],
+				overwrite: true, // overwrite matched source files
+				replacements: [{
+					from: '<script src="scripts/sayonara_components',
+					to: '<script src="admin/scripts/sayonara_components'
+				}, {
+					from: 'templateUrl: \'views/templates',
+					to: 'templateUrl: \'admin/views/templates'
+				}, {
+					from: 'src="images/',
+					to: 'src="admin/images/'
+				}]
+			}
 		}
 	});
 
+	//String replace for grunt
+	grunt.loadNpmTasks('grunt-text-replace');
 
 	grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
 		if (target === 'dist') {
@@ -438,6 +474,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('build', [
+		'replace',
 		'clean:dist',
 		'wiredep',
 		'useminPrepare',
