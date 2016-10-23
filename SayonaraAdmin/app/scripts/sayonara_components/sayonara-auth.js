@@ -14,12 +14,20 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 		localStorage.setItem(sayonaraAuthKey, JSON.stringify(token));
 	}
 
+	//Function to logout the user
+	var deleteSayonaraUserToken = function() {
+		localStorage.removeItem(sayonaraAuthKey);
+	}
+
 	//Function to get the current login status of the user
 	var sayonaraIsLoggedIn = function(redirectPath) {
 		if (getSayonaraUserToken()) return true;
 		else {
 			//Check if we have a redirect url
-			//if (redirectPath) $location.path(redirectPath);
+			if (redirectPath) {
+				//Check if we are not already on the path
+				if ($location.path() != redirectPath) $location.path(redirectPath)
+			}
 
 			//Return false
 			return false;
@@ -35,12 +43,14 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 			password: password
 		}
 
-		//Pass into the api, return the promise
+		//Pass into the api, return the promise from the api
 		return sayonaraApiAuth.loginUser(payload);
 	}
 
 	return {
 		isLoggedIn: sayonaraIsLoggedIn,
-		loginUser: sayonaraApiLogin
+		loginUser: sayonaraApiLogin,
+		saveUser: setSayonaraUserToken,
+		logout: deleteSayonaraUserToken
 	};
 });

@@ -6,7 +6,7 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 
 	//Returns for functions we are exposing
 	return {
-		usersLogin: $resource(sayonaraApiHost + '/users/login', {}, {
+		usersLogin: $resource(sayonaraApiHost + '/auth/login', {}, {
 			post: {
 				method: 'POST',
 				params: {},

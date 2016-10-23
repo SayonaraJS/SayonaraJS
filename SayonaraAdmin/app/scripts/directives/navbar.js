@@ -33,17 +33,13 @@ angular.module('sayonaraAdminApp')
 				//Function to check if we are logged in
 				scope.isLoggedIn = function() {
 					//Simply return Sayonara's auth service
-					return sayonaraAuthService.isLoggedIn();
+					return sayonaraAuthService.isLoggedIn('/login');
 				}
 
 				//Function to log out
 				scope.logout = function() {
-
-					//delete the session storage
-					sessionStorage.removeItem('userToken');
-
-					//Redirect home
-					$location.path('/');
+					//Have the auth service logout the user
+					sayonaraAuthService.logout();
 				}
 
 				//Function to set our nav toggler
