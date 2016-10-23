@@ -1,1 +1,28 @@
-<p>This is the allPages view.</p>
+<h1 class="centerText pageHeader">Pages</h1>
+
+<div class="centerText elementDescription">
+  This view shows all current pages for the website. You can create a new page by clicking "New Page" below. You can edit a page, by clicking "Edit" on the corresponding page.
+</div>
+
+<div class="centerText">
+  <md-button class="center md-raised md-primary" ng-click="console.log(newPage)">New Page</md-button>
+</div>
+
+<!-- Ng-for through all the pages -->
+<div class="center pagesContainer">
+  <md-card class="pageCard" ng-repeat="page in pages">
+    <md-card-title>
+      <md-card-title-text class="centerText">
+        <span class="md-headline">{{page.title}}</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content>
+      <p>Date: {{page.date}}</P>
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="goToPage(page.id)">Edit</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

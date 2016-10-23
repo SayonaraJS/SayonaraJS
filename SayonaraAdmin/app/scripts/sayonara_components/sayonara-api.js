@@ -18,7 +18,7 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				get: {
 					method: 'GET',
 					params: {},
-					isArray: false,
+					isArray: true,
 					headers: customHeaders || {}
 				}
 			});

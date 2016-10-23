@@ -1,0 +1,27 @@
+
+//Width to keep header and flexbox aligned
+$allPagesWidth: 90%;
+.pageHeader {
+    width: $allPagesWidth;
+}
+
+.elementDescription {
+    width: 75%;
+    min-width: 300px;
+    margin-bottom: 10px;
+}
+
+.pagesContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    width: $allPagesWidth;
+
+    .pageCard {
+        width: 100%;
+        max-width: 550px;
+    }
+}

@@ -61,13 +61,9 @@ router.get('/all', function(req, res) {
 				res.status(500).json(err);
 				return;
 			}
-			var pagesMap = {};
 
-			pages.forEach(function(page) {
-				pagesMap[page._id] = page;
-			});
-
-			res.send(pagesMap);
+			//Return the pages
+			res.send(pages);
 		});
 	}, function(error) {
 		res.status(error.status).send(error.message);

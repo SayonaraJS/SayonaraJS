@@ -15,8 +15,8 @@ angular
 		'ngResource',
 		'ngRoute',
 		'ngSanitize',
-		'ngTouch',
 		'ngMaterial',
+		'angular-loading-bar',
 		'sayonaraAuth',
 		'sayonaraPages'
 	])
