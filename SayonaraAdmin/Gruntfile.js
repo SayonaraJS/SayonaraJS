@@ -403,6 +403,30 @@ module.exports = function(grunt) {
 					cwd: '.tmp/images',
 					dest: '<%= yeoman.dist %>/images',
 					src: ['generated/*']
+				}, {
+					expand: true,
+					dot: true,
+					cwd: '<%= yeoman.app %>/bower_components/tinymce-dist/themes/modern/',
+					src: ['**'],
+					dest: '<%= yeoman.dist %>/tinymce/themes/modern/'
+				}, {
+					expand: true,
+					dot: true,
+					cwd: '<%= yeoman.app %>/bower_components/tinymce-dist/skins/',
+					src: ['**'],
+					dest: '<%= yeoman.dist %>/tinymce/skins/'
+				}, {
+					expand: true,
+					dot: true,
+					cwd: '<%= yeoman.app %>/bower_components/tinymce-dist/plugins/link/',
+					src: ['**'],
+					dest: '<%= yeoman.dist %>/tinymce/plugins/link/'
+				}, {
+					expand: true,
+					dot: true,
+					cwd: 'bower_components/font-awesome/fonts/',
+					src: '*',
+					dest: '<%= yeoman.dist %>/fonts'
 				}]
 			},
 			styles: {
@@ -436,10 +460,10 @@ module.exports = function(grunt) {
 			}
 		},
 
-		//String replace for sayonara server
+		//String replace for sayonara server, since, we are using a relative path
 		replace: {
 			dist: {
-				src: ['<%= yeoman.app %>/**/*.html', '<%= yeoman.app %>/**/*.js'],
+				src: ['<%= yeoman.dist %>/**/*.html', '<%= yeoman.dist %>/**/*.js'],
 				overwrite: true, // overwrite matched source files
 				replacements: [{
 					from: '<script src="scripts/sayonara_components',
@@ -450,6 +474,9 @@ module.exports = function(grunt) {
 				}, {
 					from: 'src="images/',
 					to: 'src="admin/images/'
+				}, {
+					from: '/bower_components/tinymce',
+					to: '/admin/bower_components/tinymce'
 				}]
 			}
 		}
@@ -474,7 +501,6 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('build', [
-		'replace',
 		'clean:dist',
 		'wiredep',
 		'useminPrepare',
@@ -487,7 +513,8 @@ module.exports = function(grunt) {
 		'cssmin',
 		'uglify',
 		'usemin',
-		'htmlmin'
+		'htmlmin',
+		'replace'
 	]);
 
 	grunt.registerTask('default', [

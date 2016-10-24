@@ -20,6 +20,18 @@ $allPagesWidth: 90%;
     justify-content: center;
     width: $allPagesWidth;
 
+    .pageContentPreviewContainer {
+        @extend .center;
+        width: 90%;
+        height: 250px;
+        overflow: auto;
+
+        border-radius: 3px;
+        border: 2px solid $standard;
+        padding: 10px;
+
+    }
+
     .pageCard {
         width: 100%;
         max-width: 550px;

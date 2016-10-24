@@ -141,6 +141,7 @@ module.exports = function(app, callback) {
 			//Regex for match everything except /admin* and /api*
 			app.get(/^(?!\/admin|\/api).*/, function(req, res) {
 				var pathString = clientRoot + req.url;
+				if (req.url == '/') pathString += 'index.html';
 				res.sendFile(path.resolve(pathString));
 			});
 		}

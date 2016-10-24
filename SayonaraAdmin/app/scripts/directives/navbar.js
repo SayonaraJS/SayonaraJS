@@ -7,7 +7,7 @@
 angular.module('sayonaraAdminApp')
 	.directive('navBar', ['$location', '$mdSidenav', 'sayonaraAuthService', function($location, $mdSidenav, sayonaraAuthService) {
 		return {
-			templateUrl: 'admin/views/templates/navbar.html',
+			templateUrl: 'views/templates/navbar.html',
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 

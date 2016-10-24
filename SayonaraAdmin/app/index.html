@@ -6,16 +6,23 @@
   <title></title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
   <!-- endbower -->
   <!-- endbuild -->
+
+  <!-- CSS required by text angular -->
+  <link rel='stylesheet prefetch' href='http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css'>
+
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
+
 </head>
 
 <body ng-app="sayonaraAdminApp">
@@ -58,15 +65,22 @@
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
   <script src="bower_components/moment/moment.js"></script>
-  <script src="bower_components/tinymce/tinymce.js"></script>
-  <script src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+  <script src="bower_components/rangy/rangy-core.js"></script>
+  <script src="bower_components/rangy/rangy-classapplier.js"></script>
+  <script src="bower_components/rangy/rangy-highlighter.js"></script>
+  <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+  <script src="bower_components/rangy/rangy-serializer.js"></script>
+  <script src="bower_components/rangy/rangy-textrange.js"></script>
+  <script src="bower_components/textAngular/dist/textAngular.js"></script>
+  <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+  <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- Our Sayonara Components -->
-  <script src="admin/scripts/sayonara_components/sayonara-api.js"></script>
-  <script src="admin/scripts/sayonara_components/sayonara-auth.js"></script>
-  <script src="admin/scripts/sayonara_components/sayonara-pages.js"></script>
+  <script src="scripts/sayonara_components/sayonara-api.js"></script>
+  <script src="scripts/sayonara_components/sayonara-auth.js"></script>
+  <script src="scripts/sayonara_components/sayonara-pages.js"></script>
 
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

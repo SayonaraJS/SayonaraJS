@@ -17,11 +17,19 @@ angular
 		'ngSanitize',
 		'ngMaterial',
 		'angular-loading-bar',
-		'ui.tinymce',
+		'textAngular',
 		'sayonaraAuth',
 		'sayonaraPages'
 	])
-	.config(function($routeProvider) {
+	.config(function($routeProvider, $mdThemingProvider) {
+
+		//Configure the ngmaterial theme
+		$mdThemingProvider.theme('default')
+			.primaryPalette('indigo')
+			.accentPalette('indigo')
+			.warnPalette('red')
+			.backgroundPalette('grey');
+
 		$routeProvider
 			.when('/', {
 				templateUrl: 'views/main.html',

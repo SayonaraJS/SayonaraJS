@@ -1,0 +1,11 @@
+$textAngularMinHeight: 400px;
+
+.ta-bind {
+    min-height: $textAngularMinHeight !important;
+}
+
+.textAngularEditor {
+    min-height: $textAngularMinHeight !important;
+    width: 100%;
+    border: 1px solid $standard;
+}

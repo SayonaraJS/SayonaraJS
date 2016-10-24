@@ -9,7 +9,7 @@
 angular.module('sayonaraAdminApp')
 	.directive('entryFieldContent', function() {
 		return {
-			templateUrl: 'admin/views/templates/entryfieldcontent.html',
+			templateUrl: 'views/templates/entryfieldcontent.html',
 			restrict: 'E',
 			restrict: 'E',
 			scope: {
