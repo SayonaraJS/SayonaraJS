@@ -71,6 +71,30 @@ router.get('/all', function(req, res) {
 	});
 });
 
+//Get All Entries in an entry type
+router.get('id/:id/allentries', function(req, res) {
+	//Validate our JWT and permissions
+	var permissions = [routeHelpers.definedPermissions.entryType, routeHelpers.definedPermissions.entries];
+	routeHelpers.validateUser(req, permissions).then(function(result) {
+
+		//Find the Entry Type
+		EntryType.findOne({
+			_id: req.params.id
+		}).populate('entries entries.categories').exec(function(err, entryType) {
+			if (err) {
+				res.status(500).json(err);
+				return;
+			}
+			if (!entryType) res.status(404).send('Entry Type not Found');
+
+			//Return the entries
+			res.status(200).json(entryType);
+		});
+	}, function(error) {
+		res.status(error.status).send(error.message);
+	});
+});
+
 //Update an entryType
 router.post('/id/:id', function(req, res) {
 

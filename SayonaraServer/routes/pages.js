@@ -71,57 +71,23 @@ router.get('/id/:id', function(req, res) {
 	var permissions = [routeHelpers.definedPermissions.pages];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
-		//Find all pages
-		Page.findOne({
-			_id: req.params.id
-		}, function(err, pages) {
-			if (err) {
-				res.status(500).json(err);
-				return;
-			}
-			if (!pages) res.status(404).send('Id not found');
-
-			//Get the entry types for the pages
-			EntryType.find({
-				'_id': {
-					$in: pages.entryTypes
-				}
-			}, function(err, entryTypes) {
+			//Find all pages
+			Page.findOne({
+				_id: req.params.id
+			}).populate('categories entryTypes entrytypes.entries').exec(function(err, pages) {
 				if (err) {
 					res.status(500).json(err);
 					return;
 				}
-				if (!entryTypes) res.status(200).json(pages);
+				if (!pages) res.status(404).send('Id not found');
 
-				//Set the entry types to the page
-				pages.entryTypes = entryTypes;
-
-				//Get the entries of the EntryType
-				Entry.find({
-					'_id': {
-						$in: pages.entryTypes.entries
-					}
-				}, function(err, entries) {
-					if (err || !entries) {
-						res.status(200).json(pages)
-						return;
-					};
-
-					//Replace the entry types entries with the actual entry
-					for (var i = 0; i < pages.entryTypes.entries.length; i++) {
-						var fullEntry = entires[pages.entryTypes.entries[i]];
-						pages.entryTypes.entries[i] = fullEntry;
-					}
-
-					//Return the pages
-					res.status(200).json(pages);
-				});
-			})
-
+				//Return the pages
+				res.status(200).json(pages);
+			});
+		},
+		function(error) {
+			res.status(error.status).send(error.message);
 		});
-	}, function(error) {
-		res.status(error.status).send(error.message);
-	});
 });
 
 //Update a page
