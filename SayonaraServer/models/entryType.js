@@ -8,7 +8,10 @@ var entryTypeSchema = new Schema({
 		type: String,
 		required: true
 	},
-	entries: [mongoose.Schema.Types.ObjectId],
+	entries: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Entry'
+	}],
 	hasContent: {
 		type: Boolean,
 		default: true

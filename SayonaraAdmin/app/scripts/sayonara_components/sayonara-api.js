@@ -60,8 +60,45 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 					headers: customHeaders || {}
 				}
 			});
-		}
-
+		},
+		newEntry: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/entry/create', {}, {
+				post: {
+					method: 'POST',
+					params: {},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		},
+		entryById: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/entry/id/:id', {}, {
+				get: {
+					method: 'GET',
+					params: {
+						id: '@id'
+					},
+					isArray: false,
+					headers: customHeaders || {}
+				},
+				update: {
+					method: 'PUT',
+					params: {
+						id: '@id'
+					},
+					isArray: false,
+					headers: customHeaders || {}
+				},
+				delete: {
+					method: 'DELETE',
+					params: {
+						id: '@id'
+					},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		},
 	}
 });
 
@@ -132,5 +169,22 @@ module.service('sayonaraApiPages', function(sayonaraApiEndpoints) {
 		createPage: createPage,
 		updatePageById: updatePageById,
 		deletePageById: deletePageById
+	}
+});
+
+module.service('sayonaraApiEntries', function(sayonaraApiEndpoints) {
+
+	//Perform actions based on our endpoints
+
+	//Create a new entry
+	var createEntry = function(payload) {
+		//Send the request to the endpoint
+		return sayonaraApiEntries.newEntry().post(payload).$promise;
+	}
+
+
+	//Returns for functions we are exposing
+	return {
+		createPage: createPage
 	}
 });

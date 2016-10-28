@@ -61,7 +61,16 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				}
 			});
 		}
-
+		newEntry: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/entry/create', {}, {
+				post: {
+					method: 'POST',
+					params: {},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		}
 	}
 });
 
@@ -132,5 +141,22 @@ module.service('sayonaraApiPages', function(sayonaraApiEndpoints) {
 		createPage: createPage,
 		updatePageById: updatePageById,
 		deletePageById: deletePageById
+	}
+});
+
+module.service('sayonaraApiEntries', function(sayonaraApiEndpoints) {
+
+	//Perform actions based on our endpoints
+
+	//Login a user
+	var authLogin = function(payload) {
+		//Send the request to the endpoint
+		//return sayonaraApiEndpoints.usersLogin.post(payload).$promise;
+	}
+
+
+	//Returns for functions we are exposing
+	return {
+		loginUser: authLogin
 	}
 });

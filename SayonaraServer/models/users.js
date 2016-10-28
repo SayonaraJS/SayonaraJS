@@ -17,7 +17,8 @@ var userSchema = new Schema({
 		default: Date.now()
 	},
 	permissions: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: Schema.Types.ObjectId,
+		ref: 'Permissions',
 		required: true
 	}
 });

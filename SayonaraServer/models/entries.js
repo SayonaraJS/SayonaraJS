@@ -8,7 +8,8 @@ var entrySchema = new Schema({
 		required: true
 	},
 	entryType: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: Schema.Types.ObjectId,
+		ref: 'EntryType',
 		required: true
 	},
 	date: {
@@ -21,7 +22,10 @@ var entrySchema = new Schema({
 	},
 	embedCodes: [String],
 	uploadUrls: [String],
-	categories: [mongoose.Schema.Types.ObjectId]
+	categories: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Category'
+	}]
 });
 
 //Models

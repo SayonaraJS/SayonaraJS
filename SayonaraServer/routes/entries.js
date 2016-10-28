@@ -67,6 +67,21 @@ router.post('/create', function(req, res) {
 	});
 });
 
+//Get all Entries
+//Not Authenticated since used by public website
+router.get('/all', function(req, res) {
+	//Find all pages
+	Entry.find({}, function(err, entries) {
+		if (err) {
+			res.status(500).json(err);
+			return;
+		}
+
+		//Return the pages
+		res.send(entries);
+	});
+});
+
 //Get All Entries in an entry type
 router.get('/all/type/:id', function(req, res) {
 	//Validate our JWT and permissions
