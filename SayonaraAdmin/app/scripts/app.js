@@ -56,6 +56,11 @@ angular
 				controller: 'PageeditCtrl',
 				controllerAs: 'pageEdit'
 			})
+.when('/allEntries', {
+  templateUrl: 'views/allentries.html',
+  controller: 'AllentriesCtrl',
+  controllerAs: 'allEntries'
+})
 			.otherwise({
 				redirectTo: '/'
 			});

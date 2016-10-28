@@ -6,7 +6,10 @@
     <title>Sayonara Setup</title>
 
     <!-- AngularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+
+    <!-- ngSanitize (for binding HTML within JSON) -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
 
     <!-- Angular Loading bar -->
     <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css' type='text/css' media='all' />
@@ -16,8 +19,8 @@
     <!-- Angular Logic -->
     <script>
         (function() {
-            var app = angular.module("sayonara", ['angular-loading-bar']);
-            app.controller("setup", ["$scope", "$http", "$location", function($scope, $http, $location) {
+            var app = angular.module("sayonara", ['ngSanitize', 'angular-loading-bar']);
+            app.controller("setup", function($scope, $http, $location) {
 
                 //Testing stuff
                 $scope.default = 'New Sayonara App';
@@ -40,7 +43,7 @@
                     });
                 };
                 $scope.getPages();
-            }]);
+            });
         })();
     </script>
 
@@ -79,6 +82,8 @@
             <h3>Title: {{page.title}}</h3>
             <h3>Content:</h3>
             {{page.content}}
+            <h3>Binded Content:</h3>
+            <div ng-bind-html="page.content"></div>
             <h3>Date:</h3>
             {{page.date}}
         </div>
