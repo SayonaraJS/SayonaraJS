@@ -26,17 +26,11 @@ angular.module('sayonaraEntries', ['sayonaraApi', 'sayonaraAuth']).service('sayo
 
 	//Update a Entry by id
 	var updateEntryById = function(id, payload) {
-		//Grab the id
-		var body = {
-			token: sayonaraAuthService.getUser().token,
-			id: id
-		}
+    //Grab the id and token
+		payload.token = sayonaraAuthService.getUser().token;
+		payload.id = id;
 
-		//Add optional fields
-		if (payload.title) body.title = payload.title;
-		if (payload.content) body.content = payload.content;
-
-		return sayonaraApiContent.updateEntryById(body);
+		return sayonaraApiContent.updateEntryById(payload);
 	}
 
 	//Delete a Entry by id

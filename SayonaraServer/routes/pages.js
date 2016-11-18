@@ -74,7 +74,7 @@ router.get('/id/:id', function(req, res) {
 			//Find all pages
 			Page.findOne({
 				_id: req.params.id
-			}).populate('categories entryTypes entrytypes.entries').exec(function(err, pages) {
+			}).exec(function(err, pages) {
 				if (err) {
 					res.status(500).json(err);
 					return;

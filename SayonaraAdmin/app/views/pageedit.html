@@ -6,6 +6,12 @@
   <input type="input" ng-model="page.title" />
 </md-input-container>
 
+<!-- The Entry type of the content -->
+<sayonara-selector ng-model="page.entryTypes" on-select="testing(selection)"
+  selections="entryTypes" selector-label="Displayed Entry Types"
+  multiple-selection="true"></sayonara-selector>
+
+
 <!-- The content of the page -->
 <sayonara-content ng-model="page.content"></sayonara-content>
 

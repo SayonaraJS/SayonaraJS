@@ -1,13 +1,13 @@
 <md-input-container class="editSelector">
   <label>{{selectorLabel}}</label>
-  <md-select ng-model="ngModel" md-on-close="selectClosed()">
+  <md-select ng-model="ngModel" md-on-close="selectClosed()"
+    ng-attr-multiple="{{multipleSelection}}">
     <md-select-header class="editSelectorHeader">
       <input ng-model="selectionSearch"
              type="search"
              placeholder="Search for an {{selectorLabel}}.."
              ng-keydown="$event.stopPropagation()"
-             class="editSelectorSearch md-text"
-             ng-attr-multiple="{{multipleSelection === 'true'}}">
+             class="editSelectorSearch md-text">
     </md-select-header>
     <md-optgroup label="{{selectorLabel}}">
       <md-option ng-repeat="selection in selections | filter: selectionSearch"

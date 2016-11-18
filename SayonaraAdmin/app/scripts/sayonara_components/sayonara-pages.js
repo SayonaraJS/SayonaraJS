@@ -26,17 +26,11 @@ angular.module('sayonaraPages', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 
 	//Update a page by id
 	var updatePageById = function(id, payload) {
-		//Grab the id
-		var body = {
-			token: sayonaraAuthService.getUser().token,
-			id: id
-		}
+		//Grab the id and token
+		payload.token = sayonaraAuthService.getUser().token;
+		payload.id = id;
 
-		//Add optional fields
-		if (payload.title) body.title = payload.title;
-		if (payload.content) body.content = payload.content;
-
-		return sayonaraApiContent.updatePageById(body);
+		return sayonaraApiContent.updatePageById(payload);
 	}
 
 	//Delete a page by id
