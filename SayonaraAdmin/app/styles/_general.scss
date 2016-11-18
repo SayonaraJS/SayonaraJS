@@ -1,4 +1,6 @@
 //General classes that can be used around the app
+$containerWidth: 90%;
+
 .center {
     margin-left: auto;
     margin-right: auto;
@@ -10,17 +12,23 @@
     text-align: center;
 }
 
+.containerWidth {
+  width: $containerWidth;
+}
+
 .footer {
+    @extend .center;
+    @extend .containerWidth;
     border-top: 1px solid $lightShade;
     margin-top: 10px;
-    padding-top: 5px;
-    width: 95%;
-
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
 }
 
 .container {
     @extend .center;
-    width: 90%;
+    @extend .containerWidth;
 }
 
 .appToast {
