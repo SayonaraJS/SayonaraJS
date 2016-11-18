@@ -19,7 +19,8 @@ angular
 		'angular-loading-bar',
 		'textAngular',
 		'sayonaraAuth',
-		'sayonaraPages'
+		'sayonaraPages',
+    'sayonaraEntries'
 	])
 	.config(function($routeProvider, $mdThemingProvider) {
 
@@ -56,11 +57,11 @@ angular
 				controller: 'PageeditCtrl',
 				controllerAs: 'pageEdit'
 			})
-.when('/allEntries', {
-  templateUrl: 'views/allentries.html',
-  controller: 'AllentriesCtrl',
-  controllerAs: 'allEntries'
-})
+			.when('/allentries', {
+			  templateUrl: 'views/allentries.html',
+			  controller: 'AllentriesCtrl',
+			  controllerAs: 'allEntries'
+			})
 			.otherwise({
 				redirectTo: '/'
 			});

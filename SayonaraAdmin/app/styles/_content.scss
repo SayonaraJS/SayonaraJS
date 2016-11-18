@@ -1,8 +1,8 @@
-
+//Sass for the content all content contents, contents and entries
 //Width to keep header and flexbox aligned
-$allPagesWidth: 90%;
-.pageHeader {
-    width: $allPagesWidth;
+$allContentWidth: 90%;
+.contentHeader {
+    width: $allContentWidth;
 }
 
 .elementDescription {
@@ -11,16 +11,16 @@ $allPagesWidth: 90%;
     margin-bottom: 10px;
 }
 
-.pagesContainer {
+.contentContainer {
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
-    width: $allPagesWidth;
+    width: $allContentWidth;
 
-    .pageContentPreviewContainer {
+    .contentPreviewContainer {
         @extend .center;
         width: 90%;
         height: 250px;
@@ -32,7 +32,7 @@ $allPagesWidth: 90%;
 
     }
 
-    .pageCard {
+    .contentCard {
         width: 100%;
         max-width: 550px;
     }

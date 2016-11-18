@@ -1,1 +1,34 @@
-<p>This is the allEntries view.</p>
+<h1 class="centerText contentHeader">Entries</h1>
+
+<div class="centerText elementDescription">
+  This view shows all current entries for the website, organized by entry type. You can create a new entry by clicking "New Entry" below. You can edit a entry, by clicking "Edit" on the corresponding entry.
+</div>
+
+<div class="centerText">
+  <md-button class="center md-raised md-primary" ng-click="goToEntry()">New Entry</md-button>
+</div>
+
+<!-- Ng-for through all the entries -->
+<div class="center contentContainer">
+  <md-card class="contentCard" ng-repeat="content in entries">
+    <md-card-title>
+      <md-card-title-text class="centerText">
+        <span class="md-headline">{{content.title}}</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content>
+
+      <!-- Preview of content -->
+      <div class="contentPreviewContainer">
+        <div class="contentPreview" ng-bind-html="content.content"></div>
+      </div>
+
+      <p>Date: {{content.date}}</P>
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="goToEntry(content._id)">Edit</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

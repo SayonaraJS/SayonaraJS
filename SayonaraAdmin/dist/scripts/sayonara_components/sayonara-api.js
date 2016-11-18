@@ -60,7 +60,7 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 					headers: customHeaders || {}
 				}
 			});
-		}
+		},
 		newEntry: function(customHeaders) {
 			return $resource(sayonaraApiHost + '/entry/create', {}, {
 				post: {
@@ -70,7 +70,35 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 					headers: customHeaders || {}
 				}
 			});
-		}
+		},
+		entryById: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/entry/id/:id', {}, {
+				get: {
+					method: 'GET',
+					params: {
+						id: '@id'
+					},
+					isArray: false,
+					headers: customHeaders || {}
+				},
+				update: {
+					method: 'PUT',
+					params: {
+						id: '@id'
+					},
+					isArray: false,
+					headers: customHeaders || {}
+				},
+				delete: {
+					method: 'DELETE',
+					params: {
+						id: '@id'
+					},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		},
 	}
 });
 
@@ -148,15 +176,15 @@ module.service('sayonaraApiEntries', function(sayonaraApiEndpoints) {
 
 	//Perform actions based on our endpoints
 
-	//Login a user
-	var authLogin = function(payload) {
+	//Create a new entry
+	var createEntry = function(payload) {
 		//Send the request to the endpoint
-		//return sayonaraApiEndpoints.usersLogin.post(payload).$promise;
+		return sayonaraApiEntries.newEntry().post(payload).$promise;
 	}
 
 
 	//Returns for functions we are exposing
 	return {
-		loginUser: authLogin
+		createPage: createPage
 	}
 });

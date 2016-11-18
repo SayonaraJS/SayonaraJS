@@ -1,4 +1,4 @@
-<h1 class="centerText pageHeader">Pages</h1>
+<h1 class="centerText contentHeader">Pages</h1>
 
 <div class="centerText elementDescription">
   This view shows all current pages for the website. You can create a new page by clicking "New Page" below. You can edit a page, by clicking "Edit" on the corresponding page.
@@ -9,26 +9,26 @@
 </div>
 
 <!-- Ng-for through all the pages -->
-<div class="center pagesContainer">
-  <md-card class="pageCard" ng-repeat="page in pages">
+<div class="center contentContainer">
+  <md-card class="contentCard" ng-repeat="content in pages">
     <md-card-title>
       <md-card-title-text class="centerText">
-        <span class="md-headline">{{page.title}}</span>
+        <span class="md-headline">{{content.title}}</span>
       </md-card-title-text>
     </md-card-title>
 
     <md-card-content>
 
       <!-- Preview of content -->
-      <div class="pageContentPreviewContainer">
-        <div class="pageContentPreview" ng-bind-html="page.content"></div>
+      <div class="contentPreviewContainer">
+        <div class="contentPreview" ng-bind-html="content.content"></div>
       </div>
 
-      <p>Date: {{page.date}}</P>
+      <p>Date: {{content.date}}</P>
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="end center">
-      <md-button class="md-raised" ng-click="goToPage(page._id)">Edit</md-button>
+      <md-button class="md-raised" ng-click="goToPage(content._id)">Edit</md-button>
     </md-card-actions>
   </md-card>
 </div>
