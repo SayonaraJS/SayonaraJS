@@ -61,6 +61,16 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				}
 			});
 		},
+		editInfo: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/admin/editinfo', {}, {
+				get: {
+					method: 'GET',
+					params: {},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		},
 	}
 });
 
@@ -88,7 +98,13 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
   //Define out content type urls
   var pageContentUrl = 'pages';
   var entryContentUrl = 'entry';
-  var entryTypeContentUrl = 'type'
+  var entryTypeContentUrl = 'type';
+
+	/**
+	 *
+	 *	PAGES
+	 *
+	 */
 
 	//Create a new page
 	var createPage = function(payload) {
@@ -128,6 +144,12 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 		return sayonaraApiEndpoints.contentById(pageContentUrl).delete(payload).$promise;
 	}
 
+	/**
+	 *
+	 *	ENTRIES
+	 *
+	 */
+
   //Create a new entry
   var createEntry = function(payload) {
     //Send the request to the endpoint
@@ -165,6 +187,12 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
     //Send the request to the endpoint
     return sayonaraApiEndpoints.contentById(entryContentUrl).delete(payload).$promise;
   }
+
+	/**
+	 *
+	 *	ENTRY TYPES
+	 *
+	 */
 
   //Create a new entry type
   var createEntryType = function(payload) {
@@ -204,6 +232,20 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
     return sayonaraApiEndpoints.contentById(entryTypeContentUrl).delete(payload).$promise;
   }
 
+	/**
+	 *
+	 *	ADMIN
+	 *
+	 */
+
+   //Get Info For Editing Content
+   var getEditInfo = function(headers) {
+     //Send the request to the endpoint
+     //Using the payload as headers
+     return sayonaraApiEndpoints.editInfo(headers).get().$promise;
+   }
+
+
 
 	//Returns for functions we are exposing
 	return {
@@ -222,5 +264,6 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 		getEntryTypeById: getEntryTypeById,
 		updateEntryTypeById: updateEntryTypeById,
 		deleteEntryTypeById: deleteEntryTypeById,
+    getEditInfo: getEditInfo,
 	}
 });

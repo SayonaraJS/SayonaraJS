@@ -1,13 +1,17 @@
 <h1>{{entry.title}}</h1>
 
-<!-- The title of the page -->
+<!-- The title of the content -->
 <md-input-container class="editInput">
   <label>Title</label>
   <input type="input" ng-model="entry.title" />
 </md-input-container>
 
-<!-- The content of the page -->
-<entry-field-content ng-model="entry.content"></entry-field-content>
+<!-- The Entry type of the content -->
+<sayonara-selector ng-model="entry.entryType" on-select="testing(selection)"
+  selections="entryTypes" selector-label="Entry Type"></sayonara-selector>
+
+<!-- The content of the content -->
+<sayonara-content ng-model="entry.content"></sayonara-content>
 
 <!-- Save button -->
 <div class="centerText">

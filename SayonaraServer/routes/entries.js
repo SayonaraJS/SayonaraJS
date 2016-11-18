@@ -55,7 +55,7 @@ router.post('/create', function(req, res) {
 				}
 
 				//push the entry onto the entrytype
-				entryTypes.entries.push(newEntry.id);
+				entryType.entries.push(newEntry.id);
 				entryType.save(function(err) {
 					if (err) {
 						res.status(500).send('Error saving the entry type');

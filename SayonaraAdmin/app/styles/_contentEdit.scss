@@ -1,0 +1,42 @@
+
+.editInput {
+    width: 100%;
+    max-width: 200px;
+    display: block;
+}
+
+.editSelector {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+
+  .editSelectorHeader {
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+  }
+
+  .editSelectorSearch {
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+    padding-left: 10.667px;
+    height: 48px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto;
+  }
+}
+
+$textAngularMinHeight: 400px;
+.ta-bind {
+    min-height: $textAngularMinHeight !important;
+}
+
+.textAngularEditor {
+    min-height: $textAngularMinHeight !important;
+    width: 100%;
+    border: 1px solid $standard
+}

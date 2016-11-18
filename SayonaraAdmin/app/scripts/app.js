@@ -22,6 +22,7 @@ angular
 		'sayonaraPages',
     'sayonaraEntries',
 		'sayonaraEntryType',
+		'sayonaraAdmin',
 	])
 	.config(function($routeProvider, $mdThemingProvider) {
 

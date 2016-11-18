@@ -7,10 +7,9 @@
  * # entryFieldContent
  */
 angular.module('sayonaraAdminApp')
-	.directive('entryFieldContent', function() {
+	.directive('sayonaraContent', function() {
 		return {
-			templateUrl: 'views/templates/entryfieldcontent.html',
-			restrict: 'E',
+			templateUrl: 'views/templates/sayonaracontent.html',
 			restrict: 'E',
 			scope: {
 				ngModel: '='

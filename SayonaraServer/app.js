@@ -50,6 +50,8 @@ var appEntryType = require('./routes/entryTypes');
 app.use('/api/type', appEntryType);
 var appPages = require('./routes/pages');
 app.use('/api/pages', appPages);
+var appAdmin = require('./routes/admin');
+app.use('/api/admin', appAdmin);
 
 //Connect to our DB
 mongoose.connect(sayonaraConfig.dbUrl);

@@ -8,7 +8,7 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('EntryeditCtrl', function ($scope, $routeParams, $location, adminNotify, sayonaraEntryService) {
+  .controller('EntryeditCtrl', function ($scope, $routeParams, $location, adminNotify, sayonaraEntryService, sayonaraAdminService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -36,6 +36,19 @@ angular.module('sayonaraAdminApp')
 			$scope.entry.title = 'New Sayonara Entry'
 		}
 
+    //Get info for editing (Categories and Entry Types)
+    $scope.entryTypes = [];
+    $scope.categories = [];
+    sayonaraAdminService.getEditInfo().then(function(success) {
+
+      //Set our entry types and categories
+      $scope.entryTypes = success.entryTypes;
+      $scope.categories = success.categories;
+    }, function(error) {
+      //Pass to te error handler
+      adminNotify.error(error);
+    });
+
 		//Save the entry
 		$scope.saveEntry = function() {
 			//First check if we are updating, or creating a new page
@@ -62,12 +75,13 @@ angular.module('sayonaraAdminApp')
 		}
 
 		var createEntry  = function() {
-			//Create a new page
+			//Create a new entry
 
 			//Create our request
 			var request = {
 				title: $scope.entry.title,
-				content: $scope.entry.content
+				content: $scope.entry.content,
+        entryType: $scope.entry.entryType
 			};
 
 			//Update an existing page

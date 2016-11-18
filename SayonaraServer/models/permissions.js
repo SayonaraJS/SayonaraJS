@@ -4,16 +4,58 @@ var Schema = mongoose.Schema;
 
 var permSchema = new Schema({
 	entries: {
-		type: Boolean,
-		default: true
+		create: {
+			type: Boolean,
+			default: true
+		},
+		read: {
+			type: Boolean,
+			default: true
+		},
+		update: {
+			type: Boolean,
+			default: true
+		},
+		delete: {
+			type: Boolean,
+			default: true
+		}
 	},
 	entryTypes: {
-		type: Boolean,
-		default: true
+		create: {
+			type: Boolean,
+			default: true
+		},
+		read: {
+			type: Boolean,
+			default: true
+		},
+		update: {
+			type: Boolean,
+			default: true
+		},
+		delete: {
+			type: Boolean,
+			default: true
+		}
 	},
 	pages: {
-		type: Boolean,
-		default: true
+		create: {
+			type: Boolean,
+			default: true
+		},
+		read: {
+			type: Boolean,
+			default: true
+		},
+		update: {
+			type: Boolean,
+			default: true
+		},
+		delete: {
+			type: Boolean,
+			default: true
+		}
 	},
 	admin: {
 		type: Boolean,
