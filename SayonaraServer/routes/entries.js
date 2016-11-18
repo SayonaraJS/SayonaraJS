@@ -173,23 +173,32 @@ router.delete('/id/:id', function(req, res) {
 			}
 			if (!entry) res.status(404).send('Entry not Found');
 
-			//Remove the entry from the entry type
-			entryType.splice(entryType.indexOf(entry.id), 1);
-
-			//Save the entry type
-			entryType.save(function(err) {
+			//Find its entry type
+			EntryType.findOne({_id: entry.entryType}).exec(function(err, entryType) {
 				if (err) {
 					res.status(500).json(err);
 					return;
 				}
+				if (!entryType) res.status(404).send('Entry Type of Entry not Found');
 
-				//Remove the entry
-				entry.remove(function(err) {
+				//Remove from the entry type
+				entryType.entries.splice(entryType.entries.indexOf(entry.id), 1);
+
+				//Save the entry type
+				entryType.save(function(err) {
 					if (err) {
 						res.status(500).json(err);
 						return;
 					}
-					res.status(200).send('Successful!');
+
+					//Remove the entry
+					entry.remove(function(err) {
+						if (err) {
+							res.status(500).json(err);
+							return;
+						}
+						res.status(200).send('Successful!');
+					});
 				});
 			});
 		});
