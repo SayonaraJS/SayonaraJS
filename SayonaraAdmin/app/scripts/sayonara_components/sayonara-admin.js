@@ -1,14 +1,14 @@
 angular.module('sayonaraAdmin', ['sayonaraApi', 'sayonaraAuth']).service('sayonaraAdminService', function(sayonaraApiContent, sayonaraAuthService) {
 
 	//Return all info for editing content
-	var getEditInfo = function() {
+	var getSettings = function() {
 		//Get out user token for the headers
-		return sayonaraApiContent.getEditInfo({
+		return sayonaraApiContent.getSettings({
 			token: sayonaraAuthService.getUser().token
 		});
 	}
 
 	return {
-		getEditInfo: getEditInfo,
+		getSettings: getSettings,
 	};
 });

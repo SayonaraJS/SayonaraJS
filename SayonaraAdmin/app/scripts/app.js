@@ -59,7 +59,7 @@ angular
 				controller: 'PageeditCtrl',
 				controllerAs: 'pageEdit'
 			})
-			.when('/allentries', {
+			.when('/allentry', {
 			  templateUrl: 'views/allentries.html',
 			  controller: 'AllentriesCtrl',
 			  controllerAs: 'allEntries'
@@ -69,6 +69,11 @@ angular
         controller: 'EntryeditCtrl',
         controllerAs: 'entryEdit'
       })
+			.when('/settings', {
+			  templateUrl: 'views/settings.html',
+			  controller: 'SettingsCtrl',
+			  controllerAs: 'settings'
+			})
 			.otherwise({
 				redirectTo: '/'
 			});

@@ -11,7 +11,13 @@ $allContentWidth: 90%;
     margin-bottom: 10px;
 }
 
+.settingTypeTitle {
+  @extend .centerText;
+  display: inline-block;
+}
+
 .contentContainer {
+    @extend .center;
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;

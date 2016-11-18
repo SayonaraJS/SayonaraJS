@@ -61,8 +61,8 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				}
 			});
 		},
-		editInfo: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/admin/editinfo', {}, {
+		settings: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/admin/settings', {}, {
 				get: {
 					method: 'GET',
 					params: {},
@@ -239,10 +239,10 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 	 */
 
    //Get Info For Editing Content
-   var getEditInfo = function(headers) {
+   var getSettings = function(headers) {
      //Send the request to the endpoint
      //Using the payload as headers
-     return sayonaraApiEndpoints.editInfo(headers).get().$promise;
+     return sayonaraApiEndpoints.settings(headers).get().$promise;
    }
 
 
@@ -264,6 +264,6 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 		getEntryTypeById: getEntryTypeById,
 		updateEntryTypeById: updateEntryTypeById,
 		deleteEntryTypeById: deleteEntryTypeById,
-    getEditInfo: getEditInfo,
+    getSettings: getSettings,
 	}
 });

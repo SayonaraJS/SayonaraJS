@@ -1,4 +1,4 @@
-//Route for all administrative, such as creating entry types, getting all entry types and categories, etc...
+//Route for all settings/administrative, such as creating entry types, getting all entry types and categories, etc...
 
 //Create our router
 var express = require('express');
@@ -14,7 +14,7 @@ var Entry = mongoose.model('Entry');
 var EntryType = mongoose.model('EntryType');
 
 //Get all Entry types and categories (useful for when editing entries and pages)
-router.get('/editinfo', function(req, res) {
+router.get('/settings', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.entries, routeHelpers.definedPermissions.pages];
 	routeHelpers.validateUser(req, permissions).then(function(result) {

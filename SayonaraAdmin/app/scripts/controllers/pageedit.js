@@ -39,7 +39,7 @@ angular.module('sayonaraAdminApp')
 		//Get info for editing (Categories and Entry Types)
     $scope.entryTypes = [];
     $scope.categories = [];
-    sayonaraAdminService.getEditInfo().then(function(success) {
+    sayonaraAdminService.getSettings().then(function(success) {
 
       //Set our entry types and categories
       $scope.entryTypes = success.entryTypes;

@@ -1,0 +1,72 @@
+<h1 class="centerText contentHeader">Settings</h1>
+
+<div class="centerText elementDescription">
+  This view shows all settings for the site itself. You can define and edit Entry Types and Categories that are applied to pages and entries. Click the title "Entry Types" or "Categories" to expand the list of Entry Types or Categories. After expanding the list, you may also create new Entry Types or Catgories.
+</div>
+
+<!-- Ng-for through all the entry types -->
+<h2 class="settingTypeTitle centerText"
+  ng-click="showList.entryTypes = !showList.entryTypes">
+  <a href="">Entry Types</a>
+</h2>
+<div class="centerText" ng-show="showList.entryTypes">
+  <md-button class="center md-raised md-primary" ng-click="goToEntry()">New Entry Type</md-button>
+</div>
+<div class="contentContainer" ng-show="showList.entryTypes">
+  <md-card class="contentCard" ng-repeat="content in entryTypes">
+
+    <!-- TODO: Make Title Editable -->
+    <md-card-title>
+      <md-input-container class="editInput centerText">
+        <input type="input" ng-model="entryTypes[$index].title" />
+      </md-input-container>
+    </md-card-title>
+
+    <md-card-content>
+
+      <!-- TODO: Simply Make the properties checkboxes that can be clicked -->
+      <!-- List the Properties of the entry type -->
+      <h4>Editable Content: {{content.hasContent}}</h4>
+      <h4>Supports Embeds: {{content.hasEmbedCodes}}</h4>
+      <h4>Supports Upload Urls: {{content.hasUploadUrls}}</h4>
+
+    </md-card-content>
+
+    <!-- TODO: Make this a save button -->
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="goToEntry(content._id)">Edit</md-button>
+    </md-card-actions>
+  </md-card>
+</div>
+
+<!-- Line Break Between the two clickable titles -->
+<br ng-show="!showList.entryTypes"/>
+
+<!-- Ng-for through all the categories -->
+<h2 class="settingTypeTitle centerText"
+  ng-click="showList.categories = !showList.categories">
+  <a href="">Categories</a>
+</h2>
+<div class="centerText" ng-show="showList.categories">
+  <md-button class="center md-raised md-primary" ng-click="goToEntry()">New Category</md-button>
+</div>
+<div class="settingsContainer" ng-show="showList.categories">
+  <md-card class="contentCard" ng-repeat="content in categories">
+
+    <!-- TODO: Make Title Editable -->
+    <md-card-title>
+      <md-card-title-text class="centerText">
+        <span class="md-headline">{{content.title}}</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content>
+      <!-- List the Properties of the Category -->
+    </md-card-content>
+
+    <!-- TODO: Make this a save button -->
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="goToEntry(content._id)">Edit</md-button>
+    </md-card-actions>
+  </md-card>
+</div>
