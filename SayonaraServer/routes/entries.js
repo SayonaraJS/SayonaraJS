@@ -15,7 +15,10 @@ var EntryType = mongoose.model('EntryType');
 router.post('/create', function(req, res) {
 
 	//Check for required fields
-	if (!req.body || !req.body.title || !req.body.entryType) res.status(400).send('Missing parameters');
+	if (!req.body || !req.body.title || !req.body.entryType) {
+		res.status(400).send('Missing parameters');
+		return;
+	}
 
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.entries];
@@ -71,7 +74,7 @@ router.post('/create', function(req, res) {
 //Not Authenticated since used by public website
 router.get('/all', function(req, res) {
 	//Find all pages
-	Entry.find({}).populate('categories').exec(function(err, entries) {
+	Entry.find({}).populate('categories entryType').exec(function(err, entries) {
 		if (err) {
 			res.status(500).json(err);
 			return;

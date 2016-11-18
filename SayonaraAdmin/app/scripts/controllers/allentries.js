@@ -8,7 +8,7 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('AllentriesCtrl', function ($scope, $location, adminNotify, sayonaraEntryService) {
+  .controller('AllentriesCtrl', function ($scope, $location, adminNotify, sayonaraEntryTypeService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -16,17 +16,17 @@ angular.module('sayonaraAdminApp')
     ];
 
     //Get entries on page load
-		$scope.pages = [];
-		sayonaraEntryService.getAllEntries().then(function(success) {
-
+		$scope.entryTypes = [];
+    //Pass in true to include Entrytype's entries
+		sayonaraEntryTypeService.getAllEntryTypes(true).then(function(success) {
 			//Preety date of the the dates
-			success.forEach(function(entry) {
-				entry.date = moment(entry.date).fromNow();
+			success.forEach(function(entryType) {
+        entryType.entries.forEach(function(entry) {
+          entry.date = moment(entry.date).fromNow();
+        })
 			});
-			//Set entries to success
-			$scope.entries = success;
-
-      console.log(success);
+			//Set entryTypes to success
+			$scope.entryTypes = success;
 		}, function(error) {
 			//Hanlde the error
 			adminNotify.error(error);

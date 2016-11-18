@@ -53,18 +53,17 @@ router.get('/all', function(req, res) {
 	var permissions = [routeHelpers.definedPermissions.entryType];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
+		//Populate if requested
+		var populateString = '';
+		if(req.headers && req.headers['populate']) populateString = 'entries';
+
 		//Find all pages
-		EntryType.find({}, function(err, entryTypes) {
+		EntryType.find({}).populate(populateString).exec(function(err, entryTypes) {
 			if (err) {
 				res.status(500).json(err);
 			}
-			var entryTypesMap = {};
 
-			entryTypes.forEach(function(entryType) {
-				entryTypesMap[entryType._id] = entryType;
-			});
-
-			res.send(entryTypesMap);
+			res.send(entryTypes);
 		});
 	}, function(error) {
 		res.status(error.status).send(error.message);

@@ -20,7 +20,8 @@ angular
 		'textAngular',
 		'sayonaraAuth',
 		'sayonaraPages',
-    'sayonaraEntries'
+    'sayonaraEntries',
+		'sayonaraEntryType',
 	])
 	.config(function($routeProvider, $mdThemingProvider) {
 
@@ -62,11 +63,11 @@ angular
 			  controller: 'AllentriesCtrl',
 			  controllerAs: 'allEntries'
 			})
-.when('/entryEdit', {
-  templateUrl: 'views/entryedit.html',
-  controller: 'EntryeditCtrl',
-  controllerAs: 'entryEdit'
-})
+      .when('/entry/edit', {
+        templateUrl: 'views/entryedit.html',
+        controller: 'EntryeditCtrl',
+        controllerAs: 'entryEdit'
+      })
 			.otherwise({
 				redirectTo: '/'
 			});

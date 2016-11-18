@@ -13,8 +13,8 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				isArray: false
 			}
 		}),
-		newPage: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/pages/create', {}, {
+		newContent: function(contentType, customHeaders) {
+			return $resource(sayonaraApiHost + '/' + contentType + '/create', {}, {
 				post: {
 					method: 'POST',
 					params: {},
@@ -23,8 +23,8 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				}
 			});
 		},
-		allPages: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/pages/all', {}, {
+		allContent: function(contentType, customHeaders) {
+			return $resource(sayonaraApiHost + '/' + contentType + '/all', {}, {
 				get: {
 					method: 'GET',
 					params: {},
@@ -33,56 +33,8 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				}
 			});
 		},
-		pageById: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/pages/id/:id', {}, {
-				get: {
-					method: 'GET',
-					params: {
-						id: '@id'
-					},
-					isArray: false,
-					headers: customHeaders || {}
-				},
-				update: {
-					method: 'PUT',
-					params: {
-						id: '@id'
-					},
-					isArray: false,
-					headers: customHeaders || {}
-				},
-				delete: {
-					method: 'DELETE',
-					params: {
-						id: '@id'
-					},
-					isArray: false,
-					headers: customHeaders || {}
-				}
-			});
-		},
-		newEntry: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/entry/create', {}, {
-				post: {
-					method: 'POST',
-					params: {},
-					isArray: false,
-					headers: customHeaders || {}
-				}
-			});
-		},
-		allEntries: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/entry/all', {}, {
-				get: {
-					method: 'GET',
-					params: {},
-					isArray: true,
-					headers: customHeaders || {}
-				}
-			});
-		},
-		entryById: function(customHeaders) {
-			return $resource(sayonaraApiHost + '/entry/id/:id', {}, {
+		contentById: function(contentType, customHeaders) {
+			return $resource(sayonaraApiHost + '/' + contentType + '/id/:id', {}, {
 				get: {
 					method: 'GET',
 					params: {
@@ -129,21 +81,26 @@ module.service('sayonaraApiAuth', function(sayonaraApiEndpoints) {
 	}
 });
 
-module.service('sayonaraApiPages', function(sayonaraApiEndpoints) {
+module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 
 	//Perform actions based on our endpoints
+
+  //Define out content type urls
+  var pageContentUrl = 'pages';
+  var entryContentUrl = 'entry';
+  var entryTypeContentUrl = 'type'
 
 	//Create a new page
 	var createPage = function(payload) {
 		//Send the request to the endpoint
-		return sayonaraApiEndpoints.newPage().post(payload).$promise;
+		return sayonaraApiEndpoints.newContent(pageContentUrl).post(payload).$promise;
 	}
 
 	//Get all pages
 	var getAllPages = function(headers) {
 		//Send the request to the endpoint
 		//Using the payload as headers
-		return sayonaraApiEndpoints.allPages(headers).get().$promise;
+		return sayonaraApiEndpoints.allContent(pageContentUrl, headers).get().$promise;
 	}
 
 	//Get a page from id
@@ -156,20 +113,96 @@ module.service('sayonaraApiPages', function(sayonaraApiEndpoints) {
 
 		//Send the request to the endpoint
 		//Using the payload as headers
-		return sayonaraApiEndpoints.pageById(headers).get(pageId).$promise;
+		return sayonaraApiEndpoints.contentById(pageContentUrl, headers).get(pageId).$promise;
 	}
 
 	//Update a page from id
 	var updatePageById = function(payload) {
 		//Send the request to the endpoint
-		return sayonaraApiEndpoints.pageById().update(payload).$promise;
+		return sayonaraApiEndpoints.contentById(pageContentUrl).update(payload).$promise;
 	}
 
 	//delete a page from id
 	var deletePageById = function(payload) {
 		//Send the request to the endpoint
-		return sayonaraApiEndpoints.pageById().delete(payload).$promise;
+		return sayonaraApiEndpoints.contentById(pageContentUrl).delete(payload).$promise;
 	}
+
+  //Create a new entry
+  var createEntry = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.newContent(entryContentUrl).post(payload).$promise;
+  }
+
+  //Get all entries
+  var getAllEntries = function(headers) {
+    //Send the request to the endpoint
+    //Using the payload as headers
+    return sayonaraApiEndpoints.allContent(entryContentUrl, headers).get().$promise;
+  }
+
+  //Get an entry from id
+  var getEntryById = function(headers) {
+
+    //Grab the id
+    var entryId = {
+      id: headers.id
+    }
+
+    //Send the request to the endpoint
+    //Using the payload as headers
+    return sayonaraApiEndpoints.contentById(entryContentUrl, headers).get(entryId).$promise;
+  }
+
+  //Update an entry from id
+  var updateEntryById = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.contentById(entryContentUrl).update(payload).$promise;
+  }
+
+  //delete an entry from id
+  var deleteEntryById = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.contentById(entryContentUrl).delete(payload).$promise;
+  }
+
+  //Create a new entry type
+  var createEntryType = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.newContent(entryTypeContentUrl).post(payload).$promise;
+  }
+
+  //Get all entry Types
+  var getAllEntryTypes = function(headers) {
+    //Send the request to the endpoint
+    //Using the payload as headers
+    return sayonaraApiEndpoints.allContent(entryTypeContentUrl, headers).get().$promise;
+  }
+
+  //Get an entry from id
+  var getEntryTypeById = function(headers) {
+
+    //Grab the id
+    var entryTypeId = {
+      id: headers.id
+    }
+
+    //Send the request to the endpoint
+    //Using the payload as headers
+    return sayonaraApiEndpoints.contentById(entryTypeContentUrl, headers).get(entryTypeId).$promise;
+  }
+
+  //Update an entry type from id
+  var updateEntryTypeById = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.contentById(entryTypeContentUrl).update(payload).$promise;
+  }
+
+  //delete an entry type from id
+  var deleteEntryTypeById = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.contentById(entryTypeContentUrl).delete(payload).$promise;
+  }
 
 
 	//Returns for functions we are exposing
@@ -178,58 +211,16 @@ module.service('sayonaraApiPages', function(sayonaraApiEndpoints) {
 		getAllPages: getAllPages,
 		getPageById: getPageById,
 		updatePageById: updatePageById,
-		deletePageById: deletePageById
-	}
-});
-
-module.service('sayonaraApiEntries', function(sayonaraApiEndpoints) {
-
-	//Perform actions based on our endpoints
-
-	//Create a new entry
-	var createEntry = function(payload) {
-		//Send the request to the endpoint
-		return sayonaraApiEntries.newEntry().post(payload).$promise;
-	}
-
-	//Get all entries
-	var getAllEntries = function(headers) {
-		//Send the request to the endpoint
-		//Using the payload as headers
-		return sayonaraApiEndpoints.allEntries(headers).get().$promise;
-	}
-
-	//Get an entry from id
-	var getEntryById = function(headers) {
-
-		//Grab the id
-		var entryId = {
-			id: headers.id
-		}
-
-		//Send the request to the endpoint
-		//Using the payload as headers
-		return sayonaraApiEndpoints.entryById(headers).get(entryId).$promise;
-	}
-
-	//Update an entry from id
-	var updateEntryById = function(payload) {
-		//Send the request to the endpoint
-		return sayonaraApiEndpoints.entryById().update(payload).$promise;
-	}
-
-	//delete an entry from id
-	var deleteEntryById = function(payload) {
-		//Send the request to the endpoint
-		return sayonaraApiEndpoints.entryById().delete(payload).$promise;
-	}
-
-	//Returns for functions we are exposing
-	return {
-		createEntry: createEntry,
+		deletePageById: deletePageById,
+    createEntry: createEntry,
 		getAllEntries: getAllEntries,
 		getEntryById: getEntryById,
 		updateEntryById: updateEntryById,
-		deleteEntryById: deleteEntryById
+		deleteEntryById: deleteEntryById,
+    createEntryType: createEntryType,
+		getAllEntryTypes: getAllEntryTypes,
+		getEntryTypeById: getEntryTypeById,
+		updateEntryTypeById: updateEntryTypeById,
+		deleteEntryTypeById: deleteEntryTypeById,
 	}
 });

@@ -20,6 +20,11 @@ $allContentWidth: 90%;
     justify-content: center;
     width: $allContentWidth;
 
+    .contentTypeTitle {
+      width: 100%;
+      display: block;
+    }
+
     .contentPreviewContainer {
         @extend .center;
         width: 90%;
