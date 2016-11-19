@@ -27,16 +27,12 @@ angular.module('sayonaraEntryType', ['sayonaraApi', 'sayonaraAuth']).service('sa
 
 	//Update a EntryType by id
 	var updateEntryTypeById = function(id, payload) {
-		//Grab the id
-		var body = {
-			token: sayonaraAuthService.getUser().token,
-			id: id
-		}
 
-		//Add optional fields
-		if (payload.title) body.title = payload.title;
+    //Add our required fields
+    payload.token = sayonaraAuthService.getUser().token;
+    payload.id = id;
 
-		return sayonaraApiContent.updateEntryTypeById(body);
+		return sayonaraApiContent.updateEntryTypeById(payload);
 	}
 
 	//Delete a EntryType by id

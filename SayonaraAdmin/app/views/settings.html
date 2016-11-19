@@ -15,26 +15,35 @@
 <div class="contentContainer" ng-show="showList.entryTypes">
   <md-card class="contentCard" ng-repeat="content in entryTypes">
 
-    <!-- TODO: Make Title Editable -->
     <md-card-title>
-      <md-input-container class="editInput centerText">
+      <md-input-container class="editInput centerText editTitle">
         <input type="input" ng-model="entryTypes[$index].title" />
       </md-input-container>
     </md-card-title>
 
     <md-card-content>
 
-      <!-- TODO: Simply Make the properties checkboxes that can be clicked -->
       <!-- List the Properties of the entry type -->
-      <h4>Editable Content: {{content.hasContent}}</h4>
-      <h4>Supports Embeds: {{content.hasEmbedCodes}}</h4>
-      <h4>Supports Upload Urls: {{content.hasUploadUrls}}</h4>
+      <div>
+        <md-checkbox ng-model="content.hasContent" aria-label="Editable Content" class="md-primary">
+              Editable Content
+        </md-checkbox>
+      </div>
+      <div>
+        <md-checkbox ng-model="content.hasEmbedCodes" aria-label="Embed Codes" class="md-primary">
+              Embed Codes
+        </md-checkbox>
+      </div>
+      <div>
+      <md-checkbox ng-model="content.hasUploadUrls" aria-label="Upload Urls" class="md-primary">
+            Upload Urls
+      </md-checkbox>
+      </div>
 
     </md-card-content>
 
-    <!-- TODO: Make this a save button -->
     <md-card-actions layout="row" layout-align="end center">
-      <md-button class="md-raised" ng-click="goToEntry(content._id)">Edit</md-button>
+      <md-button class="md-raised" ng-click="saveEntryType(content)">Save</md-button>
     </md-card-actions>
   </md-card>
 </div>

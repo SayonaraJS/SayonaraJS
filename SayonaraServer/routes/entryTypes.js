@@ -95,7 +95,7 @@ router.get('id/:id/allentries', function(req, res) {
 });
 
 //Update an entryType
-router.post('/id/:id', function(req, res) {
+router.put('/id/:id', function(req, res) {
 
 	//Check for required fields
 	if (!req.body) res.status(400).send('Missing parameters');
@@ -106,8 +106,16 @@ router.post('/id/:id', function(req, res) {
 
 		//Get the entryType
 		EntryType.findOne({
-			_id: req.param.id
+			_id: req.params.id
 		}, function(err, entryType) {
+			if (err) {
+				res.status(500).json(err);
+				return;
+			}
+			if (!entryType) {
+				res.status(404).send('Item Not Found');
+				return;
+			}
 
 			//Check for optional parameters
 			if (req.body.title) entryType.title = req.body.title;

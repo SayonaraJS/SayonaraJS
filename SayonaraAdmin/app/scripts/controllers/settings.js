@@ -8,7 +8,7 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('SettingsCtrl', function ($scope, sayonaraAdminService) {
+  .controller('SettingsCtrl', function ($scope, adminNotify, sayonaraEntryTypeService, sayonaraAdminService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -34,4 +34,23 @@ angular.module('sayonaraAdminApp')
       //Pass to te error handler
       adminNotify.error(error);
     });
+
+    //Save an entryType
+    $scope.saveEntryType = function(entryType) {
+
+      //Get our payload
+      var payload = Object.assign({}, entryType)
+
+      //Delete uneeded fields from the json
+      delete payload['_id'];
+      delete payload['entries'];
+
+      sayonaraEntryTypeService.updateEntryTypeById(entryType._id, payload).then(function(success) {
+        //Pass to te error handler
+        adminNotify.showAlert('Saved the entry type!');
+      }, function(error) {
+        //Pass to te error handler
+        adminNotify.error(error);
+      });
+    }
   });
