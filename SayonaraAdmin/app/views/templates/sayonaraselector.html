@@ -1,8 +1,8 @@
 <md-input-container class="editSelector">
   <label>{{selectorLabel}}</label>
-  <md-select ng-model="ngModel" md-on-close="selectClosed()"
-    ng-attr-multiple="{{multipleSelection}}"
-    data-md-container-class="editSelector">
+  <!-- Using Ng-if since ng-attr would not work for angular material directive attributes (such as multiple) -->
+  <md-select ng-if="multipleSelection" ng-model="ngModel" md-on-close="selectClosed()"
+    multiple="true" data-md-container-class="editSelector">
     <md-select-header class="editSelectorHeader">
       <input ng-model="selectionSearch"
              type="search"
@@ -10,7 +10,25 @@
              ng-keydown="$event.stopPropagation()"
              class="editSelectorSearch md-text">
     </md-select-header>
-    <md-optgroup label="{{selectorLabel}}">
+    <md-optgroup ng-label="{{selectorLabel}}">
+      <!-- Multiple selection hack fix: http://stackoverflow.com/questions/34033175/how-to-update-md-select-options-when-scope-value-changes -->
+      <md-option ng-repeat="selection in selections | filter: selectionSearch"
+        ng-value="selection._id">
+          {{selection.title}}
+        </md-option>
+    </md-optgroup>
+  </md-select>
+
+  <md-select ng-if="!multipleSelection" ng-model="ngModel" md-on-close="selectClosed()"
+    multiple="false" data-md-container-class="editSelector">
+    <md-select-header class="editSelectorHeader">
+      <input ng-model="selectionSearch"
+             type="search"
+             placeholder="Search for an {{selectorLabel.substring(0,14)}}.."
+             ng-keydown="$event.stopPropagation()"
+             class="editSelectorSearch md-text">
+    </md-select-header>
+    <md-optgroup ng-label="{{selectorLabel}}">
       <md-option ng-repeat="selection in selections | filter: selectionSearch"
         ng-value="selection._id">
           {{selection.title}}

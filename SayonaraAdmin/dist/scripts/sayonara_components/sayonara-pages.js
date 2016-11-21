@@ -1,9 +1,9 @@
-angular.module('sayonaraPages', ['sayonaraApi', 'sayonaraAuth']).service('sayonaraPageService', function(sayonaraApiPages, sayonaraAuthService) {
+angular.module('sayonaraPages', ['sayonaraApi', 'sayonaraAuth']).service('sayonaraPageService', function(sayonaraApiContent, sayonaraAuthService) {
 
 	//Return all pages
 	var getAllPages = function() {
 		//Get out user token
-		return sayonaraApiPages.getAllPages({
+		return sayonaraApiContent.getAllPages({
 			token: sayonaraAuthService.getUser().token
 		});
 	}
@@ -11,7 +11,7 @@ angular.module('sayonaraPages', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 	//Get a page by their id
 	var getPageById = function(pageId) {
 		//Get out user token
-		return sayonaraApiPages.getPageById({
+		return sayonaraApiContent.getPageById({
 			token: sayonaraAuthService.getUser().token,
 			id: pageId
 		});
@@ -21,22 +21,16 @@ angular.module('sayonaraPages', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 	var createPage = function(payload) {
 		//Add the token to the payload
 		payload.token = sayonaraAuthService.getUser().token;
-		return sayonaraApiPages.createPage(payload);
+		return sayonaraApiContent.createPage(payload);
 	}
 
 	//Update a page by id
 	var updatePageById = function(id, payload) {
-		//Grab the id
-		var body = {
-			token: sayonaraAuthService.getUser().token,
-			id: id
-		}
+		//Grab the id and token
+		payload.token = sayonaraAuthService.getUser().token;
+		payload.id = id;
 
-		//Add optional fields
-		if (payload.title) body.title = payload.title;
-		if (payload.content) body.content = payload.content;
-
-		return sayonaraApiPages.updatePageById(body);
+		return sayonaraApiContent.updatePageById(payload);
 	}
 
 	//Delete a page by id
@@ -47,7 +41,7 @@ angular.module('sayonaraPages', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 			id: id
 		}
 
-		return sayonaraApiPages.deletePageById(body);
+		return sayonaraApiContent.deletePageById(body);
 	}
 
 	return {

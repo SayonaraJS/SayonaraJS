@@ -15,7 +15,7 @@ angular.module('sayonaraAdminApp')
 				ngModel: '=',
         selections: '<',
         selectorLabel: '@',
-        multipleSelection: '@',
+        multipleSelection: '<',
         onSelect: '&',
 			},
       link: function postLink(scope, element, attrs) {
@@ -24,7 +24,6 @@ angular.module('sayonaraAdminApp')
 
         //Call any callbacks on select
         scope.selectClosed = function() {
-
           //Reset our search
           scope.selectionSearch = '';
           //Timeout to call callback on next digest

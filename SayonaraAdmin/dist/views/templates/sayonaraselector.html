@@ -1,0 +1,20 @@
+<md-input-container class="editSelector">
+  <label>{{selectorLabel}}</label>
+  <md-select ng-model="ngModel" md-on-close="selectClosed()"
+    ng-attr-multiple="{{multipleSelection}}"
+    data-md-container-class="editSelector">
+    <md-select-header class="editSelectorHeader">
+      <input ng-model="selectionSearch"
+             type="search"
+             placeholder="Search for an {{selectorLabel.substring(0,14)}}.."
+             ng-keydown="$event.stopPropagation()"
+             class="editSelectorSearch md-text">
+    </md-select-header>
+    <md-optgroup label="{{selectorLabel}}">
+      <md-option ng-repeat="selection in selections | filter: selectionSearch"
+        ng-value="selection._id">
+          {{selection.title}}
+        </md-option>
+    </md-optgroup>
+  </md-select>
+</md-input-container>

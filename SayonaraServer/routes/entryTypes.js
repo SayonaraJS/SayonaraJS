@@ -20,7 +20,6 @@ router.post('/create', function(req, res) {
 	var permissions = [routeHelpers.definedPermissions.entries, routeHelpers.definedPermissions.entryType];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
-
 		//Perform the action
 		//Create a new page
 		var newEntryType = new EntryType({
@@ -29,14 +28,15 @@ router.post('/create', function(req, res) {
 
 		//Check for optional parameters
 		//Booleans if the fields are enabled
-		if (req.body.hasContent) newEntryField.hasContent = req.body.hasContent;
-		if (req.body.hasEmbedCodes) newEntryField.hasEmbedCodes = req.body.hasEmbedCodes;
-		if (req.body.hasUploadUrls) newEntryField.hasUploadUrls = req.body.hasUploadUrls;
+		if (req.body.hasContent) newEntryType.hasContent = req.body.hasContent;
+		if (req.body.hasEmbedCodes) newEntryType.hasEmbedCodes = req.body.hasEmbedCodes;
+		if (req.body.hasUploadUrls) newEntryType.hasUploadUrls = req.body.hasUploadUrls;
 
 		//Save the new entry
 		newEntryType.save(function(err) {
 			if (err) {
 				res.status(500).send('Error saving the category.');
+				return;
 			}
 
 			//Save the new entry type

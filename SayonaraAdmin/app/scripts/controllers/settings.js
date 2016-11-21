@@ -35,7 +35,26 @@ angular.module('sayonaraAdminApp')
       adminNotify.error(error);
     });
 
-    //Save an entryType
+    //Create a new Entry Types
+    $scope.createEntryType = function() {
+
+      //Create our payload (With Default Entry Type)
+      var payload = {
+        title: 'New Sayonara Entry Type',
+        hasContent: true
+      }
+
+      sayonaraEntryTypeService.createEntryType(payload).then(function(success) {
+        //Push to our array of entry types
+        $scope.entryTypes.push(success);
+        adminNotify.showAlert('Created a new Entry Type!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
+    //Save/Update an entryType
     $scope.saveEntryType = function(entryType) {
 
       //Get our payload
@@ -46,10 +65,10 @@ angular.module('sayonaraAdminApp')
       delete payload['entries'];
 
       sayonaraEntryTypeService.updateEntryTypeById(entryType._id, payload).then(function(success) {
-        //Pass to te error handler
+        //Inform of success
         adminNotify.showAlert('Saved the entry type!');
       }, function(error) {
-        //Pass to te error handler
+        //Pass to the error handler
         adminNotify.error(error);
       });
     }
