@@ -61,7 +61,8 @@ angular.module('sayonaraAdminApp')
 			//Create our request
 			var request = {
 				title: $scope.entry.title,
-				content: $scope.entry.content
+				content: $scope.entry.content,
+        entryType: $scope.entry.entryType
 			};
 
 			//Update an existing page

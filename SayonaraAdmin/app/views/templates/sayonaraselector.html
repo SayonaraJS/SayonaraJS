@@ -1,8 +1,10 @@
 <md-input-container class="editSelector">
   <label>{{selectorLabel}}</label>
   <!-- Using Ng-if since ng-attr would not work for angular material directive attributes (such as multiple) -->
-  <md-select ng-if="multipleSelection" ng-model="ngModel" md-on-close="selectClosed()"
-    multiple="true" data-md-container-class="editSelector">
+  <!-- Md-select has it's own scope, need to use $parent to get directive scope -->
+  <md-select ng-if="multipleSelection"
+    ng-model="$parent.selectedItems"
+    multiple="true" md-container-class="editSelector">
     <md-select-header class="editSelectorHeader">
       <input ng-model="selectionSearch"
              type="search"
@@ -10,17 +12,16 @@
              ng-keydown="$event.stopPropagation()"
              class="editSelectorSearch md-text">
     </md-select-header>
-    <md-optgroup ng-label="{{selectorLabel}}">
-      <!-- Multiple selection hack fix: http://stackoverflow.com/questions/34033175/how-to-update-md-select-options-when-scope-value-changes -->
-      <md-option ng-repeat="selection in selections | filter: selectionSearch"
-        ng-value="selection._id">
-          {{selection.title}}
-        </md-option>
-    </md-optgroup>
+    <md-option ng-repeat="selection in selections | filter: selectionSearch"
+      ng-value="selection._id"
+      ng-click="itemClicked(selection)">
+        {{selection.title}}
+    </md-option>
   </md-select>
 
-  <md-select ng-if="!multipleSelection" ng-model="ngModel" md-on-close="selectClosed()"
-    multiple="false" data-md-container-class="editSelector">
+  <md-select ng-if="!multipleSelection"
+    ng-model="$parent.selectedItems"
+    multiple="false" md-container-class="editSelector">
     <md-select-header class="editSelectorHeader">
       <input ng-model="selectionSearch"
              type="search"
@@ -28,11 +29,10 @@
              ng-keydown="$event.stopPropagation()"
              class="editSelectorSearch md-text">
     </md-select-header>
-    <md-optgroup ng-label="{{selectorLabel}}">
-      <md-option ng-repeat="selection in selections | filter: selectionSearch"
-        ng-value="selection._id">
-          {{selection.title}}
-        </md-option>
-    </md-optgroup>
+    <md-option ng-value="selection._id"
+      ng-repeat="selection in selections | filter: selectionSearch"
+      ng-click="itemClicked(selection)">
+        {{selection.title}}
+    </md-option>
   </md-select>
 </md-input-container>

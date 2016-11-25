@@ -2,6 +2,9 @@
 var express = require('express');
 var router = express.Router();
 
+//Promise (for entry type updating)
+var Promise = require('promise');
+
 //Helper functions
 var routeHelpers = require('./routeHelpers');
 
@@ -121,9 +124,7 @@ router.put('/id/:id', function(req, res) {
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
 		//Find the entry
-		Entry.findOne({
-			_id: req.params.id
-		}, function(err, entry) {
+		Entry.findOne({ _id: req.params.id }).exec(function(err, entry) {
 			if (err) {
 				res.status(500).send('Error finding the entry.');
 				return;
@@ -138,12 +139,77 @@ router.put('/id/:id', function(req, res) {
 			if (req.body.uploadUrls) entry.uploadUrls = req.body.uploadUrls;
 			if (req.body.categories) entry.categories = req.body.categories;
 
-			entry.save(function(err) {
-				if (err) {
-					res.status(500).send('Error saving the entry.');
-					return;
-				}
-				res.status(200).json(entry);
+			//Create a promise for checking/changing entry types
+			var entryTypePromise = new Promise(function(resolve) {
+				if (req.body.entryType) {
+					if(req.body.entryType != entry.entryType._id) {
+						//First, ensure the new Entry type exists
+						EntryType.findOne({_id: req.body.entryType}).populate('entries').exec(function(err, newEntryType) {
+							if (err) {
+								res.status(500).send('Error finding the entry\'s new entry type.');
+								return;
+							}
+							if(newEntryType) {
+
+								//Save the old entry type, and set the new entry type
+								var oldEntryTypeId = entry.entryType;
+								entry.entryType = newEntryType._id;
+
+								//Add to the new entry type
+								newEntryType.entries.push(entry);
+								newEntryType.save(function(err) {
+									if (err) {
+										res.status(500).send('Error saving the new entry type.');
+										return;
+									}
+
+									//Remove from the previous entrytype
+									//Find the old Entry Type
+									EntryType.findOne({ _id: oldEntryTypeId }).populate('entries').exec(function(err, oldEntryType) {
+										if (err) {
+											res.status(500).send('Error finding the entry\'s old entry type.');
+											return;
+										}
+										if(oldEntryType) {
+											//Get a reference to the length of the entries
+											var entryLength = oldEntryType.entries.length;
+
+											//Find the entry in the entry type
+											for(var i = 0; i < oldEntryType.entries.length; i++) {
+												if(entry._id.equals(oldEntryType.entries[i]._id)) {
+													oldEntryType.entries.splice(i, 1);
+												}
+											}
+
+											//Check if we spliced an entry out, if we did, save
+											if(oldEntryType.entries.length < entryLength) {
+												//Save the old entry type
+												oldEntryType.save(function(err) {
+													if (err) {
+														res.status(500).send('Error saving the old entry type.');
+														return;
+													}
+													resolve();
+												});
+											} else resolve();
+										} else resolve();
+									});
+								});
+							} else resolve();
+						});
+					} else resolve();
+				} else resolve();
+			});
+
+			//Save the entry after checking entry types
+			entryTypePromise.then(function() {
+				entry.save(function(err) {
+					if (err) {
+						res.status(500).send('Error saving the entry.');
+						return;
+					}
+					res.status(200).json();
+				});
 			});
 		})
 	}, function(error) {

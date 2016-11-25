@@ -15,21 +15,35 @@ angular.module('sayonaraAdminApp')
 				ngModel: '=',
         selections: '<',
         selectorLabel: '@',
-        multipleSelection: '<',
-        onSelect: '&',
+        multipleSelection: '<?',
+        onSelect: '&?',
 			},
-      link: function postLink(scope, element, attrs) {
-        //Initialize our search to nothing
-        scope.selectionSearch = '';
+      link: function($scope, element, attrs) {
 
-        //Call any callbacks on select
-        scope.selectClosed = function() {
-          //Reset our search
-          scope.selectionSearch = '';
+        //Initialize our search to nothing
+        $scope.selectionSearch = '';
+
+        //Call function once directive compiles, to workaround md-select
+        $timeout(function () {
+          $scope.selectedItems = $scope.ngModel;
+        }, 0);
+
+        //Called whenever an item is chosen
+        $scope.itemClicked = function(selection) {
+
+          //Reset our search if not multiple
+          if(!$scope.multipleSelection) $scope.selectionSearch = '';
+
           //Timeout to call callback on next digest
           $timeout(function () {
-            scope.onSelect({
-              selection: scope.ngModel
+
+            //Set our ngModel to our selectedItems
+            $scope.ngModel = $scope.selectedItems;
+
+            //Check if we have an onselect callback
+            if(!$scope.onSelect) return;
+            $scope.onSelect({
+              selection: selection
             });
           }, 0);
         }
