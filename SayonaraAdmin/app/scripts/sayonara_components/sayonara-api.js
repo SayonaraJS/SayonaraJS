@@ -99,6 +99,7 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
   var pageContentUrl = 'pages';
   var entryContentUrl = 'entry';
   var entryTypeContentUrl = 'type';
+  var categoryContentUrl = 'category';
 
 	/**
 	 *
@@ -234,6 +235,30 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 
 	/**
 	 *
+	 *	Categories
+	 *
+	 */
+
+   //Create a new entry type
+   var createCategory = function(payload) {
+     //Send the request to the endpoint
+     return sayonaraApiEndpoints.newContent(categoryContentUrl).post(payload).$promise;
+   }
+
+   //Update an entry type from id
+   var updateCategoryById = function(payload) {
+     //Send the request to the endpoint
+     return sayonaraApiEndpoints.contentById(categoryContentUrl).update(payload).$promise;
+   }
+
+   //delete an entry type from id
+   var deleteCategoryById = function(payload) {
+     //Send the request to the endpoint
+     return sayonaraApiEndpoints.contentById(categoryContentUrl).delete(payload).$promise;
+   }
+
+	/**
+	 *
 	 *	ADMIN
 	 *
 	 */
@@ -264,6 +289,9 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
 		getEntryTypeById: getEntryTypeById,
 		updateEntryTypeById: updateEntryTypeById,
 		deleteEntryTypeById: deleteEntryTypeById,
+    createCategory: createCategory,
+    updateCategoryById: updateCategoryById,
+    deleteCategoryById: deleteCategoryById,
     getSettings: getSettings,
 	}
 });
