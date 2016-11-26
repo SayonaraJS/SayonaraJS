@@ -42,7 +42,11 @@
 
     </md-card-content>
 
-    <md-card-actions layout="row" layout-align="end center">
+    <md-card-actions layout="row" layout-align="start center">
+      <!-- Delete on the left, save on the right -->
+      <md-card-icon-actions>
+        <md-button class="md-raised md-warn" ng-click="deleteEntryType($index)">Delete</md-button>
+      </md-card-icon-actions>
       <md-button class="md-raised" ng-click="saveEntryType(content)">Save</md-button>
     </md-card-actions>
   </md-card>
@@ -72,7 +76,11 @@
       <!-- List the Properties of the Category -->
     </md-card-content>
 
-    <md-card-actions layout="row" layout-align="end center">
+    <md-card-actions layout="row" layout-align="start center">
+      <!-- Delete on the left, save on the right -->
+      <md-card-icon-actions>
+        <md-button class="md-raised md-warn" ng-click="deleteCategory($index)">Delete</md-button>
+      </md-card-icon-actions>
       <md-button class="md-raised" ng-click="saveCategory(content)">Save</md-button>
     </md-card-actions>
   </md-card>

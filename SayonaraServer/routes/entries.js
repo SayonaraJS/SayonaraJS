@@ -157,7 +157,7 @@ router.put('/id/:id', function(req, res) {
 
 								//Add to the new entry type
 								newEntryType.entries.push(entry);
-								newEntryType.save(function(err) {
+								newEntryType.update(function(err) {
 									if (err) {
 										res.status(500).send('Error saving the new entry type.');
 										return;
@@ -184,7 +184,7 @@ router.put('/id/:id', function(req, res) {
 											//Check if we spliced an entry out, if we did, save
 											if(oldEntryType.entries.length < entryLength) {
 												//Save the old entry type
-												oldEntryType.save(function(err) {
+												oldEntryType.update(function(err) {
 													if (err) {
 														res.status(500).send('Error saving the old entry type.');
 														return;

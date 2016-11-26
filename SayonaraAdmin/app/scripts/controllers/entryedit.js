@@ -44,6 +44,12 @@ angular.module('sayonaraAdminApp')
       //Set our entry types and categories
       $scope.entryTypes = success.entryTypes;
       $scope.categories = success.categories;
+
+      //If we did not have an id we are editing, then we are creating
+      //Set the entry type to the first available entry type
+      if(!$routeParams.id && $scope.entryTypes.length > 0) {
+        $scope.entry.entryType = $scope.entryTypes[0]._id;
+      }
     }, function(error) {
       //Pass to te error handler
       adminNotify.error(error);

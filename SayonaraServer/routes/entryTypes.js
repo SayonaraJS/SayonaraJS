@@ -5,8 +5,12 @@ var router = express.Router();
 //Helper functions
 var routeHelpers = require('./routeHelpers');
 
+//Promise
+var Promise = require('promise');
+
 // User models
 var mongoose = require('mongoose');
+var Entry = mongoose.model('Entry');
 var EntryType = mongoose.model('EntryType');
 var Page = mongoose.model('Page');
 
@@ -17,7 +21,7 @@ router.post('/create', function(req, res) {
 	if (!req.body || !req.body.title) res.status(400).send('Missing parameters');
 
 	//Validate our JWT and permissions
-	var permissions = [routeHelpers.definedPermissions.entries, routeHelpers.definedPermissions.entryType];
+	var permissions = [];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
 		//Perform the action
@@ -35,7 +39,7 @@ router.post('/create', function(req, res) {
 		//Save the new entry
 		newEntryType.save(function(err) {
 			if (err) {
-				res.status(500).send('Error saving the category.');
+				res.status(500).send('Error saving the Entry Type.');
 				return;
 			}
 
@@ -146,57 +150,78 @@ router.delete('/id/:id', function(req, res) {
 
 		//Find the entry type
 		EntryType.findOne({
-			_id: req.param.id
+			_id: req.params.id
 		}, function(err, entryType) {
 			if (err) {
 				res.status(500).json(err);
+				return;
 			}
-			if (!entryType) res.status(404).send('Item Not Found');
+			if (!entryType) {
+				res.status(404).send('Item Not Found');
+				return;
+			}
+
+			//Create an array of our cleanup promises
+			var cleanUpPromises = [];
 
 			//Find All pages associated with the entry type
 			Page.find({
-				entryTypes: entryType.id
+				entryTypes: entryType._id
 			}, function(err, pages) {
 				if (err) {
 					res.status(500).json(err);
 				}
 
+				if(pages && pages.length > 0) {
+
+					//Remove the reference to the entry field from the pages
+					pages.forEach(function(page) {
+						cleanUpPromises.push(new Promise(function(resolve) {
+							page.entryTypes.splice(page.entryTypes.indexOf(entryType.id), 1);
+							page.save(function(err) {
+								if (err) {
+									res.status(500).json(err);
+								}
+								resolve();
+							})
+						}));
+					});
+				}
+
 				//Find All Entries associate with the entry field
 				Entry.find({
-					entryType: entryType.id
+					entryType: entryType._id
 				}, function(err, entries) {
 					if (err) {
 						res.status(500).json(err);
 					}
 
-					//Now that we have reference to The Entry Field, Pages, and Entries, Start removing
-					//Delete all the entries
-					entries.remove(function(err) {
-						if (err) {
-							res.status(500).json(err);
-						}
-
-						//Remove the reference to the entry field from the pages
-						pages.forEach(function(page) {
-							page.categories.splice(page.categories.indexOf(category.id), 1);
+					//Loop Through all entries to be deleted
+					if(entries && entries.length > 0) {
+						entries.forEach(function(entry) {
+							cleanUpPromises.push(new Promise(function(resolve) {
+								entry.remove(function(err) {
+									if (err) {
+										res.status(500).json(err);
+									}
+									resolve();
+								});
+							}));
 						});
+					}
 
-						pages.save(function(err) {
+					//Once all clean up promises resolve
+					Promise.all(cleanUpPromises).then(function() {
+						//Finally delete the entry type
+						entryType.remove(function(err) {
 							if (err) {
 								res.status(500).json(err);
 							}
 
-							//Finally delete the entry type
-							entryType.remove(function(err) {
-								if (err) {
-									res.status(500).json(err);
-								}
-
-								//Success!
-								res.status.send("Success!");
-							})
-						})
-					})
+							//Success!
+							res.status(200).send("Success!");
+						});
+					});
 				})
 			})
 

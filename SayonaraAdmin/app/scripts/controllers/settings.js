@@ -108,4 +108,43 @@ angular.module('sayonaraAdminApp')
         adminNotify.error(error);
       });
     }
+
+    //Delete an entryType
+    $scope.deleteEntryType = function(index) {
+
+      //Return if not a valid index
+      if(!$scope.entryTypes[index] || !$scope.entryTypes[index]._id) return;
+
+      sayonaraEntryTypeService.deleteEntryTypeById($scope.entryTypes[index]._id).then(function(success) {
+
+        //Delete the entry type from the client
+        $scope.entryTypes.splice(index, 1);
+
+
+        //Inform of success
+        adminNotify.showAlert('Deleted the entry type!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
+    //Delete a categort
+    $scope.deleteCategory = function(index) {
+
+      //Return if not a valid index
+      if(!$scope.categories[index] || !$scope.categories[index]._id) return;
+
+      sayonaraCategoryService.deleteCategoryById($scope.categories[index]._id).then(function(success) {
+
+        //Delete the category from the client
+        $scope.categories.splice(index, 1);
+
+        //Inform of success
+        adminNotify.showAlert('Deleted the category!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
   });
