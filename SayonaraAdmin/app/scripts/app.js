@@ -60,7 +60,7 @@ angular
 				controller: 'PageeditCtrl',
 				controllerAs: 'pageEdit'
 			})
-			.when('/allentry', {
+			.when('/allentries', {
 			  templateUrl: 'views/allentries.html',
 			  controller: 'AllentriesCtrl',
 			  controllerAs: 'allEntries'

@@ -10,7 +10,7 @@
 
 <!-- Ng-for through all the entries -->
 <div class="center contentContainer" ng-repeat="entryType in entryTypes">
-  <h2 class="contentTypeTitle">{{entryType.title}}</h2>
+  <h2 class="contentTypeTitle" ng-if="entryType.entries.length > 0">{{entryType.title}}</h2>
   <md-card class="contentCard" ng-repeat="content in entryType.entries">
     <md-card-title>
       <md-card-title-text class="centerText">

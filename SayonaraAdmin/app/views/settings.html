@@ -16,8 +16,8 @@
   <md-card class="contentCard" ng-repeat="content in entryTypes">
 
     <md-card-title>
-      <md-input-container class="editInput centerText editTitle">
-        <input type="input" ng-model="entryTypes[$index].title" />
+      <md-input-container class="editInput editTitle">
+        <input class="centerText" type="input" ng-model="entryTypes[$index].title" />
       </md-input-container>
     </md-card-title>
 
@@ -57,25 +57,23 @@
   <a href="">Categories</a>
 </h2>
 <div class="centerText" ng-show="showList.categories">
-  <md-button class="center md-raised md-primary" ng-click="goToEntry()">New Category</md-button>
+  <md-button class="center md-raised md-primary" ng-click="createCategory()">New Category</md-button>
 </div>
-<div class="settingsContainer" ng-show="showList.categories">
+<div class="contentContainer" ng-show="showList.categories">
   <md-card class="contentCard" ng-repeat="content in categories">
 
-    <!-- TODO: Make Title Editable -->
     <md-card-title>
-      <md-card-title-text class="centerText">
-        <span class="md-headline">{{content.title}}</span>
-      </md-card-title-text>
+      <md-input-container class="editInput editTitle">
+        <input class="centerText" type="input" ng-model="categories[$index].title" />
+      </md-input-container>
     </md-card-title>
 
     <md-card-content>
       <!-- List the Properties of the Category -->
     </md-card-content>
 
-    <!-- TODO: Make this a save button -->
     <md-card-actions layout="row" layout-align="end center">
-      <md-button class="md-raised" ng-click="goToEntry(content._id)">Edit</md-button>
+      <md-button class="md-raised" ng-click="saveCategory(content)">Save</md-button>
     </md-card-actions>
   </md-card>
 </div>

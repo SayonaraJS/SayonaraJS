@@ -8,7 +8,7 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('SettingsCtrl', function ($scope, adminNotify, sayonaraEntryTypeService, sayonaraAdminService) {
+  .controller('SettingsCtrl', function ($scope, adminNotify, sayonaraEntryTypeService, sayonaraCategoryService, sayonaraAdminService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -54,6 +54,24 @@ angular.module('sayonaraAdminApp')
       });
     }
 
+    //Create new categories
+    $scope.createCategory = function() {
+      //Create our payload (With Default Entry Type)
+      var payload = {
+        title: 'New Sayonara Category',
+        hasContent: true
+      }
+
+      sayonaraCategoryService.createCategory(payload).then(function(success) {
+        //Push to our array of entry types
+        $scope.categories.push(success);
+        adminNotify.showAlert('Created a new Category!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
     //Save/Update an entryType
     $scope.saveEntryType = function(entryType) {
 
@@ -67,6 +85,24 @@ angular.module('sayonaraAdminApp')
       sayonaraEntryTypeService.updateEntryTypeById(entryType._id, payload).then(function(success) {
         //Inform of success
         adminNotify.showAlert('Saved the entry type!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
+    //Save/Update a category
+    $scope.saveCategory = function(category) {
+
+      //Get our payload
+      var payload = Object.assign({}, category)
+
+      //Delete uneeded fields from the json
+      delete payload['_id'];
+
+      sayonaraCategoryService.updateCategoryById(category._id, payload).then(function(success) {
+        //Inform of success
+        adminNotify.showAlert('Saved the category!');
       }, function(error) {
         //Pass to the error handler
         adminNotify.error(error);

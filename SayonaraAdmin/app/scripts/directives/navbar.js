@@ -22,7 +22,7 @@ angular.module('sayonaraAdminApp')
 					if (route == '/') scope.currentNavItem = 'home';
 					else if (route == '/about') scope.currentNavItem = 'about';
 					else if (route.includes('page')) scope.currentNavItem = 'pages';
-					else if (route.includes('entry')) scope.currentNavItem = 'entries';
+					else if (route.includes('entry') || route.includes('allentries')) scope.currentNavItem = 'entries';
 					else if (route.includes('settings')) scope.currentNavItem = 'settings';
 					else scope.currentNavItem = '';
 				}

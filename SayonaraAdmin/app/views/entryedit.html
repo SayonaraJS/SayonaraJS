@@ -7,8 +7,9 @@
 </md-input-container>
 
 <!-- The Entry type of the content -->
-<sayonara-selector ng-model="entry.entryType"
-  selections="entryTypes" selector-label="Entry Type"></sayonara-selector>
+<sayonara-selector selected-items="entry.entryType"
+  options="entryTypes" selector-label="Entry Type">
+</sayonara-selector>
 
 <!-- The content of the content -->
 <sayonara-content ng-model="entry.content"></sayonara-content>
