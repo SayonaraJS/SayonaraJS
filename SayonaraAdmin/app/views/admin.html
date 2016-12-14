@@ -1,1 +1,48 @@
-<p>This is the admin view.</p>
+<!-- Admin View, simply shows cards to other pages for general admin configuration -->
+
+<h1 class="centerText contentHeader">Admin</h1>
+
+<div class="centerText elementDescription">
+  This View shows additional settings meant for Admin users. By being admin user, you should understand basic website administration, or developer operations. Please refer to SayonaraJS Documentation if anything is unclear. <b>BEWARE:</b> with these settings you could potentially and unintentionally decrease the security of your website, or break some its functionality, please proceed with caution.
+</div>
+
+<!-- Ng-for through all the pages -->
+<div class="center contentContainer">
+
+  <!-- Users -->
+  <md-card class="contentCard">
+    <md-card-title>
+      <md-card-title-text class="centerText">
+        <!-- Card Title -->
+        <span class="md-headline">Users</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <!-- Content/Description of the setting -->
+    <md-card-content>
+      Create, delete, or edit the information of the User's of this website here
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="goToPage(content._id)">Edit</md-button>
+    </md-card-actions>
+  </md-card>
+
+  <md-card class="contentCard">
+    <md-card-title>
+      <md-card-title-text class="centerText">
+        <!-- Card Title -->
+        <span class="md-headline">Sayonara Config</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <!-- Content/Description of the setting -->
+    <md-card-content>
+      Edit the sayonaraConfig.js. Change Frontend clients, databases, ports, etc...
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="goToPage(content._id)">Edit</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

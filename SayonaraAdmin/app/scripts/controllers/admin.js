@@ -14,4 +14,6 @@ angular.module('sayonaraAdminApp')
       'AngularJS',
       'Karma'
     ];
+
+    //Nothing goes here, we simply redirect to other pages from this site
   });

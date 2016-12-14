@@ -20,10 +20,10 @@ angular.module('sayonaraAdminApp')
 					//Check for the correct route
 					//Default to dashboard
 					if (route == '/') scope.currentNavItem = 'home';
-					else if (route == '/about') scope.currentNavItem = 'about';
 					else if (route.includes('page')) scope.currentNavItem = 'pages';
 					else if (route.includes('entry') || route.includes('allentries')) scope.currentNavItem = 'entries';
 					else if (route.includes('settings')) scope.currentNavItem = 'settings';
+					else if (route.includes('admin')) scope.currentNavItem = 'admin';
 					else scope.currentNavItem = '';
 				}
 				setNav();

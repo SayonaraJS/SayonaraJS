@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name sayonaraAdminApp.controller:AboutCtrl
+ * @name sayonaraAdminApp.controller:EditusersCtrl
  * @description
- * # AboutCtrl
+ * # EditusersCtrl
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('AboutCtrl', function () {
+  .controller('EditusersCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
