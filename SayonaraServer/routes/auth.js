@@ -165,7 +165,7 @@ router.get('/users', function(req, res) {
 			}
 
 			//Return the pages
-			res.send(users);
+			res.status(200).json(users);
 		});
 	});
 });
@@ -273,7 +273,7 @@ router.post('/user/:id', function(req, res) {
 						return;
 					}
 					//Return the User
-					res.send(user);
+					res.status(200).json(user);
 				});
 			});
 		});
