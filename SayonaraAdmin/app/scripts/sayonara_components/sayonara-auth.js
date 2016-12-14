@@ -3,13 +3,16 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 	//Define the value for our jwt
 	var sayonaraAuthKey = 'sayonaraToken';
 
+	//TODO: Add new User CRUD
+
 	//Function to call the api to log in
-	var sayonaraApiLogin = function(email, password) {
+	var sayonaraApiLogin = function(email, password, permissions) {
 
 		//Create a payload
 		var payload = {
 			email: email,
-			password: password
+			password: password,
+			permissions: permissions
 		}
 
 		//Pass into the api, return the promise from the api

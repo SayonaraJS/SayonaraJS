@@ -152,7 +152,7 @@ router.post('/login', function(req, res) {
 });
 
 //Get all users
-router.get('/users', function(req, res) {
+router.get('/user/all', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.admin];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
@@ -171,7 +171,7 @@ router.get('/users', function(req, res) {
 });
 
 //Edit a user
-router.post('/user/:id', function(req, res) {
+router.post('/user/id/:id', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.admin];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
@@ -281,7 +281,7 @@ router.post('/user/:id', function(req, res) {
 });
 
 //Delete a user
-router.delete('/user/:id', function(req, res) {
+router.delete('/user/id/:id', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.admin];
 	routeHelpers.validateUser(req, permissions).then(function(result) {

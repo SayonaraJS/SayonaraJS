@@ -13,6 +13,13 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				isArray: false
 			}
 		}),
+    usersCreate: $resource(sayonaraApiHost + '/auth/create', {}, {
+			post: {
+				method: 'POST',
+				params: {},
+				isArray: false
+			}
+		}),
 		newContent: function(contentType, customHeaders) {
 			return $resource(sayonaraApiHost + '/' + contentType + '/create', {}, {
 				post: {
@@ -71,6 +78,22 @@ module.service('sayonaraApiEndpoints', function($location, $resource) {
 				}
 			});
 		},
+    sayonaraConfig: function(customHeaders) {
+			return $resource(sayonaraApiHost + '/sayonara/', {}, {
+				get: {
+					method: 'GET',
+					params: {},
+					isArray: false,
+					headers: customHeaders || {}
+				},
+        put: {
+					method: 'PUT',
+					params: {},
+					isArray: false,
+					headers: customHeaders || {}
+				}
+			});
+		},
 	}
 });
 
@@ -78,16 +101,75 @@ module.service('sayonaraApiAuth', function(sayonaraApiEndpoints) {
 
 	//Perform actions based on our endpoints
 
+  var userApiUrl = 'user';
+
+  //Create a user
+  var createUser = function(payload) {
+    //Send the request to the endpoint
+		return sayonaraApiEndpoints.usersCreate.post(payload).$promise;
+  }
+
 	//Login a user
-	var authLogin = function(payload) {
+	var loginUser = function(payload) {
 		//Send the request to the endpoint
 		return sayonaraApiEndpoints.usersLogin.post(payload).$promise;
 	}
 
+  //Get all Users
+	var getAllUsers = function(headers) {
+		//Send the request to the endpoint
+		//Using the payload as headers
+		return sayonaraApiEndpoints.allContent(userApiUrl, headers).get().$promise;
+	}
+
+  //Edit a user
+  var updateUser = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.contentById(userApiUrl).update(payload).$promise;
+  }
+
+  //Delete a user
+  var deleteUser = function(payload) {
+    //Send the request to the endpoint
+    return sayonaraApiEndpoints.contentById(userApiUrl).delete(payload).$promise;
+  }
+
 
 	//Returns for functions we are exposing
 	return {
-		loginUser: authLogin
+		loginUser: loginUser,
+    getAllUsers: getAllUsers,
+    updateUser: updateUser,
+    deleteUser: deleteUser
+	}
+});
+
+module.service('sayonaraApiAdmin', function(sayonaraApiEndpoints) {
+  //Get Info For Editing Content
+  var getSettings = function(headers) {
+    //Send the request to the endpoint
+    //Using the payload as headers
+    return sayonaraApiEndpoints.settings(headers).get().$promise;
+  }
+
+  //Get sayonara config file
+  var getConfig = function(headers) {
+    //Send the request to the endpoint
+    //Using the payload as headers
+    return sayonaraApiEndpoints.sayonaraConfig(headers).get().$promise;
+  }
+
+  //Edit sayonara config file
+  var updateConfig = function(payload) {
+		//Send the request to the endpoint
+		return sayonaraApiEndpoints.sayonaraConfig().update(payload).$promise;
+	}
+
+  //Returns for functions we are exposing
+	return {
+		getSettings: getSettings,
+    getConfig: getConfig,
+    updateConfig: updateConfig
 	}
 });
 
@@ -257,20 +339,6 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
      return sayonaraApiEndpoints.contentById(categoryContentUrl).delete(payload).$promise;
    }
 
-	/**
-	 *
-	 *	ADMIN
-	 *
-	 */
-
-   //Get Info For Editing Content
-   var getSettings = function(headers) {
-     //Send the request to the endpoint
-     //Using the payload as headers
-     return sayonaraApiEndpoints.settings(headers).get().$promise;
-   }
-
-
 
 	//Returns for functions we are exposing
 	return {
@@ -292,6 +360,5 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
     createCategory: createCategory,
     updateCategoryById: updateCategoryById,
     deleteCategoryById: deleteCategoryById,
-    getSettings: getSettings,
 	}
 });
