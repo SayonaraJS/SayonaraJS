@@ -73,8 +73,9 @@ module.exports = {
 									});
 								}
 							}
-
 							//Has sufficient permissions
+							//Added the user to the reponse object and return
+							response.user = decoded;
 							return resolve(response);
 						});
 					}

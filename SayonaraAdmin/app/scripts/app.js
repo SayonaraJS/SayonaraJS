@@ -75,7 +75,7 @@ angular
   controller: 'AdminCtrl',
   controllerAs: 'admin'
 })
-.when('/editusers', {
+.when('/users', {
   templateUrl: 'views/editusers.html',
   controller: 'EditusersCtrl',
   controllerAs: 'editusers'
