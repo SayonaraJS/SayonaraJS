@@ -88,7 +88,7 @@ router.get('/all', function(req, res) {
 	});
 });
 
-//Get An Entry (Including it's categories)
+//Get An Entry
 router.get('/id/:id', function(req, res) {
 
 	//Validate our JWT and permissions
@@ -98,7 +98,7 @@ router.get('/id/:id', function(req, res) {
 		//Find the Entry
 		Entry.findOne({
 			_id: req.params.id
-		}).populate('categories').exec(function(err, entry) {
+		}).exec(function(err, entry) {
 			if (err) {
 				res.status(500).json(err);
 				return;

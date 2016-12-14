@@ -68,7 +68,8 @@ angular.module('sayonaraAdminApp')
 			var request = {
 				title: $scope.entry.title,
 				content: $scope.entry.content,
-        entryType: $scope.entry.entryType
+        entryType: $scope.entry.entryType,
+        categories: $scope.entry.categories || []
 			};
 
 			//Update an existing page
@@ -88,7 +89,8 @@ angular.module('sayonaraAdminApp')
 			var request = {
 				title: $scope.entry.title,
 				content: $scope.entry.content,
-        entryType: $scope.entry.entryType
+        entryType: $scope.entry.entryType,
+        categories: $scope.entry.categories || []
 			};
 
 			//Update an existing page

@@ -11,6 +11,12 @@
   options="entryTypes" selector-label="Entry Type">
 </sayonara-selector>
 
+<!-- The Category of the content -->
+<sayonara-selector selected-items="entry.categories"
+  options="categories" selector-label="Categories"
+  multiple-selection="true">
+</sayonara-selector>
+
 <!-- The content of the content -->
 <sayonara-content ng-model="entry.content"></sayonara-content>
 

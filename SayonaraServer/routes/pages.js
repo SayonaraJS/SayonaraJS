@@ -65,7 +65,7 @@ router.get('/all', function(req, res) {
 	});
 });
 
-//Get a page (All the way down to entries)
+//Get a page
 router.get('/id/:id', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.pages];
