@@ -1,4 +1,4 @@
-<!-- Client for settings up Sayonara -->
+<!-- Client for settings up Sayonara, and Sayonara Debug -->
 <!DOCTYPE html>
 <html>
 
@@ -20,18 +20,18 @@
     <script>
         (function() {
             var app = angular.module("sayonara", ['ngSanitize', 'angular-loading-bar']);
-            app.controller("setup", function($scope, $http, $location) {
+            app.controller("setup", function($scope, $http, $location, $sce) {
 
                 //Testing stuff
                 $scope.default = 'New Sayonara App';
 
                 $scope.pages = [];
-                $scope.getPages = function() {
+                $scope.getPublic = function() {
 
                     //send post request to api
                     $http({
                         method: 'GET',
-                        url: 'api/pages/all'
+                        url: 'api/public'
                     }).then(function successCallback(response) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -42,7 +42,32 @@
                         $scope.pages = response;
                     });
                 };
-                $scope.getPages();
+                $scope.getPublic();
+
+                //Function to preety print json response
+                $scope.preetyJson = function(json) {
+                    if (typeof json != 'string') {
+                         json = JSON.stringify(json, undefined, 4);
+                    }
+                    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    var preetyJson =  $sce.trustAsHtml(json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                        var cls = 'number';
+                        if (/^"/.test(match)) {
+                            if (/:$/.test(match)) {
+                                cls = 'key';
+                            } else {
+                                cls = 'string';
+                            }
+                        } else if (/true|false/.test(match)) {
+                            cls = 'boolean';
+                        } else if (/null/.test(match)) {
+                            cls = 'null';
+                        }
+                        return '<span class="' + cls + '">' + match + '</span>';
+                    }));
+
+                    return preetyJson;
+                }
             });
         })();
     </script>
@@ -63,10 +88,39 @@
             height: 10px;
         }
 
+        .newSayonara {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
         .sayonaraImage {
             width: 80%;
             height: auto;
         }
+
+        .entryTypeSection {
+            border: 1px solid #020202;
+            padding: 5px;
+        }
+
+        .divider {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-bottom: 10px;
+            border-style: solid;
+        }
+
+        /* Preety json styles */
+        pre {
+            text-align: left;
+            padding: 5px;
+            margin: 5px;
+        }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: red; }
+        .null { color: magenta; }
+        .key { color: blue; }
     </style>
 </head>
 
@@ -74,22 +128,55 @@
     <div class="center" ng-controller="setup">
 
         <!-- Dynamic content -->
-        <h1>{{default}}<h1>
-        <h3>Go to <a href="/admin">/admin</a> for the admin panel</h3>
+        <div class="newSayonara">
+            <h1>{{default}}<h1>
+            <h3>Go to <a href="/admin">/admin</a> for the admin panel</h3>
+        </div>
 
         <!-- pages -->
         <div ng-repeat="page in pages">
-            <h3>Title: {{page.title}}</h3>
+
+            <!-- Horizontal divider for visibility -->
+            <div class="divider" ng-if="$index == 0"></div>
+
+            <h1>Page: {{page.title}}</h1>
             <h3>Content:</h3>
             {{page.content}}
             <h3>Binded Content:</h3>
             <div ng-bind-html="page.content"></div>
             <h3>Date:</h3>
             {{page.date}}
+            <h3>Categories:</h3>
+            <span ng-repeat="pageCategory in page.categories">
+                {{pageCategory.title}},
+            </span>
+
+            <!-- Entry Types in page -->
+            <div ng-repeat="entryType in page.entryTypes">
+                <h1 class="entryTypeSection">EntryType: {{entryType.title}}, in Page: {{page.title}}</h1>
+
+                <!-- Entries in Entry Type -->
+                <div ng-repeat="entry in entryType.entries">
+                    <h2>Entry: {{entry.title}}, in EntryType: {{entryType.title}}</h2>
+                    <h3>Content:</h3>
+                    {{entry.content}}
+                    <h3>Binded Content:</h3>
+                    <div ng-bind-html="entry.content"></div>
+                    <h3>Date:</h3>
+                    {{entry.date}}
+                    <h3>Categories:</h3>
+                    <span ng-repeat="entryCategory in entry.categories">
+                        {{entryCategory.title}},
+                    </span>
+                </div>
+            </div>
+
+            <!-- Horizontal divider for visibility -->
+            <div class="divider"></div>
         </div>
 
         <h2>Raw Pages:</h2>
-        {{pages}}
+        <pre ng-bind-html="preetyJson(pages)"></pre>
     </div>
 </body>
 

@@ -1,5 +1,4 @@
-//Sayonara configuration
-var sayonaraConfig = require('../sayonaraConfig');
+//Route for CRUD operations on pages
 
 //Create our router
 var express = require('express');
@@ -51,17 +50,20 @@ router.post('/create', function(req, res) {
 });
 
 //Get all Pages
-//Not Authenticated since used by public website
 router.get('/all', function(req, res) {
-	//Find all pages
-	Page.find({}, function(err, pages) {
-		if (err) {
-			res.status(500).json(err);
-			return;
-		}
+	//Validate our JWT and permissions
+	var permissions = [routeHelpers.definedPermissions.pages];
+	routeHelpers.validateUser(req, permissions).then(function(result) {
+		//Find all pages
+		Page.find({}, function(err, pages) {
+			if (err) {
+				res.status(500).json(err);
+				return;
+			}
 
-		//Return the pages
-		res.send(pages);
+			//Return the pages
+			res.send(pages);
+		});
 	});
 });
 

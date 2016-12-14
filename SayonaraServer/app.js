@@ -52,6 +52,8 @@ var appPages = require('./routes/pages');
 app.use('/api/pages', appPages);
 var appAdmin = require('./routes/admin');
 app.use('/api/admin', appAdmin);
+var appPublic = require('./routes/public');
+app.use('/api/public', appPublic);
 
 //Connect to our DB
 mongoose.connect(sayonaraConfig.dbUrl);
