@@ -71,14 +71,19 @@ require('./setup/setupSayonara')(app, function(app) {
 	//Callback to be run after sayonara is done setting up
 
 	//Get our admin view
-	// The Admin App Root
-	app.get('/admin', function(req, res) {
+	// The Admin App Root, but redirect for the trailing slash
+	app.get(/^\/admin$/, function(req, res) {
+		res.redirect('/admin/');
+	});
+	app.get('/admin/', function(req, res) {
 		res.sendFile(path.resolve('../SayonaraAdmin/dist/index.html'));
 	});
 	//Relative paths for the admin app
 	//Regex for /admin/[anything here]
 	app.get(/(\/admin\/).*/, function(req, res) {
-		var pathString = '../SayonaraAdmin/dist' + req.url.split('/admin')[1];
+		//Split out all of the /admin from the url, to get the file path
+		var adminSplit = req.url.split('/admin');
+		var pathString = '../SayonaraAdmin/dist/' + adminSplit[adminSplit.length - 1];
 		res.sendFile(path.resolve(pathString));
 	});
 
