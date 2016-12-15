@@ -8,7 +8,19 @@ angular.module('sayonaraAdmin', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 		});
 	}
 
-  //TODO: Add sayonara config editing
+  //Get the current config json file
+  var getSayonaraConfig = function() {
+    //Get out user token for the headers
+		return sayonaraApiAdmin.getConfig({
+			token: sayonaraAuthService.getUser().token
+		});
+  }
+
+  //Update the current config json file
+  var updateSayonaraConfig = function(payload) {
+    //Get out user token for the headers
+		return sayonaraApiAdmin.updateConfig(payload);
+  }
 
 	return {
 		getSettings: getSettings,

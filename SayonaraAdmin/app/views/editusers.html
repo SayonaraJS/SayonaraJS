@@ -1,1 +1,31 @@
-<p>This is the editusers view.</p>
+<h1 class="centerText contentHeader">Users</h1>
+
+<div class="centerText elementDescription">
+  This view shows all the users and their information who may add/edit content, or edit the site itself. The first card displayed is the form for creating a new users. Below, is a list of all users for the current site. You may also edit any of the information displayed for the user, as long as current password for the user is provided.
+</div>
+
+<!-- Make the Main New user Form/Card -->
+<md-card class="contentCard">
+
+  <md-card-title>
+    New User
+  </md-card-title>
+
+  <md-card-content>
+    <!-- Form to create user -->
+    <!--Email -->
+    <md-input-container class="editInput editTitle">
+      <input type="text" placeholder="E-mail" ng-model="newUser.email" />
+    </md-input-container>
+  </md-card-content>
+
+  <md-card-actions layout="row" layout-align="start center">
+    <!-- Delete on the left, save on the right -->
+    <md-card-icon-actions>
+    </md-card-icon-actions>
+    <md-button class="md-raised" ng-click="createUser(content)">Create</md-button>
+  </md-card-actions>
+</md-card>
+
+<!-- Search able list of editable Users -->
+{{users}}

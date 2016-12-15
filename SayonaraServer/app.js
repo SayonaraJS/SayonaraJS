@@ -83,7 +83,7 @@ require('./setup/setupSayonara')(app, function(app) {
 	app.get(/(\/admin\/).*/, function(req, res) {
 		//Split out all of the /admin from the url, to get the file path
 		var adminSplit = req.url.split('/admin');
-		var pathString = '../SayonaraAdmin/dist/' + adminSplit[adminSplit.length - 1];
+		var pathString = '../SayonaraAdmin/dist' + adminSplit[adminSplit.length - 1];
 		res.sendFile(path.resolve(pathString));
 	});
 

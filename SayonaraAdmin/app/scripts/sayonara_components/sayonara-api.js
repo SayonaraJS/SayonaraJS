@@ -101,7 +101,7 @@ module.service('sayonaraApiAuth', function(sayonaraApiEndpoints) {
 
 	//Perform actions based on our endpoints
 
-  var userApiUrl = 'user';
+  var userApiUrl = 'auth/user';
 
   //Create a user
   var createUser = function(payload) {

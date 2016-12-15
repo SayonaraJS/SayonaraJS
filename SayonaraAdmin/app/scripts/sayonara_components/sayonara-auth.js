@@ -3,8 +3,6 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 	//Define the value for our jwt
 	var sayonaraAuthKey = 'sayonaraToken';
 
-	//TODO: Add new User CRUD
-
 	//Function to call the api to log in
 	var sayonaraApiLogin = function(email, password, permissions) {
 
@@ -18,6 +16,25 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 		//Pass into the api, return the promise from the api
 		return sayonaraApiAuth.loginUser(payload);
 	}
+
+  //Use the api to return a promise to get all users
+  var sayonaraApiGetUsers = function() {
+    //Send the user's token in the header
+    return sayonaraApiAuth.getAllUsers({
+			token: getSayonaraUser().token
+		});
+  }
+
+  //Use the api to return a promise to update a user
+  var sayonaraApiUpdateUser = function(payload) {
+    return sayonaraApiAuth.updateUser(payload);
+  }
+
+  //Use the api to return a promise to delete the user
+  var sayonaraApiDeleteUser = function(payload) {
+    return sayonaraApiAuth.deleteUser(payload);
+  }
+
 
 	//Function to set the sayonaraUser token from json object
 	var setSayonaraUserToken = function(payload) {
@@ -57,6 +74,9 @@ angular.module('sayonaraAuth', ['sayonaraApi']).service('sayonaraAuthService', f
 	return {
 		isLoggedIn: sayonaraIsLoggedIn,
 		loginUser: sayonaraApiLogin,
+    getAllUsers: sayonaraApiGetUsers,
+    updateUser: sayonaraApiUpdateUser,
+    deleteUser: sayonaraApiDeleteUser,
 		saveUser: setSayonaraUserToken,
 		getUser: getSayonaraUser,
 		logout: deleteSayonaraUserToken
