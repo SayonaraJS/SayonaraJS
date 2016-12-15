@@ -79,16 +79,20 @@ router.post('/create', function(req, res) {
 						return;
 					}
 
-					//Success! Finally return a JWT to the user
+					//Success! Don't Create a JWT, since users will be creating one another
 					// create a JWT, expires in one week
-					var jwtToken = jwt.sign(user, sayonaraConfig.authSecret, {
-						expiresIn: '7 days'
-					});
+					// var jwtToken = jwt.sign(user, sayonaraConfig.authSecret, {
+					// 	expiresIn: '7 days'
+					// });
+
+					//Get the populated user
+					var populatedUser = user;
+					populatedUser.permissions = newPermissions;
 
 					res.status(200).json({
 						success: true,
 						message: 'Success!',
-						token: jwtToken
+						user: populatedUser
 					});
 				});
 			});
@@ -126,7 +130,10 @@ router.post('/login', function(req, res) {
 
 		// Verifying a hash
 		password(userPass).verifyAgainst(JSON.parse(user.hash), function(error, verified) {
-			if (error) res.status(500).json(err);
+			if (error) {
+				res.status(500).json(err);
+				return;
+			}
 			if (!verified) {
 				//Passwords did not match
 				res.status(401).send('Incorrect Password.');
@@ -171,7 +178,7 @@ router.get('/user/all', function(req, res) {
 });
 
 //Edit a user
-router.post('/user/id/:id', function(req, res) {
+router.put('/user/id/:id', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.admin];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
@@ -189,34 +196,78 @@ router.post('/user/id/:id', function(req, res) {
 			var editPromises = [];
 
 			//Edit the passed fields
-			if(req.body.password) {
-				//Create a promise for hashing
-				editPromises.push(new Promise(function(resolve) {
-					//Hash the password first
-					//Hash the password
-					password(userPass).hash(function(error, hash) {
-						if (error) {
-							res.status(500).json(err);
-							//TODO: reject the promise
-							return;
+			//Check for emails
+			if(req.body.email) {
+				//Ensure the email isnt already taken
+				editPromises.push(new Promise(function(resolve, reject) {
+					User.findOne({
+						email: req.body.email
+					}).exec(function(err, foundUser) {
+						if (err) {
+							reject({
+								status: 500,
+								json: error
+							});
 						}
 
-						user.hash = hash;
-						resolve();
+						//User Already has the email
+						if (foundUser) {
+							reject({
+								status: 409,
+								json: {reason: 'User already exists with that username.'}
+							});
+						}
+
+						//No User has the email, set it to the current user
+						user.email = req.body.email;
+					})
+				}));
+			}
+
+			//Check for a password change
+			if(req.body.password && req.body.newPassword) {
+				//Create a promise for hashing
+				editPromises.push(new Promise(function(resolve, reject) {
+					//First verify the current password
+					password(req.body.password).verifyAgainst(JSON.parse(user.hash), function(error, verified) {
+						if (error) res.status(500).json(err);
+						if (!verified) {
+							//Passwords did not match
+							reject({
+								status: 403,
+								json: {reason: 'Incorrect Password.'}
+							});
+						} else {
+							//Hash the password
+							password(req.body.newPassword).hash(function(error, hash) {
+								if (error) {
+									reject({
+										status: 500,
+										json: error
+									});
+								}
+
+								user.hash = JSON.stringify(hash);
+								resolve();
+							});
+						}
 					});
 				}));
 			}
+
+
 			if(req.body.permissions) {
 				//Create a promise for permission editing
-				editPromises.push(new Promise(function(resolve) {
+				editPromises.push(new Promise(function(resolve, reject) {
 					//Find the permissions of the user
 					Permissions.findOne({
 						_id: user.permissions
 					}).exec(function(err, permissions) {
 						if (error) {
-							res.status(500).json(err);
-							//TODO: reject the promise
-							return;
+							reject({
+								status: 500,
+								json: error
+							});
 						}
 
 						//Loop through the Schema paths
@@ -249,9 +300,10 @@ router.post('/user/id/:id', function(req, res) {
 						//Save the permissions
 						permissions.save(function(err) {
 							if (error) {
-								res.status(500).json(err);
-								//TODO: reject the promise
-								return;
+								reject({
+									status: 500,
+									json: error
+								});
 							}
 
 							//Resolve the promise
@@ -260,9 +312,6 @@ router.post('/user/id/:id', function(req, res) {
 					});
 				}));
 			}
-
-			//Edit the other fields while the promises are running
-			if(req.body.email) user.email = req.body.email;
 
 			//Once all promises resolve, save the edited user
 			Promise.all(editPromises).then(function() {
@@ -275,6 +324,10 @@ router.post('/user/id/:id', function(req, res) {
 					//Return the User
 					res.status(200).json(user);
 				});
+			}, function(error) {
+				//Rejected promise, return the error
+				res.status(error.status).json(error.json);
+				return;
 			});
 		});
 	});

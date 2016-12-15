@@ -68,11 +68,11 @@
       </md-input-container>
 
       <md-input-container class="editInput">
-        <input class="centerText" type="input" placeholder="New Password" ng-model="users[$index].newPassword" />
+        <input class="centerText" type="password" placeholder="New Password" ng-model="users[$index].newPassword" />
       </md-input-container>
 
       <md-input-container class="editInput">
-        <input class="centerText" type="input" placeholder="New Password Confirm" ng-model="users[$index].newPasswordConfirm" />
+        <input class="centerText" type="password" placeholder="New Password Confirm" ng-model="users[$index].newPasswordConfirm" />
       </md-input-container>
 
       <!-- Permissions, put into a flex box of vertical content -->
@@ -151,9 +151,9 @@
     <md-card-actions layout="row" layout-align="start center">
       <!-- Delete on the left, save on the right -->
       <md-card-icon-actions>
-        <md-button class="md-raised md-warn" ng-click="deleteUser(user)">Delete</md-button>
+        <md-button class="md-raised md-warn" ng-click="deleteUser(user, $index)">Delete</md-button>
       </md-card-icon-actions>
-      <md-button class="md-raised" ng-click="saveUser(user)">Save</md-button>
+      <md-button class="md-raised" ng-click="updateUser(user, $index)">Save</md-button>
     </md-card-actions>
   </md-card>
 </div>
