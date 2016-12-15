@@ -5,17 +5,27 @@
 </div>
 
 <!-- Make the Main New user Form/Card -->
-<md-card class="contentCard">
+<md-card class="cardForm marginTopBottom">
 
-  <md-card-title>
+  <md-card-title class="cardTitle centerText">
     New User
   </md-card-title>
 
   <md-card-content>
     <!-- Form to create user -->
     <!--Email -->
-    <md-input-container class="editInput editTitle">
+    <md-input-container class="cardInputText center">
       <input type="text" placeholder="E-mail" ng-model="newUser.email" />
+    </md-input-container>
+
+    <!--Password -->
+    <md-input-container class="cardInputText center">
+      <input type="password" placeholder="Password" ng-model="newUser.password" />
+    </md-input-container>
+
+    <!--Confirm Password -->
+    <md-input-container class="cardInputText center">
+      <input type="password" placeholder="Confirm Password" ng-model="newUser.confirmPassword" />
     </md-input-container>
   </md-card-content>
 
@@ -23,9 +33,127 @@
     <!-- Delete on the left, save on the right -->
     <md-card-icon-actions>
     </md-card-icon-actions>
-    <md-button class="md-raised" ng-click="createUser(content)">Create</md-button>
+    <md-button class="md-raised" ng-click="createUser()">Create</md-button>
   </md-card-actions>
 </md-card>
 
-<!-- Search able list of editable Users -->
-{{users}}
+<!-- Search able list of editable Users, using auto complete to search -->
+<md-autocomplete
+          class="userSearch"
+          md-search-text="userSearchText"
+          md-items="user in users | filter:userSearchText"
+          md-item-text="user.email"
+          md-min-length="0"
+          placeholder="Search for a user">
+          <md-item-template>
+            <span md-highlight-text="user.email" md-highlight-flags="^i">{{user.email}}</span>
+          </md-item-template>
+          <md-not-found>
+            No users with the email "{{userSearchText}}" were found.
+          </md-not-found>
+</md-autocomplete>
+<div class="center contentContainer">
+  <md-card class="contentCard" ng-repeat="user in users | filter:userSearchText">
+
+    <md-card-title>
+      <md-input-container class="editInput editTitle">
+        <input class="centerText" type="input" placeholder="E-mail" ng-model="users[$index].email" />
+      </md-input-container>
+    </md-card-title>
+
+    <md-card-content>
+
+      <md-input-container class="editInput">
+        <input class="centerText" type="password" placeholder="Current Password" ng-model="users[$index].currentPassword" />
+      </md-input-container>
+
+      <md-input-container class="editInput">
+        <input class="centerText" type="input" placeholder="New Password" ng-model="users[$index].newPassword" />
+      </md-input-container>
+
+      <md-input-container class="editInput">
+        <input class="centerText" type="input" placeholder="New Password Confirm" ng-model="users[$index].newPasswordConfirm" />
+      </md-input-container>
+
+      <!-- Permissions, put into a flex box of vertical content -->
+      <h2 ng-click="showPermissions[user._id] = !showPermissions[user._id]">
+        <a href="">
+          User Permissions
+        </a>
+      </h2>
+      <div class="userPermissionsContainer" ng-show="showPermissions[user._id]">
+        <div class="userPermission">
+          <h4>Admin</h4>
+          <md-checkbox ng-model="user.permissions.admin" aria-label="Editable Content" class="md-primary">
+            Is Admin?
+          </md-checkbox>
+        </div>
+        <div class="userPermission">
+          <h4>Pages</h4>
+          <md-checkbox ng-model="user.permissions.pages.read" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox">
+            Read
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.pages.create" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.pages.read">
+            Create
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.pages.update" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.pages.read">
+            Update
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.pages.delete" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.pages.read">
+            Delete
+          </md-checkbox>
+        </div>
+        <div class="userPermission">
+          <h4>Entry Types</h4>
+          <md-checkbox ng-model="user.permissions.entryTypes.read" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox">
+            Read
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.entryTypes.create" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.entryTypes.read">
+            Create
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.entryTypes.update" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.entryTypes.read">
+            Update
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.entryTypes.delete" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.entryTypes.read">
+            Delete
+          </md-checkbox>
+        </div>
+        <div class="userPermission">
+          <h4>Entries</h4>
+          <md-checkbox ng-model="user.permissions.entries.read" aria-label="Editable Content" class="md-primary permissionsCheckBox">
+            Read
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.entries.create" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.entries.read">
+            Create
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.entries.update" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.entries.read">
+            Update
+          </md-checkbox>
+          <md-checkbox ng-model="user.permissions.entries.delete" aria-label="Editable Content"
+            class="md-primary permissionsCheckBox" ng-if="user.permissions.entries.read">
+            Delete
+          </md-checkbox>
+        </div>
+      </div>
+
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="start center">
+      <!-- Delete on the left, save on the right -->
+      <md-card-icon-actions>
+        <md-button class="md-raised md-warn" ng-click="deleteUser(user)">Delete</md-button>
+      </md-card-icon-actions>
+      <md-button class="md-raised" ng-click="saveUser(user)">Save</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

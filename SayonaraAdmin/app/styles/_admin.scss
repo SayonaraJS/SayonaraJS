@@ -1,0 +1,54 @@
+//Styles for the pages displayed in the admin section
+$searchHeight: 60px;
+.userSearch {
+  display: block;
+  width: 100%;
+  max-width: 950px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  height: $searchHeight;
+
+  .md-whiteframe-z1 {
+    height: $searchHeight;
+  }
+
+  input {
+    //Need important to override angular material
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    height: $searchHeight!important;
+    font-size: 16px !important;
+  }
+}
+
+//Permissions Flex box
+.userPermissionsContainer {
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .userPermission {
+    @extend .centerText;
+    min-width: 150px;
+    min-height: 205px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    border-left: 2px solid $lightShade;
+    border-right: 2px solid $lightShade;
+
+    .permissionsCheckBox {
+      display: block;
+      text-align: left;
+    }
+  }
+}

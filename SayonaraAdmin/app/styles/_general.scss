@@ -12,6 +12,11 @@ $containerWidth: 90%;
     text-align: center;
 }
 
+.marginTopBottom {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .containerWidth {
   width: $containerWidth;
 }
@@ -29,6 +34,23 @@ $containerWidth: 90%;
 .container {
     @extend .center;
     @extend .containerWidth;
+}
+
+.cardForm {
+  @extend .center;
+  width: 100%;
+  max-width: 750px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  .cardTitle {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .cardInputText {
+    display: block;
+  }
 }
 
 .appToast {

@@ -139,6 +139,7 @@ module.service('sayonaraApiAuth', function(sayonaraApiEndpoints) {
 	return {
 		loginUser: loginUser,
     getAllUsers: getAllUsers,
+    createUser: createUser,
     updateUser: updateUser,
     deleteUser: deleteUser
 	}
