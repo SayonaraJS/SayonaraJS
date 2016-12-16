@@ -1,1 +1,1 @@
-## Where frontend's that utilize Sayonara will go
+## Where frontend's/clients that utilize Sayonara will go

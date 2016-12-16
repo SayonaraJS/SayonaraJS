@@ -12,16 +12,25 @@ Sayonara JS allows Developers to create portfolios, blogs, shopping sites, and m
 
 ## How can I install Sayonara JS?
 Sayonara can be installed in 7 easy steps!
+
 1. [Install Nodejs](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04)
+
 2. [Install MongoDB](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
+
 3. Download the latest release of Sayonara JS
+
 4. Extract the release, `cd` into the directory, and run `npm install`
+
 5. Install a Node server monitor, I prefer [forever](https://www.npmjs.com/package/forever), `npm install forever -g`
+
 6. Still inside the Sayonara directory, run `forever app.js`, or whatever server monitor you prefer
+
 7. Follow the Server instructions, navigate to [http://localhost:8000](http://localhost:8000) and setup your site!
+
 
 ## Any examples of this admin panel?
 Yup, here is a .gif of me changing some content in the debug client using the admin panel!
+
 ![Sayonara Admin](https://files.aaronthedev.com/$/hxpks)
 
 ## How can I learn how to use Sayonara JS?
