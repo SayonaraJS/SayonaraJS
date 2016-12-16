@@ -2,7 +2,7 @@ var module = angular.module('sayonaraApi', []);
 module.service('sayonaraApiEndpoints', function($location, $resource) {
 
 	//Get the host for the app
-	var sayonaraApiHost = $location.protocol() + '://' + $location.host() + ':8000' + '/api';
+	var sayonaraApiHost = $location.protocol() + '://' + $location.host() + ':'+  $location.port() + '/api';
 
 	//Returns for functions we are exposing
 	return {
@@ -163,7 +163,7 @@ module.service('sayonaraApiAdmin', function(sayonaraApiEndpoints) {
   //Edit sayonara config file
   var updateConfig = function(payload) {
 		//Send the request to the endpoint
-		return sayonaraApiEndpoints.sayonaraConfig().update(payload).$promise;
+		return sayonaraApiEndpoints.sayonaraConfig().put(payload).$promise;
 	}
 
   //Returns for functions we are exposing

@@ -18,6 +18,8 @@ angular.module('sayonaraAdmin', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 
   //Update the current config json file
   var updateSayonaraConfig = function(payload) {
+    //Add our token to the payload
+    payload.token = sayonaraAuthService.getUser().token;
     //Get out user token for the headers
 		return sayonaraApiAdmin.updateConfig(payload);
   }

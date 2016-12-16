@@ -52,3 +52,18 @@ $searchHeight: 60px;
     }
   }
 }
+
+//Sayonara config form card
+.jsonForm {
+  text-align: center;
+
+  .jsonKey {
+    display: inline-block;
+    width: 100px;
+  }
+
+  .jsonValue {
+    display: inline-block;
+    width: calc(100% - 150px);
+  }
+}

@@ -1,7 +1,7 @@
 <h1 class="centerText contentHeader">Sayonara Config</h1>
 
 <div class="centerText elementDescription">
-  This view shows the Sayonara Config (sayonaraConfig.js) file found on your Sayonara Server. You may edit the JSON from here if anything needs to be changed, such as Clients, MongoDB ports, etc.. More JSON fields can be added or removed from logging in / ssh'ing into your server. <b>BEWARE:</b> we highly suggest not removing the default fields on the Sayonara config, as it will definitely break your server. Also, please be careful changing these JSON fields, it could potentially make your site unusable.
+  This view shows the Sayonara Config (sayonaraConfig.js) file found on your Sayonara Server. You may edit the JSON from here if anything needs to be changed, such as Clients, MongoDB ports, etc.. More JSON fields can be added or removed from logging in / ssh'ing into your server. <b>BEWARE:</b> we highly suggest not removing the default fields on the Sayonara config, as it will definitely break your server. Also, please be careful changing these JSON fields, it could potentially make your site unusable. <b>You need to restart your server to reflect the changes</b>.
 </div>
 
 <!-- Make the Main New user Form/Card -->
@@ -11,20 +11,24 @@
     Sayonara Config JSON
   </md-card-title>
 
+  <!-- Add json brackets to look more like json -->
   <md-card-content>
+    {
     <!-- Ng-repeat through the JSON -->
-    <div ng-repeat="(sayonaraKey, sayonaraValue) in sayonaraConfig">
-      {{key}}
-      <md-input-container class="cardInputText center">
-        <input type="text" placeholder="E-mail" ng-model="sayonaraValue" />
+    <div ng-repeat="(sayonaraKey, sayonaraValue) in sayonaraConfig"
+      class="jsonForm">
+      <span class="jsonKey">{{sayonaraKey}}:</span>
+      <md-input-container class="cardInputText jsonValue center">
+        <input type="text" placeholder="{{sayonaraKey}}" ng-model="sayonaraConfig[sayonaraKey]" />
       </md-input-container>
     </div>
+    }
   </md-card-content>
 
   <md-card-actions layout="row" layout-align="start center">
     <!-- Delete on the left, save on the right -->
     <md-card-icon-actions>
     </md-card-icon-actions>
-    <md-button class="md-raised" ng-click="saveConfig()">Save</md-button>
+    <md-button class="md-raised" ng-click="updateConfig()">Save</md-button>
   </md-card-actions>
 </md-card>
