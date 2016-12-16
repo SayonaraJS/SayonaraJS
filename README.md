@@ -27,6 +27,8 @@ Sayonara can be installed in 7 easy steps!
 
 7. Follow the Server instructions, navigate to [http://localhost:8000](http://localhost:8000) and setup your site!
 
+_The admin panel can be found at [sayonaraSiteUrl]/admin/_
+
 
 ## Any examples of this admin panel?
 Yup, here is a .gif of me changing some content in the debug client using the admin panel!
