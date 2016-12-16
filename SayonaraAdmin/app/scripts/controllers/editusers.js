@@ -136,7 +136,6 @@ angular.module('sayonaraAdminApp')
         delete $scope.users[index].newPasswordConfirm
         $scope.originalUsers = angular.copy($scope.users);
 
-
         //Inform the user
         adminNotify.showAlert("User successfully updated!");
       }, function(error) {
@@ -148,6 +147,27 @@ angular.module('sayonaraAdminApp')
           status: 403,
           text: 'Incorrect Password'
         }]);
+      });
+    }
+
+    //Delete a user
+    $scope.deleteUser = function(user, index) {
+      //Create our payload
+      var payload = {
+        id: user._id,
+      }
+      //Send the request
+      sayonaraAuthService.deleteUser(payload).then(function(success) {
+        //Remove the user from the users array
+        $scope.users.splice(index, 1);
+        $scope.originalUsers = angular.copy($scope.users);
+
+        //Inform the user
+        adminNotify.showAlert(user.email + " successfully deleted!");
+
+      }, function(error) {
+        //Notify the user
+        adminNotify.error(error);
       });
     }
   });

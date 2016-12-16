@@ -220,7 +220,8 @@ router.put('/user/id/:id', function(req, res) {
 
 						//No User has the email, set it to the current user
 						user.email = req.body.email;
-					})
+						resolve();
+					});
 				}));
 			}
 
@@ -386,7 +387,7 @@ router.delete('/user/id/:id', function(req, res) {
 						}
 
 						//Return success
-						res.send('Deleted!');
+						res.status(200).send('Deleted!');
 					});
 				});
 			});
