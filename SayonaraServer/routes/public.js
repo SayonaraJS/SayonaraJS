@@ -15,6 +15,9 @@ var Page = mongoose.model('Page');
 //Returns an array of pages to be deciphered
 router.get('/', function(req, res) {
 
+    //Our Sayonara Config (For Site name and things)
+    var sayonaraConfig = require('../sayonaraConfig');
+
     //Find all pages, and populate, EVERYTHING
     Page.find({})
         .populate('categories')
@@ -36,8 +39,11 @@ router.get('/', function(req, res) {
             return;
         }
 
-        //Return the pages
-        res.send(pages);
+        //Return the public info (pages, and site name)
+        var response = {};
+        if(sayonaraConfig.siteName) response.siteName = sayonaraConfig.siteName;
+        response.pages = pages;
+        res.status(200).json(response);
     });
 });
 

@@ -97,8 +97,8 @@ module.exports = {
 		return new Promise(function(resolve, reject) {
 
 			//Preserve our comments for user friendliness
-			var fileComments = '//Sayonara config contains secrets for JWT, database URLs, etc..\n//For New Sayonara users, we highly recommend you do NOT upload your sayonaraConfig file to git\n//Any Custom Sayonara Config Values Go Here. They will become Editable on the Admin, Sayonara config Page!\nSetting "runInitialSetup" to true, will allow you to clear your website, and re-run the setup.\n//Don\'t remove the default json atrributes on this config file, as it can break your server.\n//Default Json atrributes:\n//appPort: "8000", dbUrl: "mongodb://localhost/sayonara", clientRoot: "../SayonaraClients/helooo", authSecret: "listredcomputercup1%", authIssuer: "Sayonara", siteName: "Sayonara Default", runInitialSetup: false, initialSetupDate: "Date goes here"';
-			var commentedFile = fileComments + 'module.exports = ' + JSON.stringify(jsonFile, null, 4);
+			var fileComments = '//Sayonara config contains secrets for JWT, database URLs, etc..\n//For New Sayonara users, we highly recommend you do NOT upload your sayonaraConfig file to git\n//Any Custom Sayonara Config Values Go Here. They will become Editable on the Admin, Sayonara config Page!\n//Setting "runInitialSetup" to true, will allow you to clear your website, and re-run the setup.\n//Don\'t remove the default json atrributes on this config file, as it can break your server.\n//Default Json atrributes:\n//appPort: "8000", dbUrl: "mongodb://localhost/sayonara", clientRoot: "../SayonaraClients/helooo", authSecret: "listredcomputercup1%", authIssuer: "Sayonara", siteName: "Sayonara Default", runInitialSetup: false, initialSetupDate: "Date goes here"';
+			var commentedFile = fileComments + '\nmodule.exports = ' + JSON.stringify(jsonFile, null, 4);
 
 			//Save the edited file/JSON
 			fs.writeFile(path.join(__dirname, '/../sayonaraConfig.js'), commentedFile, function (err) {

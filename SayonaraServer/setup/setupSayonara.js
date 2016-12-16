@@ -21,7 +21,7 @@ module.exports = function(app, mongooseConnection, callback) {
 
 	//Check if we have run the setup from the sayonaraConfig
 	if (sayonaraConfig.runInitialSetup) {
-		console.log('Setup Not found in Sayonara Config. Starting Setup Page.');
+		console.log('Run Initial Setup is true in Sayonara Config. Starting Setup Page.');
 		//Make the index of the app the setup file
 		app.get(/^(?!\/setup).*/, function(req, res) {
 			res.sendFile(path.resolve('./setup/setupClient.html'));

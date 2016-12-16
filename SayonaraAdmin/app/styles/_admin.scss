@@ -64,6 +64,7 @@ $searchHeight: 60px;
 
   .jsonValue {
     display: inline-block;
-    width: calc(100% - 150px);
+    //TODO: Fix this to be a non static width. Wont look good on mobile
+    width: calc(100% - 200px);
   }
 }
