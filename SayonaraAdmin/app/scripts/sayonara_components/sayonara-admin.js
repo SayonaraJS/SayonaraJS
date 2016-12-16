@@ -24,5 +24,7 @@ angular.module('sayonaraAdmin', ['sayonaraApi', 'sayonaraAuth']).service('sayona
 
 	return {
 		getSettings: getSettings,
+    getSayonaraConfig: getSayonaraConfig,
+    updateSayonaraConfig: updateSayonaraConfig
 	};
 });

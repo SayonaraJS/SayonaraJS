@@ -70,21 +70,21 @@ angular
 			  controller: 'SettingsCtrl',
 			  controllerAs: 'settings'
 			})
-.when('/admin', {
-  templateUrl: 'views/admin.html',
-  controller: 'AdminCtrl',
-  controllerAs: 'admin'
-})
-.when('/users', {
-  templateUrl: 'views/editusers.html',
-  controller: 'EditusersCtrl',
-  controllerAs: 'editusers'
-})
-.when('/sayonaraConfig', {
-  templateUrl: 'views/sayonaraconfig.html',
-  controller: 'SayonaraconfigCtrl',
-  controllerAs: 'sayonaraConfig'
-})
+		.when('/admin', {
+		  templateUrl: 'views/admin.html',
+		  controller: 'AdminCtrl',
+		  controllerAs: 'admin'
+		})
+		.when('/admin/users', {
+		  templateUrl: 'views/editusers.html',
+		  controller: 'EditusersCtrl',
+		  controllerAs: 'editusers'
+		})
+		.when('/admin/sayonaraconfig', {
+		  templateUrl: 'views/sayonaraconfig.html',
+		  controller: 'SayonaraconfigCtrl',
+		  controllerAs: 'sayonaraConfig'
+		})
 			.otherwise({
 				redirectTo: '/'
 			});

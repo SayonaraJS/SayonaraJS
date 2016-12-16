@@ -5,24 +5,29 @@ var express = require('express');
 var router = express.Router();
 
 //Modules
+//TODO: Use a different Module, implementation doesnt match its docs
 var jsonfile = require('jsonfile');
 
 //Helper functions
 var routeHelpers = require('./routeHelpers');
 
 //Path to the sayonara config
-var configPath = '../sayonaraConfig.js'
+var configPath = 'sayonaraConfig.js'
 
 router.get('/', function(req, res) {
     //Validate our JWT and permissions
     var permissions = [routeHelpers.definedPermissions.admin];
     routeHelpers.validateUser(req, permissions).then(function(result) {
         // read in the JSON file
-        jsonfile.readFile(configPath, function(err, jsonObject) {
-            if (err) {
+        jsonfile.readFile(configPath, function(error, jsonObject) {
+            if (error &&
+                Object.keys(error).length > 0) {
                 res.status(500).json(err);
                 return;
             }
+
+            console.log("Error: ", error);
+            console.log("File: ", jsonObject);
 
             //Return the json
             res.status(200).json(jsonObject);
