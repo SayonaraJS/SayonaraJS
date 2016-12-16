@@ -80,6 +80,11 @@ angular
   controller: 'EditusersCtrl',
   controllerAs: 'editusers'
 })
+.when('/sayonaraConfig', {
+  templateUrl: 'views/sayonaraconfig.html',
+  controller: 'SayonaraconfigCtrl',
+  controllerAs: 'sayonaraConfig'
+})
 			.otherwise({
 				redirectTo: '/'
 			});
