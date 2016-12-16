@@ -24,7 +24,7 @@ angular.module('sayonaraAdminApp')
     $scope.showPermissions = {};
     sayonaraAuthService.getAllUsers().then(function(success) {
       $scope.users = success
-      $scope.originalUsers = $scope.users;
+      $scope.originalUsers = angular.copy($scope.users);
 		}, function(error) {
 			//Hanlde the error
 			adminNotify.error(error);
@@ -64,6 +64,7 @@ angular.module('sayonaraAdminApp')
 
         //Add the user to our users
         $scope.users.push(success.user);
+        $scope.originalUsers = angular.copy($scope.users);
 
         //Inform the user
         adminNotify.showAlert("User Created: " + success.user);
@@ -82,8 +83,10 @@ angular.module('sayonaraAdminApp')
       //Create our payload
       var payload = {
         id: user._id,
-        email: user.email
       }
+
+      //Check if we are going to change our email
+      if(user.email != $scope.originalUsers[index].email) payload.email = user.email;
 
       //Check if we would like to change our password
       if(user.currentPassword &&
@@ -101,18 +104,37 @@ angular.module('sayonaraAdminApp')
 
       //Check if we changed our permissions
       if(!angular.equals(user.permissions, $scope.originalUsers[index].permissions)) {
-        //The permissions changed, add to the payload
+        //The permissions changed
+
+        //Ensure that if we cannot read, we disable everything else
+        var permissionsKeys = Object.keys(user.permissions);
+        //Remove the admin key
+        permissionsKeys.splice(permissionsKeys.indexOf('admin'), 1);
+        for(var i = 0; i < permissionsKeys.length; i++) {
+          if(user.permissions[permissionsKeys[i]].read != undefined &&
+              !user.permissions[permissionsKeys[i]].read) {
+            user.permissions[permissionsKeys[i]].create = false;
+            user.permissions[permissionsKeys[i]].update = false;
+            user.permissions[permissionsKeys[i]].delete = false;
+          }
+        }
+
+        //Add to the payload
         payload.permissions = user.permissions;
       }
+
+      //Laslty, if we only have the user id, if so, dont make the request
+      if(Object.keys(payload).length == 1) return;
 
       //Make the request with the payload
       sayonaraAuthService.updateUser(payload).then(function(success) {
         //Success!
 
         //Clear the user password fields
-        $scope.users[index].confirmPassword = '';
-        $scope.users[index].newPassword = '';
-        $scope.users[index].newPasswordConfirm = '';
+        delete $scope.users[index].confirmPassword
+        delete $scope.users[index].newPassword
+        delete $scope.users[index].newPasswordConfirm
+        $scope.originalUsers = angular.copy($scope.users);
 
 
         //Inform the user

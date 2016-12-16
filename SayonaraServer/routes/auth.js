@@ -261,12 +261,20 @@ router.put('/user/id/:id', function(req, res) {
 				editPromises.push(new Promise(function(resolve, reject) {
 					//Find the permissions of the user
 					Permissions.findOne({
-						_id: user.permissions
-					}).exec(function(err, permissions) {
+						_id: req.body.permissions._id
+					}).exec(function(error, permissions) {
 						if (error) {
 							reject({
 								status: 500,
 								json: error
+							});
+						}
+
+						//If we could not find the permissions
+						if(!permissions) {
+							reject({
+								status: 404,
+								json: {reason: "Could not find the user's permissions"}
 							});
 						}
 
@@ -286,8 +294,8 @@ router.put('/user/id/:id', function(req, res) {
 						//Permission types
 						for(var i = 0; i < crudPermissionTypes.length; i++) {
 							//Crud keys
-							for(var k = 0; k < crudKeys.length; i++) {
-								if(req.body.permissions.crudPermissionTypes[i] &&
+							for(var k = 0; k < crudKeys.length; k++) {
+								if(req.body.permissions[crudPermissionTypes[i]] &&
 									typeof req.body.permissions[crudPermissionTypes[i]][crudKeys[k]] === 'boolean') {
 										permissions[crudPermissionTypes[i]][crudKeys[k]] = req.body.permissions[crudPermissionTypes[i]][crudKeys[k]]
 									}

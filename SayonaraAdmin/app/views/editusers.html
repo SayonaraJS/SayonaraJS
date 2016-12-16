@@ -126,7 +126,7 @@
             Delete
           </md-checkbox>
         </div>
-        <div class="userPermission">
+        <div class="userPermission" ng-if="user.permissions.entryTypes.read">
           <h4>Entries</h4>
           <md-checkbox ng-model="user.permissions.entries.read" aria-label="Editable Content" class="md-primary permissionsCheckBox">
             Read
