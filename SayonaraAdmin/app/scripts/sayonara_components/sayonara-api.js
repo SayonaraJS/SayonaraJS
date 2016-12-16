@@ -1,8 +1,9 @@
-var module = angular.module('sayonaraApi', []);
-module.service('sayonaraApiEndpoints', function($location, $resource) {
+var module = angular.module('sayonaraApi', ['sayonaraAdminBuildConfig']);
+module.service('sayonaraApiEndpoints', function($location, $resource, ENV) {
 
 	//Get the host for the app
 	var sayonaraApiHost = $location.protocol() + '://' + $location.host() + ':'+  $location.port() + '/api';
+  if(ENV.devApiPort) sayonaraApiHost = $location.protocol() + '://' + $location.host() + ':' +  ENV.devApiPort + '/api';
 
 	//Returns for functions we are exposing
 	return {

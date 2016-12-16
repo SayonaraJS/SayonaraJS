@@ -12,6 +12,9 @@ module.exports = function(grunt) {
 	// Time how long tasks take. Can help when optimizing build times
 	require('time-grunt')(grunt);
 
+  //Require ngconstat for angular constants
+  grunt.loadNpmTasks('grunt-ng-constant');
+
 	// Automatically load required Grunt tasks
 	require('jit-grunt')(grunt, {
 		useminPrepare: 'grunt-usemin',
@@ -29,6 +32,38 @@ module.exports = function(grunt) {
 
 		// Project settings
 		yeoman: appConfig,
+
+    //Define constants for our build enviornments
+    //http://stackoverflow.com/questions/28388143/using-grunt-to-preprocess-and-replace-environment-variables
+    ngconstant: {
+      // Options for all targets
+      options: {
+        space: '  ',
+        wrap: '"use strict";\n\n {%= __ngModule %}',
+        name: 'sayonaraAdminBuildConfig',
+      },
+      // Environment targets
+      development: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/sayonaraAdminBuildConfig.js'
+        },
+        constants: {
+          ENV: {
+            devApiPort: 8000,
+          }
+        }
+      },
+      production: {
+        options: {
+          dest: '<%= yeoman.dist %>/scripts/sayonaraAdminBuildConfig.js'
+        },
+        constants: {
+          ENV: {
+            devApiPort: false,
+          }
+        }
+      }
+    },
 
 		// Watches files for changes and runs tasks based on the changed files
 		watch: {
@@ -492,6 +527,7 @@ module.exports = function(grunt) {
 
 		grunt.task.run([
 			'clean:server',
+      'ngconstant:development',
 			'wiredep',
 			'concurrent:server',
 			'postcss:server',
@@ -502,6 +538,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build', [
 		'clean:dist',
+    'ngconstant:production',
 		'wiredep',
 		'useminPrepare',
 		'concurrent:dist',

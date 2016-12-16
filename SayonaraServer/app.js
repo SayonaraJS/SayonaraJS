@@ -31,7 +31,6 @@ var sayonaraConfig = require('./sayonaraConfig');
 var mongoose = require('mongoose');
 
 //Models for mongoose
-require('./setup/sayonaraSetupModel');
 require('./models/permissions');
 require('./models/users');
 require('./models/categories');
@@ -58,7 +57,7 @@ var appSayonara = require('./routes/config');
 app.use('/api/sayonara', appSayonara);
 
 //Connect to our DB
-mongoose.connect(sayonaraConfig.dbUrl);
+var mongooseConnection = mongoose.connect(sayonaraConfig.dbUrl);
 mongoose.connection.on('connected', function() {
 	console.log('Mongoose connected to ' + sayonaraConfig.dbUrl);
 });
@@ -67,7 +66,7 @@ mongoose.connection.on('disconnected', function() {
 });
 
 //Check if we need to setup
-require('./setup/setupSayonara')(app, function(app) {
+require('./setup/setupSayonara')(app, mongooseConnection, function(app) {
 	//Callback to be run after sayonara is done setting up
 
 	//Get our admin view

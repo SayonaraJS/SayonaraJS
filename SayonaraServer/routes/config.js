@@ -4,73 +4,55 @@
 var express = require('express');
 var router = express.Router();
 
-//Modules
-//TODO: Use a different Module, implementation doesnt match its docs
-var jsonfile = require('jsonfile');
-
 //Helper functions
 var routeHelpers = require('./routeHelpers');
 
 //Path to the sayonara config
-var configPath = 'sayonaraConfig.js'
+var configPath = '../sayonaraConfig.js'
 
 router.get('/', function(req, res) {
     //Validate our JWT and permissions
     var permissions = [routeHelpers.definedPermissions.admin];
     routeHelpers.validateUser(req, permissions).then(function(result) {
-        // read in the JSON file
-        jsonfile.readFile(configPath, function(error, jsonObject) {
-            if (error &&
-                Object.keys(error).length > 0) {
-                res.status(500).json(err);
-                return;
-            }
-
-            console.log("Error: ", error);
-            console.log("File: ", jsonObject);
-
-            //Return the json
-            res.status(200).json(jsonObject);
-        });
+        //Read/Require the json file
+        var jsonFile = require(configPath);
+        res.status(200).json(jsonFile);
     });
 });
 
+//http://stackoverflow.com/questions/10685998/how-to-update-a-value-in-a-json-file-and-save-it-through-node-js
 router.put('/', function(req, res) {
     //Validate our JWT and permissions
     var permissions = [routeHelpers.definedPermissions.admin];
     routeHelpers.validateUser(req, permissions).then(function(result) {
-        // read in the JSON file
-        jsonfile.readFile(configPath, function(err, jsonObject) {
-            if (err) {
-                res.status(500).json(err);
+        //Read/Require the json file
+        var jsonFile = require(configPath);
+
+        //Edit the file
+        var configKeys = Object.keys(jsonFile);
+        var fileChanged = false;
+        for(var i = 0; i < configKeys.length; i++) {
+            if(req.body[configKeys[i]] &&
+                jsonFile[configKeys[i]]) {
+                    jsonFile[configKeys[i]] = req.body[configKeys[i]];
+                    fileChanged = true;
+                }
+            //Check if at the last index
+            if(i >= configKeys.length - 1 && !fileChanged) {
+                //Nothing changed, simply return the request
+                res.status(200).json(jsonFile);
                 return;
             }
+        }
 
-            //Edit the file
-            var configKeys = Object.keys(jsonObject);
-            var fileChanged = false;
-            for(var i = 0; i < configKeys.length; i++) {
-                if(req.body[configKeys[i]] &&
-                    jsonObject[configKeys[i]]) {
-                        jsonObject[configKeys[i]] = req.body[configKeys[i]];
-                        fileChanged = true;
-                    }
-                //Check if at the last index
-                if(i >= configKeys.length - 1 && !fileChanged) {
-                    //Nothing changed, simply return the request
-                    res.status(200).json(jsonObject);
-                    return;
-                }
-            }
-
-          // Write the modified obj to the file
-          jsonfile.writeFile(configPath, jsonObject, function(err) {
-              if (err) {
-                  res.status(500).json(err);
-                  return;
-              }
-              res.status(200).json(jsonObject);
-          });
+        //Use the route helpers to edit the file
+        routeHelpers.editSayonaraConfig(jsonFile).then(function(success) {
+            //Returnt eh json to the client
+            res.status(200).json(success);
+            return;
+        }, function(error) {
+            res.status(error.status).send(error.message);
+            return
         });
     });
 });
