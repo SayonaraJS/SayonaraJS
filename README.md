@@ -19,7 +19,7 @@ Sayonara can be installed in 7 easy steps!
 
 3. Download the latest release of Sayonara JS
 
-4. Extract the release, `cd` into the directory, and run `npm install`
+4. Extract the release, `cd` into the directory "SayonaraServer", and run `npm install`
 
 5. Install a Node server monitor, I prefer [forever](https://www.npmjs.com/package/forever), `npm install forever -g`
 
