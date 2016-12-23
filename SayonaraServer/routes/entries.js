@@ -103,7 +103,7 @@ router.get('/id/:id', function(req, res) {
 				res.status(500).json(err);
 				return;
 			}
-			if (!entry) res.status(404).send('Entry Type not Found');
+			if (!entry) res.status(404).send('Entry not Found');
 
 			//Return the entry
 			res.status(200).json(entry);
@@ -142,7 +142,7 @@ router.put('/id/:id', function(req, res) {
 			//Create a promise for checking/changing entry types
 			var entryTypePromise = new Promise(function(resolve) {
 				if (req.body.entryType) {
-					if(req.body.entryType != entry.entryType._id) {
+					if(req.body.entryType != entry.entryType) {
 						//First, ensure the new Entry type exists
 						EntryType.findOne({_id: req.body.entryType}).populate('entries').exec(function(err, newEntryType) {
 							if (err) {
