@@ -1,9 +1,9 @@
 # SayonaraJS
 Code It Once. Drop it Off. Sayonara!
 
-![Sayonara Logo](https://files.aaronthedev.com/$/e7dz8)
+![Sayonara Logo](https://files.aaronthedev.com/$/afnje)
 
-![Sayonara Setup](https://files.aaronthedev.com/$/zuzsf)
+![Sayonara Setup](https://files.aaronthedev.com/$/fux8s)
 
 ## What is Sayonara JS?
 Sayonara JS is a **Highly un-opinionated** CMS/Framework build on top of the MEAN stack.
@@ -33,7 +33,7 @@ _The admin panel can be found at [sayonaraSiteUrl]/admin/_
 ## Any examples of this admin panel?
 Yup, here is a .gif of me changing some content in the debug client using the admin panel!
 
-![Sayonara Admin](https://files.aaronthedev.com/$/hxpks)
+![Sayonara Admin](https://files.aaronthedev.com/$/9cadm)
 
 ## How can I learn how to use Sayonara JS?
 **Documentation coming soon!**
