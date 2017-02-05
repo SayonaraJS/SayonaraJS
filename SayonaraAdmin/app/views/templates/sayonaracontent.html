@@ -14,11 +14,17 @@
     </md-tab>
     <md-tab label="Markdown">
       <md-content>
+        <h5>Markdown Editor:</h5>
         <md-input-container>
-          <textarea ng-model="markdown" ng-change="markdownToHtml()">
+          <textarea
+            ng-model="markdown"
+            ng-model-options="{ debounce: 500 }"
+            ng-change="markdownToHtml()"
+            placeholder="Enter Markdown here">
           </textarea>
         </md-input-container>
-        <div markdown-to-html="ngModel">
+        <h5>Markdown Preview:</h5>
+        <div marked="ngModel">
         </div>
       </md-content>
     </md-tab>

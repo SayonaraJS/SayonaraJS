@@ -7,7 +7,7 @@
  * # entryFieldContent
  */
 angular.module('sayonaraAdminApp')
-	.directive('sayonaraContent', function($showdown) {
+	.directive('sayonaraContent', function(marked) {
 		return {
 			templateUrl: 'views/templates/sayonaracontent.html',
 			restrict: 'E',
@@ -18,13 +18,14 @@ angular.module('sayonaraAdminApp')
 				//Do some logic here
 				scope.markdown = ''
 				scope.$watch('ngModel', function (newValue) {
-            if(scope.ngModel && scope.ngModel.length > 0 && scope.markdown.length < 1)
-							scope.markdown = toMarkdown(scope.ngModel);
+            if(scope.ngModel && scope.ngModel.length > 0)
+							scope.markdown = toMarkdown(scope.ngModel, {
+								gfm: true
+							});
         });
 
 				scope.markdownToHtml = function() {
-					console.log('bye')
-					scope.ngModel = $showdown.makeHtml(scope.markdown)
+					scope.ngModel = marked(scope.markdown)
 				}
 			}
 		};
