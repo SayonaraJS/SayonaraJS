@@ -10,8 +10,7 @@
     "angular-sanitize": "^1.4.0",
     "angular-material": "^1.1.1",
     "angular-loading-bar": "^0.9.0",
-    "moment": "^2.15.1",
-    "textAngular": "^1.5.12"
+    "moment": "^2.15.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

@@ -17,7 +17,7 @@ angular
 		'ngSanitize',
 		'ngMaterial',
 		'angular-loading-bar',
-		'textAngular',
+		'ngQuill',
 		'sayonaraAuth',
 		'sayonaraPages',
     'sayonaraEntries',
@@ -25,7 +25,12 @@ angular
 		'sayonaraCategory',
 		'sayonaraAdmin',
 	])
-	.config(function($routeProvider, $locationProvider, $mdThemingProvider) {
+	.config(function($routeProvider, $locationProvider,
+			$mdThemingProvider, ngQuillConfigProvider) {
+
+		//Configure our Application hash
+		//this will remove the default '!'
+		$locationProvider.hashPrefix('');
 
 		//Configure the ngmaterial theme
 		$mdThemingProvider.theme('default')
@@ -34,9 +39,8 @@ angular
 			.warnPalette('red')
 			.backgroundPalette('grey');
 
-		//Configure our Application hash
-		//this will remove the default '!'
-		$locationProvider.hashPrefix('');
+		//Configure our wysiwig
+		ngQuillConfigProvider.set(null, null, 'custom placeholder');
 
 		$routeProvider
 			.when('/', {

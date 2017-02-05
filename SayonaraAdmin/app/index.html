@@ -12,12 +12,11 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
-  <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
-  <!-- CSS required by text angular -->
-  <link rel='stylesheet prefetch' href='http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css'>
+  <!-- CSS required by ngQuill -->
+  <link href="https://cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
 
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
@@ -63,15 +62,6 @@
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
   <script src="bower_components/moment/moment.js"></script>
-  <script src="bower_components/rangy/rangy-core.js"></script>
-  <script src="bower_components/rangy/rangy-classapplier.js"></script>
-  <script src="bower_components/rangy/rangy-highlighter.js"></script>
-  <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
-  <script src="bower_components/rangy/rangy-serializer.js"></script>
-  <script src="bower_components/rangy/rangy-textrange.js"></script>
-  <script src="bower_components/textAngular/dist/textAngular.js"></script>
-  <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
-  <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -86,6 +76,10 @@
 
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- ngQuill required libs -->
+  <script src="https://cdn.quilljs.com/1.2.0/quill.js"></script>
+  <script src="scripts/externalLibs/ng-quill.js"></script>
 
   <!-- Our build config -->
   <script src="scripts/sayonaraAdminBuildConfig.js"></script>

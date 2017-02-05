@@ -1,7 +1,8 @@
 <div class='entryFieldContent'>
   <h3>Content:</h3>
 
-  <text-angular ng-model="ngModel" ta-text-editor-class="textAngularEditor" ta-html-editor-class="textAngularEditor" ta-focussed-class="focussed" ta-toolbar-class="textAngularToolbar" ta-toolbar-group-class="textAngularGroup centerText" ta-toolbar-button-class="md-button md-raised"
-      ta-toolbar-button-active-class="active"></text-angular>
-
+  <ng-quill-editor ng-model="ngModel"
+    placeholder="Enter the content here!"
+    on-editor-created="editorCreated(editor)"
+    on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
 </div>

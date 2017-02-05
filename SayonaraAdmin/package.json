@@ -44,5 +44,10 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js"
+  },
+  "dependencies": {
+    "install": "^0.8.5",
+    "ng-quill": "^2.2.3",
+    "npm": "^4.1.2"
   }
 }
