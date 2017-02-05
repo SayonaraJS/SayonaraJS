@@ -12,6 +12,6 @@ module.exports = {
     "authSecret": "supersecretsayonaragoodbye1%",
     "authIssuer": "Sayonara",
     "siteName": "New Sayonara Site",
-    "runInitialSetup": true,
-    "initialSetupDate": false
+    "runInitialSetup": false,
+    "initialSetupDate": 1486284562316
 }

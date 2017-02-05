@@ -16,6 +16,10 @@ var pagesSchema = new Schema({
 		type: String,
 		default: '<h1>Sayonara, New Page</h1>'
 	},
+	order: {
+		type: Number,
+		default: 0
+	},
 	entryTypes: [{
 		type: Schema.Types.ObjectId,
 		ref: 'EntryType'

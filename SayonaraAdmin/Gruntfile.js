@@ -82,9 +82,9 @@ module.exports = function(grunt) {
 				files: ['test/spec/**/**.js'],
 				tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
 			},
-			compass: {
-				files: ['<%= yeoman.app %>/styles/**/**.{scss,sass}'],
-				tasks: ['compass:server', 'postcss:server']
+			sass: {
+			    files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+			    tasks: ['sass:server', 'autoprefixer']
 			},
 			gruntfile: {
 				files: ['Gruntfile.js']
@@ -104,7 +104,7 @@ module.exports = function(grunt) {
 		// The actual grunt server settings
 		connect: {
 			options: {
-				port: 9000,
+				port: 9001,
 				// Change this to '0.0.0.0' to access the server from outside.
 				hostname: '0.0.0.0',
 				livereload: 35729
@@ -263,33 +263,32 @@ module.exports = function(grunt) {
 		},
 
 		// Compiles Sass to CSS and generates necessary files if requested
-		compass: {
-			options: {
-				sassDir: '<%= yeoman.app %>/styles',
-				cssDir: '.tmp/styles',
-				generatedImagesDir: '.tmp/images/generated',
-				imagesDir: '<%= yeoman.app %>/images',
-				javascriptsDir: '<%= yeoman.app %>/scripts',
-				fontsDir: '<%= yeoman.app %>/styles/fonts',
-				importPath: './bower_components',
-				httpImagesPath: '/images',
-				httpGeneratedImagesPath: '/images/generated',
-				httpFontsPath: '/styles/fonts',
-				relativeAssets: false,
-				assetCacheBuster: false,
-				raw: 'Sass::Script::Number.precision = 10\n'
-			},
-			dist: {
-				options: {
-					generatedImagesDir: '<%= yeoman.dist %>/images/generated'
-				}
-			},
-			server: {
-				options: {
-					sourcemap: true
-				}
-			}
-		},
+		//Using this conversion guide to node-sass: https://github.com/yeoman/generator-angular/issues/819#issuecomment-100379175
+		sass: {
+        options: {
+            includePaths: [
+                'bower_components'
+            ]
+        },
+        dist: {
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles',
+                src: ['*.scss'],
+                dest: '.tmp/styles',
+                ext: '.css'
+            }]
+        },
+        server: {
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles',
+                src: ['*.scss'],
+                dest: '.tmp/styles',
+                ext: '.css'
+            }]
+        }
+    },
 
 		// Reads HTML for usemin blocks to enable smart builds that automatically
 		// concat, minify and revision files. Creates configurations in memory so
@@ -474,17 +473,19 @@ module.exports = function(grunt) {
 
 		// Run some tasks in parallel to speed up the build process
 		concurrent: {
-			server: [
-				'compass:server'
-			],
-			test: [
-				'compass'
-			],
-			dist: [
-				'compass:dist',
-				'imagemin',
-				'svgmin'
-			]
+		    server: [
+		        'sass:server',
+		        'copy:styles'
+		    ],
+		    test: [
+		        'copy:styles'
+		    ],
+		    dist: [
+		        'sass',
+		        'copy:styles',
+		        'imagemin',
+		        'svgmin'
+		    ]
 		},
 
 		// Test settings

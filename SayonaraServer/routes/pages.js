@@ -32,6 +32,7 @@ router.post('/create', function(req, res) {
 
 		//Check for any optional fields
 		if (req.body.date) newPage.date = req.body.date;
+		if (req.body.order) newPage.order = req.body.order;
 		if (req.body.content) newPage.content = req.body.content;
 		if (req.body.entryTypes) newPage.entryTypes = req.body.entryTypes;
 		if (req.body.categories) newPage.categories = req.body.categories;
@@ -113,6 +114,7 @@ router.put('/id/:id', function(req, res) {
 			}
 			//Check for any optional fields
 			if (req.body.date) page.date = req.body.date;
+			if (req.body.order) page.order = req.body.order;
 			if (req.body.title) page.title = req.body.title;
 			if (req.body.content) page.content = req.body.content;
 			if (req.body.entryTypes) page.entryTypes = req.body.entryTypes;

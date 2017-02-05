@@ -47,6 +47,7 @@ router.post('/create', function(req, res) {
 			//Check for optional parameters
 			if (req.body.date) newEntry.date = req.body.date;
 			if (req.body.content) newEntry.content = req.body.content;
+			if (req.body.order) newEntry.order = req.body.order;
 			if (req.body.embedCodes) newEntry.embedCodes = req.body.embedCodes;
 			if (req.body.uploadUrls) newEntry.uploadUrls = req.body.uploadUrls;
 			if (req.body.categories) newEntry.categories = req.body.categories;
@@ -135,6 +136,7 @@ router.put('/id/:id', function(req, res) {
 			if (req.body.title) entry.title = req.body.title;
 			if (req.body.date) entry.date = req.body.date;
 			if (req.body.content) entry.content = req.body.content;
+			if (req.body.order) entry.order = req.body.order;
 			if (req.body.embedCodes) entry.embedCodes = req.body.embedCodes;
 			if (req.body.uploadUrls) entry.uploadUrls = req.body.uploadUrls;
 			if (req.body.categories) entry.categories = req.body.categories;

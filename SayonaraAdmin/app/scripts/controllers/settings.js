@@ -41,6 +41,7 @@ angular.module('sayonaraAdminApp')
       //Create our payload (With Default Entry Type)
       var payload = {
         title: 'New Sayonara Entry Type',
+        order: 0,
         hasContent: true
       }
 

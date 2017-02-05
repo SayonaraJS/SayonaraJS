@@ -25,7 +25,7 @@ angular
 		'sayonaraCategory',
 		'sayonaraAdmin',
 	])
-	.config(function($routeProvider, $mdThemingProvider) {
+	.config(function($routeProvider, $locationProvider, $mdThemingProvider) {
 
 		//Configure the ngmaterial theme
 		$mdThemingProvider.theme('default')
@@ -33,6 +33,10 @@ angular
 			.accentPalette('indigo')
 			.warnPalette('red')
 			.backgroundPalette('grey');
+
+		//Configure our Application hash
+		//this will remove the default '!'
+		$locationProvider.hashPrefix('');
 
 		$routeProvider
 			.when('/', {

@@ -16,6 +16,10 @@ var entrySchema = new Schema({
 		type: Date,
 		default: Date.now()
 	},
+	order: {
+		type: Number,
+		default: 0
+	},
 	content: {
 		type: String,
 		default: '<h1>Sayonara, New Entry</h1>'

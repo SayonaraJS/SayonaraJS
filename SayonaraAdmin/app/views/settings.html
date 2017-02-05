@@ -13,7 +13,7 @@
   <md-button class="center md-raised md-primary" ng-click="createEntryType()">New Entry Type</md-button>
 </div>
 <div class="contentContainer" ng-show="showList.entryTypes">
-  <md-card class="contentCard" ng-repeat="content in entryTypes">
+  <md-card class="contentCard" ng-repeat="entryType in entryTypes">
 
     <md-card-title>
       <md-input-container class="editInput editTitle">
@@ -25,19 +25,26 @@
 
       <!-- List the Properties of the entry type -->
       <div>
-        <md-checkbox ng-model="content.hasContent" aria-label="Editable Content" class="md-primary">
+        <md-checkbox ng-model="entryType.hasContent" aria-label="Editable Content" class="md-primary">
               Editable Content
         </md-checkbox>
       </div>
       <div>
-        <md-checkbox ng-model="content.hasEmbedCodes" aria-label="Embed Codes" class="md-primary">
+        <md-checkbox ng-model="entryType.hasEmbedCodes" aria-label="Embed Codes" class="md-primary">
               Embed Codes
         </md-checkbox>
       </div>
       <div>
-      <md-checkbox ng-model="content.hasUploadUrls" aria-label="Upload Urls" class="md-primary">
-            Upload Urls
-      </md-checkbox>
+        <md-checkbox ng-model="entryType.hasUploadUrls" aria-label="Upload Urls" class="md-primary">
+              Upload Urls
+        </md-checkbox>
+      </div>
+      <div>
+        <!-- The order of the entry type -->
+        <md-input-container class="editInput">
+          <label>Order</label>
+          <input type="number" ng-model="entryType.order" />
+        </md-input-container>
       </div>
 
     </md-card-content>
@@ -47,7 +54,7 @@
       <md-card-icon-actions>
         <md-button class="md-raised md-warn" ng-click="deleteEntryType($index)">Delete</md-button>
       </md-card-icon-actions>
-      <md-button class="md-raised" ng-click="saveEntryType(content)">Save</md-button>
+      <md-button class="md-raised" ng-click="saveEntryType(entryType)">Save</md-button>
     </md-card-actions>
   </md-card>
 </div>

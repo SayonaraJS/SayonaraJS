@@ -12,6 +12,10 @@ var entryTypeSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'Entry'
 	}],
+	order: {
+		type: Number,
+		default: 0
+	},
 	hasContent: {
 		type: Boolean,
 		default: true

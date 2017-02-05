@@ -33,7 +33,8 @@ angular.module('sayonaraAdminApp')
 			});
 		} else {
 			//Add a default title to our new page
-			$scope.entry.title = 'New Sayonara Entry'
+			$scope.entry.title = 'New Sayonara Entry';
+      $scope.entry.order = 0;
 		}
 
     //Get info for editing (Categories and Entry Types)
@@ -68,6 +69,7 @@ angular.module('sayonaraAdminApp')
 			var request = {
 				title: $scope.entry.title,
 				content: $scope.entry.content,
+        order: $scope.entry.order,
         entryType: $scope.entry.entryType,
         categories: $scope.entry.categories || []
 			};
@@ -89,6 +91,7 @@ angular.module('sayonaraAdminApp')
 			var request = {
 				title: $scope.entry.title,
 				content: $scope.entry.content,
+        order: $scope.entry.order,
         entryType: $scope.entry.entryType,
         categories: $scope.entry.categories || []
 			};

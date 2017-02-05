@@ -18,6 +18,12 @@
   multiple-selection="true">
 </sayonara-selector>
 
+<!-- The order of the page -->
+<md-input-container class="editInput">
+  <label>Order</label>
+  <input type="number" ng-model="page.order" />
+</md-input-container>
+
 <!-- The content of the page -->
 <sayonara-content ng-model="page.content"></sayonara-content>
 
