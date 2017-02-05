@@ -40,7 +40,37 @@ angular
 			.backgroundPalette('grey');
 
 		//Configure our wysiwig
-		ngQuillConfigProvider.set(null, null, 'custom placeholder');
+		//ngQuillConfigProvider.set(modules, theme,
+		//  placeholder, formats, boundary, readOnly)
+		// Image handler from: https://github.com/quilljs/quill/issues/863
+		var toolbarOptions = [
+		  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+		  ['blockquote', 'code-block'],
+		  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+		  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+		  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+		  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+		  [{ 'direction': 'rtl' }],                         // text direction
+		  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+		  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+		  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+		  [{ 'font': [] }],
+		  [{ 'align': [] }],
+		  ['clean'],                                        // remove formatting button
+			['link', 'image', 'video']
+		];
+		ngQuillConfigProvider.set({
+        toolbar: {
+          container: toolbarOptions,
+          handlers: {
+            image: function() {
+							var range = this.quill.getSelection();
+						  var value = prompt('Please enter the image URL');
+						  this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+						}
+          }
+        }
+    }, null, 'Sayonara Editor');
 
 		$routeProvider
 			.when('/', {

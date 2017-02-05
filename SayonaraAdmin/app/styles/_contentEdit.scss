@@ -42,3 +42,6 @@
     max-height: 240px;
   }
 }
+
+// Required for ng-quill
+[ng-quill-editor] { display: block; }
