@@ -66,6 +66,7 @@ angular
             image: function() {
 							var range = this.quill.getSelection();
 						  var value = prompt('Please enter the image URL');
+							if(!value || value.length <= 0) return true;
 						  this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
 						}
           }
