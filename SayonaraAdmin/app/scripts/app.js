@@ -18,6 +18,7 @@ angular
 		'ngMaterial',
 		'angular-loading-bar',
 		'ngQuill',
+		'ng-showdown',
 		'sayonaraAuth',
 		'sayonaraPages',
     'sayonaraEntries',

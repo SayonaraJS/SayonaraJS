@@ -1,8 +1,26 @@
 <div class='entryFieldContent'>
   <h3>Content:</h3>
 
-  <ng-quill-editor ng-model="ngModel"
-    placeholder="Enter the content here!"
-    on-editor-created="editorCreated(editor)"
-    on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
+  <!-- Tabs for the options for editors -->
+  <md-tabs md-dynamic-height>
+    <md-tab label="Quill WYSIWYG">
+      <md-content>
+        <ng-quill-editor ng-model="ngModel"
+          placeholder="Enter the content here!"
+          on-editor-created="editorCreated(editor)"
+          on-content-changed="contentChanged(editor, html, text)">
+        </ng-quill-editor>
+      </md-content>
+    </md-tab>
+    <md-tab label="Markdown">
+      <md-content>
+        <md-input-container>
+          <textarea ng-model="markdown" ng-change="markdownToHtml()">
+          </textarea>
+        </md-input-container>
+        <div markdown-to-html="ngModel">
+        </div>
+      </md-content>
+    </md-tab>
+  </md-tabs>
 </div>
