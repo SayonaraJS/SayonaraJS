@@ -71,17 +71,6 @@ module.exports = function(grunt) {
 				files: ['bower.json'],
 				tasks: ['wiredep']
 			},
-			js: {
-				files: ['<%= yeoman.app %>/scripts/**/*.js'],
-				tasks: ['newer:jshint:all', 'newer:jscs:all'],
-				options: {
-					livereload: '<%= connect.options.livereload %>'
-				}
-			},
-			jsTest: {
-				files: ['test/spec/**/**.js'],
-				tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
-			},
 			sass: {
 			    files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
 			    tasks: ['sass:server', 'autoprefixer']
@@ -149,43 +138,6 @@ module.exports = function(grunt) {
 					open: true,
 					base: '<%= yeoman.dist %>'
 				}
-			}
-		},
-
-		// Make sure there are no obvious mistakes
-		jshint: {
-			options: {
-				jshintrc: '.jshintrc',
-				reporter: require('jshint-stylish')
-			},
-			all: {
-				src: [
-					'Gruntfile.js',
-					'<%= yeoman.app %>/scripts/**/**.js'
-				]
-			},
-			test: {
-				options: {
-					jshintrc: 'test/.jshintrc'
-				},
-				src: ['test/spec/**/**.js']
-			}
-		},
-
-		// Make sure code styles are up to par
-		jscs: {
-			options: {
-				config: '.jscsrc',
-				verbose: true
-			},
-			all: {
-				src: [
-					'Gruntfile.js',
-					'<%= yeoman.app %>/scripts/**/**.js'
-				]
-			},
-			test: {
-				src: ['test/spec/**/**.js']
 			}
 		},
 
@@ -430,6 +382,14 @@ module.exports = function(grunt) {
 					cwd: '<%= yeoman.app %>',
 					dest: '<%= yeoman.dist %>',
 					src: [
+						'scripts/external_libs/**'
+					]
+				}, {
+					expand: true,
+					dot: true,
+					cwd: '<%= yeoman.app %>',
+					dest: '<%= yeoman.dist %>',
+					src: [
 						'views/templates/**'
 					]
 				}, {
@@ -440,27 +400,9 @@ module.exports = function(grunt) {
 				}, {
 					expand: true,
 					dot: true,
-					cwd: '<%= yeoman.app %>/bower_components/tinymce-dist/themes/modern/',
+					cwd: '<%= yeoman.app %>/highlightjs/styles',
 					src: ['**'],
-					dest: '<%= yeoman.dist %>/tinymce/themes/modern/'
-				}, {
-					expand: true,
-					dot: true,
-					cwd: '<%= yeoman.app %>/bower_components/tinymce-dist/skins/',
-					src: ['**'],
-					dest: '<%= yeoman.dist %>/tinymce/skins/'
-				}, {
-					expand: true,
-					dot: true,
-					cwd: '<%= yeoman.app %>/bower_components/tinymce-dist/plugins/link/',
-					src: ['**'],
-					dest: '<%= yeoman.dist %>/tinymce/plugins/link/'
-				}, {
-					expand: true,
-					dot: true,
-					cwd: 'bower_components/font-awesome/fonts/',
-					src: '*',
-					dest: '<%= yeoman.dist %>/fonts'
+					dest: '<%= yeoman.dist %>/highlightjs/styles'
 				}]
 			},
 			styles: {
@@ -556,8 +498,6 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('default', [
-		'newer:jshint',
-		'newer:jscs',
 		'test',
 		'build'
 	]);

@@ -12,18 +12,18 @@
         </ng-quill-editor>
       </md-content>
     </md-tab>
-    <md-tab label="Markdown">
+    <md-tab label="Markdown (Beta)"
+    ng-click="htmlToMarkdown()">
       <md-content>
-        <h5>Markdown Editor:</h5>
+        <h4>Markdown Editor:</h4>
         <md-input-container>
           <textarea
             ng-model="markdown"
-            ng-model-options="{ debounce: 500 }"
             ng-change="markdownToHtml()"
             placeholder="Enter Markdown here">
           </textarea>
         </md-input-container>
-        <h5>Markdown Preview:</h5>
+        <h4>Markdown Preview:</h4>
         <div marked="ngModel">
         </div>
       </md-content>

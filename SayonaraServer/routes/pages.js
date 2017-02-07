@@ -56,7 +56,7 @@ router.get('/all', function(req, res) {
 	var permissions = [routeHelpers.definedPermissions.pages];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 		//Find all pages
-		Page.find({}, function(err, pages) {
+		Page.find({}).sort('order').exec(function(err, pages) {
 			if (err) {
 				res.status(500).json(err);
 				return;

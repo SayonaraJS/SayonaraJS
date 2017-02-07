@@ -71,7 +71,8 @@ angular
 						  this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
 						}
           }
-        }
+        },
+				syntax: true
     }, null, 'Sayonara Editor');
 
 		//Configure our markdown Editor

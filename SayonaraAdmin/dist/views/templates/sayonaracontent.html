@@ -1,7 +1,32 @@
 <div class='entryFieldContent'>
   <h3>Content:</h3>
 
-  <text-angular ng-model="ngModel" ta-text-editor-class="textAngularEditor" ta-html-editor-class="textAngularEditor" ta-focussed-class="focussed" ta-toolbar-class="textAngularToolbar" ta-toolbar-group-class="textAngularGroup centerText" ta-toolbar-button-class="md-button md-raised"
-      ta-toolbar-button-active-class="active"></text-angular>
-
+  <!-- Tabs for the options for editors -->
+  <md-tabs md-dynamic-height>
+    <md-tab label="Quill WYSIWYG">
+      <md-content>
+        <ng-quill-editor ng-model="ngModel"
+          placeholder="Enter the content here!"
+          on-editor-created="editorCreated(editor)"
+          on-content-changed="contentChanged(editor, html, text)">
+        </ng-quill-editor>
+      </md-content>
+    </md-tab>
+    <md-tab label="Markdown (Beta)"
+    ng-click="htmlToMarkdown()">
+      <md-content>
+        <h4>Markdown Editor:</h4>
+        <md-input-container>
+          <textarea
+            ng-model="markdown"
+            ng-change="markdownToHtml()"
+            placeholder="Enter Markdown here">
+          </textarea>
+        </md-input-container>
+        <h4>Markdown Preview:</h4>
+        <div marked="ngModel">
+        </div>
+      </md-content>
+    </md-tab>
+  </md-tabs>
 </div>

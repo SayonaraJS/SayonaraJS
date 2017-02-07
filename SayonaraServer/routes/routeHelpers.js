@@ -19,7 +19,7 @@ var Permissions = mongoose.model('Permissions');
 //Recycled functions
 module.exports = {
 	generalServerError: function(err, res, message) {
-		//TODO: Fucntion to handle our general mongoose and express errors
+		//TODO: Function to handle our general mongoose and express errors
 
 	},
 	definedPermissions: {

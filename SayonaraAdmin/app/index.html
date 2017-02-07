@@ -19,6 +19,9 @@
   <!-- CSS required by ngQuill -->
   <link href="https://cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
 
+  <!-- Stylesheet fo highlight.js for syntax highlighting (not included in above) -->
+  <link href="bower_components/highlightjs/styles/gruvbox-dark.css" rel="stylesheet">
+
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
@@ -84,7 +87,10 @@
 
   <!-- ngQuill required libs -->
   <script src="https://cdn.quilljs.com/1.2.0/quill.js"></script>
-  <script src="scripts/externalLibs/ng-quill.js"></script>
+  <script src="scripts/external_libs/ng-quill.js"></script>
+
+  <!-- Additional Languages for highlight.js -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
 
   <!-- Our build config -->
   <script src="scripts/sayonaraAdminBuildConfig.js"></script>

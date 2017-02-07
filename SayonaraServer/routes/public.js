@@ -24,15 +24,26 @@ router.get('/', function(req, res) {
         .populate({
             path: 'entryTypes',
             model: 'EntryType',
+            options: {
+      				sort: {
+      					order: 1
+      				}
+      			},
             populate: {
                 path: 'entries',
                 model: 'Entry',
+                options: {
+          				sort: {
+          					order: 1
+          				}
+          			},
                 populate: {
                     path: 'categories',
                     model: 'Category'
                 }
             }
         })
+        .sort('order')
         .exec(function(err, pages) {
         if (err) {
             res.status(500).json(err);

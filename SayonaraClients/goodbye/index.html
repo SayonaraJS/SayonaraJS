@@ -146,6 +146,8 @@
             {{page.content}}
             <h3>Binded Content:</h3>
             <div ng-bind-html="page.content"></div>
+            <h3>Order:</h3>
+            {{page.order}}
             <h3>Date:</h3>
             {{page.date}}
             <h3>Categories:</h3>
@@ -155,7 +157,7 @@
 
             <!-- Entry Types in page -->
             <div ng-repeat="entryType in page.entryTypes">
-                <h1 class="entryTypeSection">EntryType: {{entryType.title}}, in Page: {{page.title}}</h1>
+                <h1 class="entryTypeSection">EntryType: {{entryType.title}}, in Page: {{page.title}}, Order: {{entryType.order}}</h1>
 
                 <!-- Entries in Entry Type -->
                 <div ng-repeat="entry in entryType.entries">
@@ -164,6 +166,8 @@
                     {{entry.content}}
                     <h3>Binded Content:</h3>
                     <div ng-bind-html="entry.content"></div>
+                    <h3>Order:</h3>
+                    {{entry.order}}
                     <h3>Date:</h3>
                     {{entry.date}}
                     <h3>Categories:</h3>

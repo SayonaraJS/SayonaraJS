@@ -62,8 +62,15 @@ router.get('/all', function(req, res) {
 		var populateString = '';
 		if(req.headers && req.headers['populate']) populateString = 'entries';
 
-		//Find all pages
-		EntryType.find({}).populate(populateString).exec(function(err, entryTypes) {
+		//Find all EntryTypes
+		EntryType.find({}).populate({
+			path: populateString,
+			options: {
+				sort: {
+					order: 1
+				}
+			}
+		}).sort('order').exec(function(err, entryTypes) {
 			if (err) {
 				res.status(500).json(err);
 			}
