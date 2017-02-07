@@ -14,17 +14,22 @@
     </md-tab>
     <md-tab label="Markdown (Beta)"
     ng-click="htmlToMarkdown()">
-      <md-content>
-        <h4>Markdown Editor:</h4>
-        <md-input-container>
-          <textarea
-            ng-model="markdown"
-            ng-change="markdownToHtml()"
-            placeholder="Enter Markdown here">
-          </textarea>
-        </md-input-container>
-        <h4>Markdown Preview:</h4>
-        <div marked="ngModel">
+      <md-content class="markdownContainer">
+        <div class="markdownEditorContainer">
+          <h4>Markdown Editor:</h4>
+          <md-input-container class="markdownEditorInputContainer">
+            <ui-codemirror
+              ui-codemirror-opts="codeEditorOptions"
+              ng-model="markdown"
+              ng-change="markdownToHtml()">
+            </ui-codemirror>
+          </md-input-container>
+        </div>
+        <div class="markdownPreviewContainer">
+          <h4>Markdown Preview:</h4>
+          <div class="markdownPreview"
+            marked="ngModel">
+          </div>
         </div>
       </md-content>
     </md-tab>

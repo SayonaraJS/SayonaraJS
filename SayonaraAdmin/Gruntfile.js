@@ -314,6 +314,7 @@ module.exports = function(grunt) {
 		htmlmin: {
 			dist: {
 				options: {
+					removeComments: true,
 					collapseWhitespace: true,
 					conservativeCollapse: true,
 					collapseBooleanAttributes: true,
@@ -400,9 +401,11 @@ module.exports = function(grunt) {
 				}, {
 					expand: true,
 					dot: true,
-					cwd: '<%= yeoman.app %>/highlightjs/styles',
-					src: ['**'],
-					dest: '<%= yeoman.dist %>/highlightjs/styles'
+					cwd: '<%= yeoman.app %>/../bower_components',
+					dest: '<%= yeoman.dist %>/bower_components',
+					src: [
+						'highlightjs/styles/gruvbox*'
+					]
 				}]
 			},
 			styles: {
@@ -452,9 +455,6 @@ module.exports = function(grunt) {
 				}, {
 					from: 'src="images/',
 					to: 'src="admin/images/'
-				}, {
-					from: '/bower_components/tinymce',
-					to: '/admin/bower_components/tinymce'
 				}]
 			}
 		}

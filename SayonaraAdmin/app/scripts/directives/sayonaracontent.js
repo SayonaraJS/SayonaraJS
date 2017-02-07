@@ -16,7 +16,13 @@ angular.module('sayonaraAdminApp')
 			},
 			link: function postLink(scope, element, attrs) {
 				//Do some logic here
+				//Initialize some variables
 				scope.markdown = '';
+				scope.codeEditorOptions = {
+		      lineWrapping : true,
+		      lineNumbers: true,
+		      mode: 'gfm',
+		    };
 
 				//Function to convert out html in scope.ngModel to Markdown
 				scope.htmlToMarkdown = function() {

@@ -19,6 +19,7 @@ angular
 		'angular-loading-bar',
 		'ngQuill',
 		'hc.marked',
+		'ui.codemirror',
 		'sayonaraAuth',
 		'sayonaraPages',
     'sayonaraEntries',

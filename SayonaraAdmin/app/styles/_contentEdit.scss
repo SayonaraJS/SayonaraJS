@@ -45,3 +45,43 @@
 
 // Required for ng-quill
 [ng-quill-editor] { display: block; }
+
+//Our Markdown Editor
+.markdownContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+
+  .markdownEditorContainer {
+    width: 100%;
+
+    .markdownEditorInputContainer {
+      width: 100%;
+    }
+  }
+
+  .markdownPreviewContainer {
+    width: 100%;
+
+    .markdownPreview {
+      padding: 10px;
+      background-color: $pure;
+    }
+  }
+
+  //Apply only to large desktops
+  @media (min-width: 1024px) {
+    .markdownEditorContainer {
+      width: 100%;
+      max-width: calc(100% / 2 - 50px);
+      margin-right: 15px;
+    }
+
+    .markdownPreviewContainer {
+      width: 100%;
+      max-width: calc(100% / 2 - 50px);
+      margin-left: 15px;
+    }
+  }
+}
