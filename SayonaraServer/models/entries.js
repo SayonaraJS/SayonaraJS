@@ -14,7 +14,7 @@ var entrySchema = new Schema({
 	},
 	date: {
 		type: Date,
-		default: Date.now()
+		default: Date.now
 	},
 	order: {
 		type: Number,
