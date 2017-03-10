@@ -1,6 +1,8 @@
 # SayonaraJS
 Code It Once. Drop it Off. Sayonara!
 
+README Last Updated: v0.0.1
+
 ![Sayonara Logo](https://files.aaronthedev.com/$/afnje)
 
 ![Sayonara Setup](https://files.aaronthedev.com/$/fux8s)
