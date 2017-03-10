@@ -14,7 +14,7 @@ var userSchema = new Schema({
 	},
 	dateJoined: {
 		type: Date,
-		default: Date.now()
+		default: Date.now
 	},
 	permissions: {
 		type: Schema.Types.ObjectId,
