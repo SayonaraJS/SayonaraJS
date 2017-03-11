@@ -1,3 +1,4 @@
+$minHeight: 300px;
 
 .editInput {
     width: 100%;
@@ -46,6 +47,16 @@
 // Required for ng-quill
 [ng-quill-editor] { display: block; }
 
+.quillEditor {
+  .ql-editor {
+    min-height: $minHeight;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
 //Our Markdown Editor
 .markdownContainer {
   display: flex;
@@ -65,8 +76,15 @@
     width: 100%;
 
     .markdownPreview {
+      border: 2px solid $standard;
       padding: 10px;
       background-color: $pure;
+      height: $minHeight;
+      overflow: auto;
+
+      img {
+        max-width: 100%;
+      }
     }
   }
 

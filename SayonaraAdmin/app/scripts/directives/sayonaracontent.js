@@ -18,10 +18,15 @@ angular.module('sayonaraAdminApp')
 				//Do some logic here
 				//Initialize some variables
 				scope.markdown = '';
-				scope.codeEditorOptions = {
+				scope.markdownCodeEditorOptions = {
 		      lineWrapping : true,
 		      lineNumbers: true,
 		      mode: 'gfm',
+		    };
+				scope.htmlCodeEditorOptions = {
+		      lineWrapping : true,
+		      lineNumbers: true,
+		      mode: 'text/html',
 		    };
 
 				//Function to convert out html in scope.ngModel to Markdown
@@ -59,7 +64,7 @@ angular.module('sayonaraAdminApp')
 
 				//Function to convert the markdown in our text area to html
 				scope.markdownToHtml = function() {
-					scope.ngModel = marked(scope.markdown)
+					scope.ngModel = marked(scope.markdown);
 				}
 			}
 		};

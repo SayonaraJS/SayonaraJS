@@ -5,7 +5,8 @@
   <md-tabs md-dynamic-height>
     <md-tab label="Quill WYSIWYG">
       <md-content>
-        <ng-quill-editor ng-model="ngModel"
+        <ng-quill-editor class="quillEditor"
+          ng-model="ngModel"
           placeholder="Enter the content here!"
           on-editor-created="editorCreated(editor)"
           on-content-changed="contentChanged(editor, html, text)">
@@ -19,7 +20,7 @@
           <h4>Markdown Editor:</h4>
           <md-input-container class="markdownEditorInputContainer">
             <ui-codemirror
-              ui-codemirror-opts="codeEditorOptions"
+              ui-codemirror-opts="markdownCodeEditorOptions"
               ng-model="markdown"
               ng-change="markdownToHtml()">
             </ui-codemirror>
@@ -29,6 +30,25 @@
           <h4>Markdown Preview:</h4>
           <div class="markdownPreview"
             marked="ngModel">
+          </div>
+        </div>
+      </md-content>
+    </md-tab>
+    <md-tab label="HTML">
+      <md-content class="markdownContainer">
+        <div class="markdownEditorContainer">
+          <h4>Html Editor:</h4>
+          <md-input-container class="markdownEditorInputContainer">
+            <ui-codemirror
+              ui-codemirror-opts="htmlCodeEditorOptions"
+              ng-model="ngModel">
+            </ui-codemirror>
+          </md-input-container>
+        </div>
+        <div class="markdownPreviewContainer">
+          <h4>Html Preview:</h4>
+          <div class="markdownPreview"
+            ng-bind-html="ngModel">
           </div>
         </div>
       </md-content>
