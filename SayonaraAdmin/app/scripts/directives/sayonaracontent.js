@@ -7,7 +7,7 @@
  * # entryFieldContent
  */
 angular.module('sayonaraAdminApp')
-	.directive('sayonaraContent', function(marked) {
+	.directive('sayonaraContent', function() {
 		return {
 			templateUrl: 'views/templates/sayonaracontent.html',
 			restrict: 'E',
@@ -64,7 +64,29 @@ angular.module('sayonaraAdminApp')
 
 				//Function to convert the markdown in our text area to html
 				scope.markdownToHtml = function() {
-					scope.ngModel = marked(scope.markdown);
+
+					//Our temporary holding place for our markdown
+					var inputMarkdown = scope.markdown;
+
+					//Replace all occurances
+					inputMarkdown = inputMarkdown.replace(/(?:\r\n|\r|\n)/g, '<br>\n');
+
+					//Override marked to respect br
+					// https://github.com/chjj/marked/issues/504
+					marked.prototype.constructor.Parser.prototype.parse = function (src) {
+					    this.inline = new marked.InlineLexer(src.links, this.options, this.renderer);
+					    this.inline.rules.br = { exec: function() {} }
+					    this.tokens = src.reverse();
+					    var out = '';
+					    while (this.next()) {
+					        out += this.tok();
+					    }
+					    return out;
+					};
+
+					//Convert to HTML
+					console.log(inputMarkdown);
+					scope.ngModel = marked(inputMarkdown);
 				}
 			}
 		};

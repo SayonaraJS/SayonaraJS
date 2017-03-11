@@ -18,7 +18,6 @@ angular
 		'ngMaterial',
 		'angular-loading-bar',
 		'ngQuill',
-		'hc.marked',
 		'ui.codemirror',
 		'sayonaraAuth',
 		'sayonaraPages',
@@ -28,7 +27,7 @@ angular
 		'sayonaraAdmin',
 	])
 	.config(function($routeProvider, $locationProvider,
-			$mdThemingProvider, ngQuillConfigProvider, markedProvider) {
+			$mdThemingProvider, ngQuillConfigProvider) {
 
 		//Configure our Application hash
 		//this will remove the default '!'
@@ -79,18 +78,18 @@ angular
 		//Configure our markdown Editor
 		//Set github markdown syntax, and syntax highlighting
 		//(using the install highlightjs)
-		markedProvider.setOptions({
-    gfm: true,
-    tables: true,
-		breaks: true,
-    highlight: function (code, lang) {
-      if (lang) {
-        return hljs.highlight(lang, code, true).value;
-      } else {
-        return hljs.highlightAuto(code).value;
-      }
-    }
-  });
+		marked.setOptions({
+	    gfm: true,
+	    tables: true,
+			breaks: true,
+	    highlight: function (code, lang) {
+	      if (lang) {
+	        return hljs.highlight(lang, code, true).value;
+	      } else {
+	        return hljs.highlightAuto(code).value;
+	      }
+	    }
+  	});
 
 		$routeProvider
 			.when('/', {
