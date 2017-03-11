@@ -11,7 +11,7 @@
 <!-- Ng-for through all the entries -->
 <div class="center contentContainer" ng-repeat="entryType in entryTypes">
   <h2 class="contentTypeTitle" ng-if="entryType.entries.length > 0">{{entryType.title}}</h2>
-  <md-card class="contentCard" ng-repeat="content in entryType.entries">
+  <md-card class="contentCard" ng-repeat="content in entryType.entries | orderBy: ['order', 'date']">
     <md-card-title>
       <md-card-title-text class="centerText">
         <span class="md-headline">{{content.title}}</span>
