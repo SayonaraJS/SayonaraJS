@@ -29,16 +29,11 @@
               Editable Content
         </md-checkbox>
       </div>
-      <div>
-        <md-checkbox ng-model="entryType.hasEmbedCodes" aria-label="Embed Codes" class="md-primary">
-              Embed Codes
-        </md-checkbox>
-      </div>
-      <div>
-        <md-checkbox ng-model="entryType.hasUploadUrls" aria-label="Upload Urls" class="md-primary">
-              Upload Urls
-        </md-checkbox>
-      </div>
+      <!-- The Entry type of the content -->
+      <sayonara-selector selected-items="entryType.customFieldTypes"
+        options="customFieldTypes" selector-label="Custom Field Types"
+        multiple-selection="true">
+      </sayonara-selector>
       <div>
         <!-- The order of the entry type -->
         <md-input-container class="editInput">
@@ -92,3 +87,47 @@
     </md-card-actions>
   </md-card>
 </div>
+
+<!-- Line Break Between the two clickable titles -->
+<br ng-show="!showList.categories"/>
+
+<!-- Ng-for through all the customFieldTypes -->
+<h2 class="settingTypeTitle centerText"
+  ng-click="showList.customFieldTypes = !showList.customFieldTypes">
+  <a href="">Custom Field Types</a>
+</h2>
+<div class="centerText" ng-show="showList.customFieldTypes">
+  <md-button class="center md-raised md-primary" ng-click="createCustomFieldType()">New Custom Field Type</md-button>
+</div>
+<div class="contentContainer" ng-show="showList.customFieldTypes">
+  <md-card class="contentCard" ng-repeat="content in customFieldTypes">
+
+    <!-- Title of custom field -->
+    <md-card-title>
+      <md-input-container class="editInput editTitle">
+        <input class="centerText" type="input" ng-model="customFieldTypes[$index].title" />
+      </md-input-container>
+    </md-card-title>
+
+    <md-card-content>
+      <!-- List the Properties of the Category -->
+
+      <!-- Description of custom field -->
+      <md-input-container class="editTextArea">
+        <textarea ng-model="customFieldTypes[$index].description" >
+        </textarea>
+      </md-input-container>
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="start center">
+      <!-- Delete on the left, save on the right -->
+      <md-card-icon-actions>
+        <md-button class="md-raised md-warn" ng-click="deleteCustomFieldType($index)">Delete</md-button>
+      </md-card-icon-actions>
+      <md-button class="md-raised" ng-click="saveCustomFieldType(content)">Save</md-button>
+    </md-card-actions>
+  </md-card>
+</div>
+
+<!-- Line Break Between the two clickable titles -->
+<br ng-show="!showList.categories"/>

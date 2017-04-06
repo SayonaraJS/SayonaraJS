@@ -15,6 +15,18 @@ $minHeight: 300px;
   }
 }
 
+.editTextArea {
+  width: 100%;
+  display: block;
+  height: auto;
+
+  textarea {
+    @extend .center;
+    width: 100%;
+    display: block;
+  }
+}
+
 .editSelector {
   display: block;
   width: 100%;

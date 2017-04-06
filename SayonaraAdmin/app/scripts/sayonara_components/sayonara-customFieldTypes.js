@@ -29,7 +29,7 @@ angular.module('sayonaraCustomFieldType', ['sayonaraApi', 'sayonaraAuth']).servi
 	}
 
 	return {
-		createCustomFieldTypeField: createCustomFieldTypeField,
+		createCustomFieldType: createCustomFieldType,
 		updateCustomFieldTypeById: updateCustomFieldTypeById,
 		deleteCustomFieldTypeById: deleteCustomFieldTypeById
 	};

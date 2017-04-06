@@ -46,7 +46,7 @@ app.use('/api/auth', appAuth);
 var appCategory = require('./routes/categories');
 app.use('/api/category', appCategory);
 var appCategory = require('./routes/customFieldTypes');
-app.use('/api/customfieldtypes', appCategory);
+app.use('/api/customfieldtype', appCategory);
 var appEntry = require('./routes/entries');
 app.use('/api/entry', appEntry);
 var appEntryType = require('./routes/entryTypes');

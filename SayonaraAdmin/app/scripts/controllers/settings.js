@@ -8,7 +8,9 @@
  * Controller of the sayonaraAdminApp
  */
 angular.module('sayonaraAdminApp')
-  .controller('SettingsCtrl', function ($scope, adminNotify, sayonaraEntryTypeService, sayonaraCategoryService, sayonaraAdminService) {
+  .controller('SettingsCtrl', function ($scope, adminNotify,
+      sayonaraEntryTypeService, sayonaraCategoryService, sayonaraCustomFieldTypeService,
+      sayonaraAdminService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -25,11 +27,16 @@ angular.module('sayonaraAdminApp')
     ////Get info for editing (Categories and Entry Types)
     $scope.entryTypes = [];
     $scope.categories = [];
+    $scope.customFieldTypes = [];
     sayonaraAdminService.getSettings().then(function(success) {
 
       //Set our entry types and categories
       $scope.entryTypes = success.entryTypes;
       $scope.categories = success.categories;
+      $scope.customFieldTypes = success.customFieldTypes;
+
+      //Update our custom field type ids to be assigned to entry types
+      $scope.updateCustomFieldTypeIds();
     }, function(error) {
       //Pass to te error handler
       adminNotify.error(error);
@@ -73,6 +80,24 @@ angular.module('sayonaraAdminApp')
       });
     }
 
+    //Create new categories
+    $scope.createCustomFieldType = function() {
+      //Create our payload (With Default Entry Type)
+      var payload = {
+        title: 'New Sayonara Custom Field Type',
+        description: 'Please enter a description here. E.g, this field should contain 0-5 entries.'
+      }
+
+      sayonaraCustomFieldTypeService.createCustomFieldType(payload).then(function(success) {
+        //Push to our array of entry types
+        $scope.customFieldTypes.push(success);
+        adminNotify.showAlert('Created a new CustomFieldType!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
     //Save/Update an entryType
     $scope.saveEntryType = function(entryType) {
 
@@ -104,6 +129,24 @@ angular.module('sayonaraAdminApp')
       sayonaraCategoryService.updateCategoryById(category._id, payload).then(function(success) {
         //Inform of success
         adminNotify.showAlert('Saved the category!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
+    //Save/Update a customFieldType
+    $scope.saveCustomFieldType = function(customFieldType) {
+
+      //Get our payload
+      var payload = Object.assign({}, customFieldType)
+
+      //Delete uneeded fields from the json
+      delete payload['_id'];
+
+      sayonaraCustomFieldTypeService.updateCustomFieldTypeById(customFieldType._id, payload).then(function(success) {
+        //Inform of success
+        adminNotify.showAlert('Saved the Custom Field Type!');
       }, function(error) {
         //Pass to the error handler
         adminNotify.error(error);
@@ -143,6 +186,25 @@ angular.module('sayonaraAdminApp')
 
         //Inform of success
         adminNotify.showAlert('Deleted the category!');
+      }, function(error) {
+        //Pass to the error handler
+        adminNotify.error(error);
+      });
+    }
+
+    //Delete a custom field type
+    $scope.deleteCustomFieldType = function(index) {
+
+      //Return if not a valid index
+      if(!$scope.customFieldTypes[index] || !$scope.customFieldTypes[index]._id) return;
+
+      sayonaraCustomFieldTypeService.deleteCustomFieldTypeById($scope.customFieldTypes[index]._id).then(function(success) {
+
+        //Delete the category from the client
+        $scope.customFieldTypes.splice(index, 1);
+
+        //Inform of success
+        adminNotify.showAlert('Deleted the Custom Field Type!');
       }, function(error) {
         //Pass to the error handler
         adminNotify.error(error);

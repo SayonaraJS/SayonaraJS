@@ -11,6 +11,7 @@ var Promise = require('promise');
 // User models
 var mongoose = require('mongoose');
 var CustomFieldType = mongoose.model('CustomFieldType');
+var EntryType = mongoose.model('EntryType');
 
 //Create CustomFieldTypes
 router.post('/create', function(req, res) {
@@ -99,7 +100,7 @@ router.delete('/id/:id', function(req, res) {
 			_id: req.params.id
 		}, function(err, customFieldType) {
 			if (err) {
-				res.status(500).send('Error finding the category.');
+				res.status(500).send('Error finding the custom field type.');
 				return;
 			}
 			if (!customFieldType) {

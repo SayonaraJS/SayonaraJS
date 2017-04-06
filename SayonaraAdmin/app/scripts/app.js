@@ -24,6 +24,7 @@ angular
     'sayonaraEntries',
 		'sayonaraEntryType',
 		'sayonaraCategory',
+		'sayonaraCustomFieldType',
 		'sayonaraAdmin',
 	])
 	.config(function($routeProvider, $locationProvider,
