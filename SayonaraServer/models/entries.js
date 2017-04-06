@@ -24,8 +24,6 @@ var entrySchema = new Schema({
 		type: String,
 		default: '<h1>Sayonara, New Entry</h1>'
 	},
-	embedCodes: [String],
-	uploadUrls: [String],
 	categories: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Category'

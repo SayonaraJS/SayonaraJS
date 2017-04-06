@@ -9,11 +9,12 @@ var routeHelpers = require('./routeHelpers');
 
 // User models
 var mongoose = require('mongoose');
+var CustomFieldType = mongoose.model('CustomFieldType');
 var Category = mongoose.model('Category');
 var Entry = mongoose.model('Entry');
 var EntryType = mongoose.model('EntryType');
 
-//Get all Entry types and categories (useful for when editing entries and pages)
+//Get all Entry types, categories, and customFields (useful for when editing entries and pages)
 router.get('/settings', function(req, res) {
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.entries, routeHelpers.definedPermissions.pages];
@@ -28,13 +29,21 @@ router.get('/settings', function(req, res) {
             //Find all categories
             Category.find({}).exec(function(err, categories) {
                 if (err) {
-    				res.status(500).json(err);
-    			}
+    							res.status(500).json(err);
+    						}
 
-                res.send({
-                    entryTypes: entryTypes,
-                    categories: categories
-                });
+								//Find all categories
+		            CustomFieldType.find({}).exec(function(err, customFieldTypes) {
+		                if (err) {
+		    							res.status(500).json(err);
+		    						}
+
+		                res.send({
+		                    entryTypes: entryTypes,
+		                    categories: categories,
+												customFieldTypes: customFieldTypes
+		                });
+		            });
             });
 		});
 	}, function(error) {

@@ -20,14 +20,10 @@ var entryTypeSchema = new Schema({
 		type: Boolean,
 		default: true
 	},
-	hasEmbedCodes: {
-		type: Boolean,
-		default: false
-	},
-	hasUploadUrls: {
-		type: Boolean,
-		default: false
-	}
+	customFieldTypes: [{
+		type: Schema.Types.ObjectId,
+		ref: 'CustomFieldType'
+	}],
 });
 
 //Models

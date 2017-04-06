@@ -182,7 +182,7 @@ module.service('sayonaraApiContent', function(sayonaraApiEndpoints) {
   //Define out content type urls
   var pageContentUrl = 'pages';
   var entryContentUrl = 'entry';
-  var entryTypeContentUrl = 'type';
+  var entryTypeContentUrl = 'entrytype';
   var categoryContentUrl = 'category';
 
 	/**

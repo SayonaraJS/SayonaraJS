@@ -11,6 +11,7 @@ var routeHelpers = require('./routeHelpers');
 // User models
 var mongoose = require('mongoose');
 var Category = mongoose.model('Category');
+var CustomField = mongoose.model('CustomField');
 var Entry = mongoose.model('Entry');
 var EntryType = mongoose.model('EntryType');
 
@@ -65,10 +66,46 @@ router.post('/create', function(req, res) {
 						res.status(500).send('Error saving the entry type');
 						return;
 					}
+
+					// Handle custom fields
+					var customFieldPromises = [];
+					if (req.body.customFields) {
+						// Create Custom fields with the appropriate id and things
+						req.body.customFields.forEach(function(customField) {
+							//Ensure we have a valid custom field
+							if(customField &&
+								customField.customFieldTypeId &&
+								customField.fields &&
+								customField.fields.length > 0) {
+									//Create a new promise to create/save the field
+								customFieldPromises.push(new Promise(function(resolve) {
+									var newCustomField = new CustomField({
+										entry: newEntry.id,
+										customFieldType: customField.customFieldTypeId,
+										fields: customField.fields
+									});
+
+									//Save the new custom field
+									newCustomField.save(function(err) {
+										if (err) {
+											res.status(500).send('Error saving the custom field: ' + customField.customFieldTypeId);
+											return;
+										}
+
+										resolve();
+									});
+								}));
+							}
+						});
+					}
+
+				// Finally, return 200 after custom fields
+				Promise.all(customFieldPromises).then(function() {
 					res.status(200).json(newEntry);
-				})
-			})
-		})
+				});
+			});
+		});
+	});
 	}, function(error) {
 		res.status(error.status).send(error.message);
 	});
@@ -92,7 +129,6 @@ router.get('/all', function(req, res) {
 
 //Get An Entry
 router.get('/id/:id', function(req, res) {
-
 	//Validate our JWT and permissions
 	var permissions = [routeHelpers.definedPermissions.entries];
 	routeHelpers.validateUser(req, permissions).then(function(result) {
@@ -211,10 +247,52 @@ router.put('/id/:id', function(req, res) {
 						res.status(500).send('Error saving the entry.');
 						return;
 					}
-					res.status(200).json();
+
+					//Lastly, update the entries customFields
+					// Handle custom fields
+					var customFieldPromises = [];
+					if (req.body.customFields &&
+						req.body.customFields.length > 0) {
+						// Create Custom fields with the appropriate id and things
+						req.body.customFields.forEach(function(customField) {
+							//Ensure we have a valid custom field
+							if(customField &&
+								customField.customFieldId &&
+								customField.fields &&
+								customField.fields.length > 0) {
+									//Create a new promise to create/save the field
+								customFieldPromises.push(new Promise(function(resolve) {
+									CustomField.findOne({_id: customField.customFieldId})
+									.exec(function(err, foundCustomField) {
+										if (err) {
+											res.status(500).send('Error, could not find the custom field: ' + customField.customFieldId);
+											return;
+										}
+
+										// Update the customField's fields
+										foundCustomField.fields = customField.fields
+
+										foundCustomField.save(function(err) {
+											if (err) {
+												res.status(500).send('Error saving the customField: ' + customField.customFieldId);
+												return;
+											}
+
+											resolve();
+										});
+									});
+								}));
+							}
+						});
+					}
+
+					// Finally, return 200 after custom fields
+					Promise.all(customFieldPromises).then(function() {
+						res.status(200).json();
+					});
 				});
 			});
-		})
+		});
 	}, function(error) {
 		res.status(error.status).send(error.message);
 	});
@@ -243,7 +321,8 @@ router.delete('/id/:id', function(req, res) {
 			if (!entry) res.status(404).send('Entry not Found');
 
 			//Find its entry type
-			EntryType.findOne({_id: entry.entryType}).exec(function(err, entryType) {
+			EntryType.findOne({_id: entry.entryType})
+				.exec(function(err, entryType) {
 				if (err) {
 					res.status(500).json(err);
 					return;
@@ -260,13 +339,40 @@ router.delete('/id/:id', function(req, res) {
 						return;
 					}
 
-					//Remove the entry
-					entry.remove(function(err) {
+					// Delete all of the custom fields associated with the entry
+					var cleanUpPromises = [];
+					CustomField.find({
+						entry: entry._id
+					}, function(err, customFields) {
 						if (err) {
 							res.status(500).json(err);
-							return;
 						}
-						res.status(200).send('Successful!');
+
+						//Loop Through all entries to be deleted
+						if(customFields && customFields.length > 0) {
+							customFields.forEach(function(customField) {
+								cleanUpPromises.push(new Promise(function(resolve) {
+									customField.remove(function(err) {
+										if (err) {
+											res.status(500).json(err);
+										}
+										resolve();
+									});
+								}));
+							});
+						}
+
+						//Once all clean up promises resolve
+						Promise.all(cleanUpPromises).then(function() {
+							//Finally, Remove the entry
+							entry.remove(function(err) {
+								if (err) {
+									res.status(500).json(err);
+									return;
+								}
+								res.status(200).send('Successful!');
+							});
+						});
 					});
 				});
 			});

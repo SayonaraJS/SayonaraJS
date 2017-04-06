@@ -30,6 +30,8 @@ router.post('/create', function(req, res) {
 			title: req.body.title
 		});
 
+		if(req.body.description) newCategory.description = req.body.description;
+
 		newCategory.save(function(err) {
 			if (err) {
 				res.status(500).send('Error saving the category.');
@@ -43,7 +45,7 @@ router.post('/create', function(req, res) {
 
 });
 
-//Get a category (Done on Entry Type)
+// GET Done in Settings route (admin.js)
 
 //Update a category
 router.put('/id/:id', function(req, res) {
@@ -67,6 +69,7 @@ router.put('/id/:id', function(req, res) {
 
 			//Add the new parameters
 			if (req.body.title) category.title = req.body.title;
+			if (req.body.description) category.description = req.body.description;
 
 			category.save(function(err) {
 				if (err) {
