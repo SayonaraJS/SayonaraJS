@@ -143,6 +143,9 @@ router.get('/id/:id', function(req, res) {
 			}
 			if (!entry) res.status(404).send('Entry not Found');
 
+			// Also, grab our custom fields
+
+
 			//Return the entry
 			res.status(200).json(entry);
 		});
@@ -183,28 +186,39 @@ router.put('/id/:id', function(req, res) {
 				if (req.body.entryType) {
 					if(req.body.entryType != entry.entryType) {
 						//First, ensure the new Entry type exists
-						EntryType.findOne({_id: req.body.entryType}).populate('entries').exec(function(err, newEntryType) {
+						EntryType
+						.findOne({_id: req.body.entryType})
+						.populate('entries')
+						.exec(function(err, newEntryType) {
 							if (err) {
 								res.status(500).send('Error finding the entry\'s new entry type.');
 								return;
 							}
 							if(newEntryType) {
-
 								//Save the old entry type, and set the new entry type
+								//TODO: Fix the entry.entryType id not updating
+								console.log(entry);
 								var oldEntryTypeId = entry.entryType;
 								entry.entryType = newEntryType._id;
+								console.log(entry);
 
 								//Add to the new entry type
+								console.log(newEntryType);
 								newEntryType.entries.push(entry);
+								console.log(newEntryType);
 								newEntryType.update(function(err) {
 									if (err) {
+										console.log(err);
 										res.status(500).send('Error saving the new entry type.');
 										return;
 									}
 
 									//Remove from the previous entrytype
 									//Find the old Entry Type
-									EntryType.findOne({ _id: oldEntryTypeId }).populate('entries').exec(function(err, oldEntryType) {
+									EntryType
+									.findOne({ _id: oldEntryTypeId })
+									.populate('entries')
+									.exec(function(err, oldEntryType) {
 										if (err) {
 											res.status(500).send('Error finding the entry\'s old entry type.');
 											return;
@@ -228,7 +242,53 @@ router.put('/id/:id', function(req, res) {
 														res.status(500).send('Error saving the old entry type.');
 														return;
 													}
-													resolve();
+
+													//Also, we need to delete all of the customFieldTypes
+													// Delete all of the custom fields associated with the entry
+													var customFieldTypePromises = [];
+													CustomField.find({
+														entry: entry._id
+													}, function(err, customFields) {
+														if (err) {
+															res.status(500).json(err);
+															return;
+														}
+														if(!customFields) {
+															// We have no customFields
+															// Finally, resolve the change of entry types
+															customFieldTypePromises.push(new Promise(function(resolve) {
+																resolve();
+															}));
+														} else {
+															//Loop Through all entries to be deleted
+															if(customFields && customFields.length > 0) {
+																customFields.forEach(function(customField) {
+																	customFieldTypePromises.push(new Promise(function(resolve) {
+																		customField.remove(function(err) {
+																			if (err) {
+																				res.status(500).json(err);
+																				return;
+																			}
+																			resolve();
+																		});
+																	}));
+																});
+															}
+														}
+
+														//Once all clean up promises resolve
+														Promise.all(customFieldTypePromises).then(function() {
+															//Finally, Remove the entry
+															entry.remove(function(err) {
+																if (err) {
+																	res.status(500).json(err);
+																	return;
+																}
+																// Finally, resolve the change of entry types
+																resolve(true);
+															});
+														});
+													});
 												});
 											} else resolve();
 										} else resolve();
@@ -241,7 +301,7 @@ router.put('/id/:id', function(req, res) {
 			});
 
 			//Save the entry after checking entry types
-			entryTypePromise.then(function() {
+			entryTypePromise.then(function(didChangeEntryType) {
 				entry.save(function(err) {
 					if (err) {
 						res.status(500).send('Error saving the entry.');
@@ -251,7 +311,8 @@ router.put('/id/:id', function(req, res) {
 					//Lastly, update the entries customFields
 					// Handle custom fields
 					var customFieldPromises = [];
-					if (req.body.customFields &&
+					if (!didChangeEntryType &&
+						req.body.customFields &&
 						req.body.customFields.length > 0) {
 						// Create Custom fields with the appropriate id and things
 						req.body.customFields.forEach(function(customField) {
@@ -347,19 +408,25 @@ router.delete('/id/:id', function(req, res) {
 						if (err) {
 							res.status(500).json(err);
 						}
-
-						//Loop Through all entries to be deleted
-						if(customFields && customFields.length > 0) {
-							customFields.forEach(function(customField) {
-								cleanUpPromises.push(new Promise(function(resolve) {
-									customField.remove(function(err) {
-										if (err) {
-											res.status(500).json(err);
-										}
-										resolve();
-									});
-								}));
-							});
+						if(!customFields) {
+							// We have no customFields
+							cleanUpPromises.push(new Promise(function(resolve) {
+								resolve();
+							}));
+						} else {
+							//Loop Through all entries to be deleted
+							if(customFields && customFields.length > 0) {
+								customFields.forEach(function(customField) {
+									cleanUpPromises.push(new Promise(function(resolve) {
+										customField.remove(function(err) {
+											if (err) {
+												res.status(500).json(err);
+											}
+											resolve();
+										});
+									}));
+								});
+							}
 						}
 
 						//Once all clean up promises resolve

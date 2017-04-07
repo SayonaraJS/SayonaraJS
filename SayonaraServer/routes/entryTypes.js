@@ -35,7 +35,7 @@ router.post('/create', function(req, res) {
 		if (req.body.order) newEntryType.order = req.body.order;
 		if (req.body.hasContent) newEntryType.hasContent = req.body.hasContent;
 		if (req.body.hasEmbedCodes) newEntryType.hasEmbedCodes = req.body.hasEmbedCodes;
-		if (req.body.hasUploadUrls) newEntryType.hasUploadUrls = req.body.hasUploadUrls;
+		if (req.body.customFieldTypes) newEntryType.customFieldTypes = req.body.customFieldTypes;
 
 		//Save the new entry
 		newEntryType.save(function(err) {
@@ -133,8 +133,7 @@ router.put('/id/:id', function(req, res) {
 			if (req.body.title) entryType.title = req.body.title;
 			if (req.body.order) entryType.order = req.body.order;
 			if (req.body.hasContent) entryType.hasContent = req.body.hasContent;
-			if (req.body.hasEmbedCodes) entryType.hasEmbedCodes = req.body.hasEmbedCodes;
-			if (req.body.hasUploadUrls) entryType.hasUploadUrls = req.body.hasUploadUrls;
+			if (req.body.customFieldTypes) entryType.customFieldTypes = req.body.customFieldTypes;
 
 			//Save the entry type
 			entryType.save(function(err) {

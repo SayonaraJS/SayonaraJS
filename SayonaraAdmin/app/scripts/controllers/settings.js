@@ -34,9 +34,6 @@ angular.module('sayonaraAdminApp')
       $scope.entryTypes = success.entryTypes;
       $scope.categories = success.categories;
       $scope.customFieldTypes = success.customFieldTypes;
-
-      //Update our custom field type ids to be assigned to entry types
-      $scope.updateCustomFieldTypeIds();
     }, function(error) {
       //Pass to te error handler
       adminNotify.error(error);
