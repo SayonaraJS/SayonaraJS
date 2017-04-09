@@ -30,6 +30,9 @@ angular.module('sayonaraAdminApp')
         }
 
         // Function to remove or add extra elements as they are filled out
+        // customFieldTypeIndex represents the index of the custom field type it
+        // is repeated within. The field index represents which field that was chnged
+        // in the respective custom field type
         $scope.onFieldChange = function(customFieldTypeIndex, fieldIndex) {
           // Check if the field is null
           if(!$scope.editCustomFields[customFieldTypeIndex].fields[fieldIndex]) {
