@@ -7,12 +7,12 @@
   </div>
 
   <!-- Input fields that always have one more if the last has input -->
-  {{getFields()}}
+  {{customFields}}
   <md-input-container class="editInput"
-    ng-repeat="field in getFields() track by $index">
+    ng-repeat="field in getFields($index) track by $index">
     <label>Field content</label>
     <input type="input"
-    ng-change="onFieldChange()"
-    ng-model="customFields[$index]" />
+    ng-change="onFieldChange($parent.$index, $index)"
+    ng-model="editCustomFields[$parent.$index].fields[$index]" />
   </md-input-container>
 </div>
