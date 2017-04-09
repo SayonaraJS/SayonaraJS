@@ -24,6 +24,10 @@ var entrySchema = new Schema({
 		type: String,
 		default: '<h1>Sayonara, New Entry</h1>'
 	},
+	customFields: [{
+		type: Schema.Types.ObjectId,
+		ref: 'CustomField'
+	}],
 	categories: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Category'

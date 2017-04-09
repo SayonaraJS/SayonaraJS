@@ -53,55 +53,56 @@ router.post('/create', function(req, res) {
 			if (req.body.uploadUrls) newEntry.uploadUrls = req.body.uploadUrls;
 			if (req.body.categories) newEntry.categories = req.body.categories;
 
-			//Save the new entry
-			newEntry.save(function(err) {
-				if (err) {
-					res.status(500).send('Error saving the entry.');
-				}
+			// Handle custom fields
+			var customFieldPromises = [];
+			if (req.body.customFields) {
+				// Create Custom fields with the appropriate id and things
+				req.body.customFields.forEach(function(customField) {
+					//Ensure we have a valid custom field
+					if(customField &&
+						customField.customFieldTypeId &&
+						customField.fields &&
+						customField.fields.length > 0) {
+							//Create a new promise to create/save the field
+						customFieldPromises.push(new Promise(function(resolve) {
+							var newCustomField = new CustomField({
+								customFieldType: customField.customFieldTypeId,
+								fields: customField.fields
+							});
 
-				//push the entry onto the entrytype
-				entryType.entries.push(newEntry.id);
-				entryType.save(function(err) {
+							//Save the new custom field
+							newCustomField.save(function(err) {
+								if (err) {
+									res.status(500).send('Error saving the custom field: ' + customField.customFieldTypeId);
+									return;
+								}
+
+								// Add the custom fields to the new entry
+								newEntry.customFields.push(newCustomField);
+								resolve();
+							});
+						}));
+					}
+				});
+			}
+
+			// Finally, return 200 after custom fields
+			Promise.all(customFieldPromises).then(function() {
+				//Save the new entry
+				newEntry.save(function(err) {
 					if (err) {
-						res.status(500).send('Error saving the entry type');
-						return;
+						res.status(500).send('Error saving the entry.');
 					}
 
-					// Handle custom fields
-					var customFieldPromises = [];
-					if (req.body.customFields) {
-						// Create Custom fields with the appropriate id and things
-						req.body.customFields.forEach(function(customField) {
-							//Ensure we have a valid custom field
-							if(customField &&
-								customField.customFieldTypeId &&
-								customField.fields &&
-								customField.fields.length > 0) {
-									//Create a new promise to create/save the field
-								customFieldPromises.push(new Promise(function(resolve) {
-									var newCustomField = new CustomField({
-										entry: newEntry.id,
-										customFieldType: customField.customFieldTypeId,
-										fields: customField.fields
-									});
-
-									//Save the new custom field
-									newCustomField.save(function(err) {
-										if (err) {
-											res.status(500).send('Error saving the custom field: ' + customField.customFieldTypeId);
-											return;
-										}
-
-										resolve();
-									});
-								}));
-							}
-						});
-					}
-
-				// Finally, return 200 after custom fields
-				Promise.all(customFieldPromises).then(function() {
-					res.status(200).json(newEntry);
+					//push the entry onto the entrytype
+					entryType.entries.push(newEntry.id);
+					entryType.save(function(err) {
+						if (err) {
+							res.status(500).send('Error saving the entry type');
+							return;
+						}
+						// Respond with success
+						res.status(200).json(newEntry);
 				});
 			});
 		});
@@ -136,7 +137,15 @@ router.get('/id/:id', function(req, res) {
 		//Find the Entry
 		Entry.findOne({
 			_id: req.params.id
-		}).exec(function(err, entry) {
+		}).populate({
+			path: 'entryType',
+			model: 'EntryType',
+			populate: {
+				path: 'customFieldTypes',
+				model: 'CustomFieldType'
+			}
+		})
+		.exec(function(err, entry) {
 			if (err) {
 				res.status(500).json(err);
 				return;
@@ -212,7 +221,11 @@ router.put('/id/:id', function(req, res) {
 						entry.entryType = newEntryType._id;
 
 						// Delete our old custom fields (as they are determined by entry type)
-						CustomField.remove({entry: entry._id}, function(err) {
+						CustomField.remove({
+							_id: {
+								$in: entry.customFields
+							}
+						}, function(err) {
 							if(err) {
 								reject({
 									status: 500,
@@ -267,22 +280,22 @@ router.put('/id/:id', function(req, res) {
 											//Finally, resolve
 											resolve();
 										});
-									})
+									});
 								});
 							});
-						});
 					});
-				}
-			});
-
-			entryTypePromise.then(function() {
-				// We successfully edited our entry!
-				res.status(200).json(entry);
-			}).catch(function(err) {
-				res.status(err.status).send(err.message);
-				return;
-			});
+				});
+			}
 		});
+
+		entryTypePromise.then(function() {
+			// We successfully edited our entry!
+			res.status(200).json(entry);
+		}).catch(function(err) {
+			res.status(err.status).send(err.message);
+			return;
+		});
+	});
 	}, function(error) {
 		res.status(error.status).send(error.message);
 	});
@@ -330,44 +343,26 @@ router.delete('/id/:id', function(req, res) {
 					}
 
 					// Delete all of the custom fields associated with the entry
-					var cleanUpPromises = [];
-					CustomField.find({
-						entry: entry._id
-					}, function(err, customFields) {
-						if (err) {
-							res.status(500).json(err);
+					CustomField.remove({
+						_id: {
+							$in: entry.customFields
 						}
-						if(!customFields) {
-							// We have no customFields
-							cleanUpPromises.push(new Promise(function(resolve) {
-								resolve();
-							}));
-						} else {
-							//Loop Through all entries to be deleted
-							if(customFields && customFields.length > 0) {
-								customFields.forEach(function(customField) {
-									cleanUpPromises.push(new Promise(function(resolve) {
-										customField.remove(function(err) {
-											if (err) {
-												res.status(500).json(err);
-											}
-											resolve();
-										});
-									}));
-								});
-							}
+					}, function(err) {
+						if(err) {
+							reject({
+								status: 500,
+								message: 'Could not remove the entry\'s custom fields'
+							});
+							return;
 						}
 
-						//Once all clean up promises resolve
-						Promise.all(cleanUpPromises).then(function() {
-							//Finally, Remove the entry
-							entry.remove(function(err) {
-								if (err) {
-									res.status(500).json(err);
-									return;
-								}
-								res.status(200).send('Successful!');
-							});
+						//Finally, Remove the entry
+						entry.remove(function(err) {
+							if (err) {
+								res.status(500).json(err);
+								return;
+							}
+							res.status(200).send('Successful!');
 						});
 					});
 				});

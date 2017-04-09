@@ -1,0 +1,18 @@
+<div class='entryCustomFields'
+  ng-repeat="customFieldType in customFieldTypes">
+  <h1 class="contentHeader">{{customFieldType.title}}</h1>
+
+  <div class="elementDescription">
+    {{customFieldType.title}}
+  </div>
+
+  <!-- Input fields that always have one more if the last has input -->
+  {{getFields()}}
+  <md-input-container class="editInput"
+    ng-repeat="field in getFields() track by $index">
+    <label>Field content</label>
+    <input type="input"
+    ng-change="onFieldChange()"
+    ng-model="customFields[$index]" />
+  </md-input-container>
+</div>

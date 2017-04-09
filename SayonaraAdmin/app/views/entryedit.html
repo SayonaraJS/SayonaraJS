@@ -7,7 +7,7 @@
 </md-input-container>
 
 <!-- The Entry type of the content -->
-<sayonara-selector selected-items="entry.entryType"
+<sayonara-selector selected-items="entry.entryType._id"
   options="entryTypes" selector-label="Entry Type">
 </sayonara-selector>
 
@@ -25,6 +25,11 @@
 
 <!-- The content of the content -->
 <sayonara-content ng-model="entry.content"></sayonara-content>
+
+<!-- Our custom fields -->
+<sayonara-custom-field custom-fields="entry.customFields"
+  custom-field-types="entry.entryType.customFieldTypes">
+</sayonara-custom-field>
 
 <!-- Save button -->
 <div class="centerText">
