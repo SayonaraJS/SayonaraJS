@@ -165,7 +165,8 @@ router.put('/id/:id', function(req, res) {
 	routeHelpers.validateUser(req, permissions).then(function(result) {
 
 		//Find the entry
-		Entry.findOne({ _id: req.params.id }).exec(function(err, entry) {
+		Entry.findOne({ _id: req.params.id })
+		.exec(function(err, entry) {
 			if (err) {
 				res.status(500).send('Error finding the entry.');
 				return;
@@ -181,177 +182,105 @@ router.put('/id/:id', function(req, res) {
 			if (req.body.uploadUrls) entry.uploadUrls = req.body.uploadUrls;
 			if (req.body.categories) entry.categories = req.body.categories;
 
-			//Create a promise for checking/changing entry types
-			var entryTypePromise = new Promise(function(resolve) {
-				if (req.body.entryType) {
-					if(req.body.entryType != entry.entryType) {
-						//First, ensure the new Entry type exists
-						EntryType
-						.findOne({_id: req.body.entryType})
-						.populate('entries')
-						.exec(function(err, newEntryType) {
-							if (err) {
-								res.status(500).send('Error finding the entry\'s new entry type.');
+			// Check if we changed entry types
+			var entryTypePromise = new Promise(function(resolve, reject) {
+				if (req.body.entryType == entry.entryType) {
+					//Simply resolve
+					resolve();
+				} else {
+					// Check if the new entry type exists
+					EntryType.findOne({ _id: req.body.entryType })
+					.exec(function(err, newEntryType) {
+						// Check for errors
+						if(err) {
+							reject({
+								status: 500,
+								message: 'Error finding the entryType.'
+							});
+							return;
+						}
+						if(!newEntryType) {
+							reject({
+								status: 500,
+								message: 'Error finding the entryType.'
+							});
+							return;
+						}
+
+						// Set our entries entryType to the new entry type
+						var oldEntryTypeId = entry.entryType.toString().slice(0);
+						entry.entryType = newEntryType._id;
+
+						// Delete our old custom fields (as they are determined by entry type)
+						CustomField.remove({entry: entry._id}, function(err) {
+							if(err) {
+								reject({
+									status: 500,
+									message: 'Could not remove the entry\'s custom fields'
+								});
 								return;
 							}
-							if(newEntryType) {
-								//Save the old entry type, and set the new entry type
-								//TODO: Fix the entry.entryType id not updating
-								console.log(entry);
-								var oldEntryTypeId = entry.entryType;
-								entry.entryType = newEntryType._id;
-								console.log(entry);
 
-								//Add to the new entry type
-								console.log(newEntryType);
+							//Save the entry
+							entry.save(function(err) {
+								if(err) {
+									reject({
+										status: 500,
+										message: 'Could not save the entry'
+									});
+									return;
+								}
+
+								// Add the entry to the new entry type
 								newEntryType.entries.push(entry);
-								console.log(newEntryType);
-								newEntryType.update(function(err) {
-									if (err) {
-										console.log(err);
-										res.status(500).send('Error saving the new entry type.');
+								newEntryType.save(function(err) {
+									if(err) {
+										reject({
+											status: 500,
+											message: 'Could not save the new entry type'
+										});
 										return;
 									}
 
-									//Remove from the previous entrytype
-									//Find the old Entry Type
-									EntryType
-									.findOne({ _id: oldEntryTypeId })
-									.populate('entries')
+									// Remove the entry from the old entry type
+									EntryType.findOne({ _id: oldEntryTypeId })
 									.exec(function(err, oldEntryType) {
-										if (err) {
-											res.status(500).send('Error finding the entry\'s old entry type.');
-											return;
-										}
-										if(oldEntryType) {
-											//Get a reference to the length of the entries
-											var entryLength = oldEntryType.entries.length;
-
-											//Find the entry in the entry type
-											for(var i = 0; i < oldEntryType.entries.length; i++) {
-												if(entry._id.equals(oldEntryType.entries[i]._id)) {
-													oldEntryType.entries.splice(i, 1);
-												}
+										oldEntryType.entries.some(function(foundEntry, index) {
+											if(foundEntry == entry._id.toString()) {
+												// Remove the entry
+												oldEntryType.entries.splice(index, 1);
+												return true;
 											}
+											return false;
+										});
 
-											//Check if we spliced an entry out, if we did, save
-											if(oldEntryType.entries.length < entryLength) {
-												//Save the old entry type
-												oldEntryType.update(function(err) {
-													if (err) {
-														res.status(500).send('Error saving the old entry type.');
-														return;
-													}
-
-													//Also, we need to delete all of the customFieldTypes
-													// Delete all of the custom fields associated with the entry
-													var customFieldTypePromises = [];
-													CustomField.find({
-														entry: entry._id
-													}, function(err, customFields) {
-														if (err) {
-															res.status(500).json(err);
-															return;
-														}
-														if(!customFields) {
-															// We have no customFields
-															// Finally, resolve the change of entry types
-															customFieldTypePromises.push(new Promise(function(resolve) {
-																resolve();
-															}));
-														} else {
-															//Loop Through all entries to be deleted
-															if(customFields && customFields.length > 0) {
-																customFields.forEach(function(customField) {
-																	customFieldTypePromises.push(new Promise(function(resolve) {
-																		customField.remove(function(err) {
-																			if (err) {
-																				res.status(500).json(err);
-																				return;
-																			}
-																			resolve();
-																		});
-																	}));
-																});
-															}
-														}
-
-														//Once all clean up promises resolve
-														Promise.all(customFieldTypePromises).then(function() {
-															//Finally, Remove the entry
-															entry.remove(function(err) {
-																if (err) {
-																	res.status(500).json(err);
-																	return;
-																}
-																// Finally, resolve the change of entry types
-																resolve(true);
-															});
-														});
-													});
+										// Save the old entry type
+										oldEntryType.save(function(err) {
+											if(err) {
+												reject({
+													status: 500,
+													message: 'Could not save the old entry type'
 												});
-											} else resolve();
-										} else resolve();
-									});
-								});
-							} else resolve();
-						});
-					} else resolve();
-				} else resolve();
-			});
-
-			//Save the entry after checking entry types
-			entryTypePromise.then(function(didChangeEntryType) {
-				entry.save(function(err) {
-					if (err) {
-						res.status(500).send('Error saving the entry.');
-						return;
-					}
-
-					//Lastly, update the entries customFields
-					// Handle custom fields
-					var customFieldPromises = [];
-					if (!didChangeEntryType &&
-						req.body.customFields &&
-						req.body.customFields.length > 0) {
-						// Create Custom fields with the appropriate id and things
-						req.body.customFields.forEach(function(customField) {
-							//Ensure we have a valid custom field
-							if(customField &&
-								customField.customFieldId &&
-								customField.fields &&
-								customField.fields.length > 0) {
-									//Create a new promise to create/save the field
-								customFieldPromises.push(new Promise(function(resolve) {
-									CustomField.findOne({_id: customField.customFieldId})
-									.exec(function(err, foundCustomField) {
-										if (err) {
-											res.status(500).send('Error, could not find the custom field: ' + customField.customFieldId);
-											return;
-										}
-
-										// Update the customField's fields
-										foundCustomField.fields = customField.fields
-
-										foundCustomField.save(function(err) {
-											if (err) {
-												res.status(500).send('Error saving the customField: ' + customField.customFieldId);
 												return;
 											}
 
+											//Finally, resolve
 											resolve();
 										});
-									});
-								}));
-							}
+									})
+								});
+							});
 						});
-					}
-
-					// Finally, return 200 after custom fields
-					Promise.all(customFieldPromises).then(function() {
-						res.status(200).json();
 					});
-				});
+				}
+			});
+
+			entryTypePromise.then(function() {
+				// We successfully edited our entry!
+				res.status(200).json(entry);
+			}).catch(function(err) {
+				res.status(err.status).send(err.message);
+				return;
 			});
 		});
 	}, function(error) {
