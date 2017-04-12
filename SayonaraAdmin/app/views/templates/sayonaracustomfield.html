@@ -1,17 +1,19 @@
 <div class='entryCustomFields'
-  ng-repeat="customFieldType in customFieldTypes track by $index">
+  ng-repeat="customFieldType in customFieldTypes">
   <h1 class="contentHeader">{{customFieldType.title}}</h1>
 
   <div class="elementDescription">
-    {{customFieldType.title}}
+    {{customFieldType.description}}
   </div>
 
   <!-- Input fields that always have one more if the last has input -->
   <md-input-container class="editInput"
-    ng-repeat="field in getFields($index) track by $index">
+    ng-repeat="field in getFieldInputs(customFieldType._id) track by $index">
     <label>Field content</label>
+    <!-- TODO: Create one input for when getCustomFieldByTypeId returns false,
+    and one when it returns true. And then, add and ng-change so that when
+    the field is emptied, it deletes the object entirely -->
     <input type="input"
-    ng-change="onFieldChange($parent.$index, $index)"
-    ng-model="editCustomFields[$parent.$index].fields[$index]" />
+    ng-model="getCustomFieldByTypeId(customFieldType._id).fields[$index]" />
   </md-input-container>
 </div>

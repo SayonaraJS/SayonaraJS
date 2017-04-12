@@ -66,12 +66,14 @@ angular.module('sayonaraAdminApp')
 		var updateEntry = function(id) {
 
 			//Create our request
+      console.log('Ayyee!', $scope.entry.customFields);
 			var request = {
 				title: $scope.entry.title,
 				content: $scope.entry.content,
         order: $scope.entry.order,
         entryType: $scope.entry.entryType,
-        categories: $scope.entry.categories || []
+        categories: $scope.entry.categories,
+        customFields: $scope.entry.customFields
 			};
 
 			//Update an existing page
@@ -93,7 +95,8 @@ angular.module('sayonaraAdminApp')
 				content: $scope.entry.content,
         order: $scope.entry.order,
         entryType: $scope.entry.entryType,
-        categories: $scope.entry.categories || []
+        categories: $scope.entry.categories,
+        customFields: $scope.entry.customFields
 			};
 
 			//Update an existing page
