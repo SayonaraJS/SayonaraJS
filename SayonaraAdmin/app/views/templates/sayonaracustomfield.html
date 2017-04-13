@@ -10,10 +10,11 @@
   <md-input-container class="editInput"
     ng-repeat="field in getFieldInputs(customFieldType._id) track by $index">
     <label>Field content</label>
-    <!-- TODO: Create one input for when getCustomFieldByTypeId returns false,
-    and one when it returns true. And then, add and ng-change so that when
-    the field is emptied, it deletes the object entirely -->
+    <!-- Ng-keydown is called before the ng-model,
+      allowing us to create and delete the field as needed
+    -->
     <input type="input"
+    ng-keydown="createDeleteFieldIfEmpty(customFieldType._id, $event)"
     ng-model="getCustomFieldByTypeId(customFieldType._id).fields[$index]" />
   </md-input-container>
 </div>
