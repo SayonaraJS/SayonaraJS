@@ -5,7 +5,7 @@
   <div class="elementDescription">
     {{customFieldType.description}}
   </div>
-  {{customFields}}
+  
   <!-- Input fields that always have one more if the last has input -->
   <md-input-container class="editInput"
     ng-repeat="field in getFieldInputs(customFieldType._id) track by $index">

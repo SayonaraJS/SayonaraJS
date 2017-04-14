@@ -192,12 +192,11 @@ router.put('/id/:id', function(req, res) {
 			if (req.body.embedCodes) entry.embedCodes = req.body.embedCodes;
 			if (req.body.uploadUrls) entry.uploadUrls = req.body.uploadUrls;
 			if (req.body.categories) entry.categories = req.body.categories;
-			if (req.body.customFields) entry.customFields = req.body.customFields;
 
 			//Check if we changed entryTypes
 			var entryTypeChanged = false;
 			if (req.body.entryType &&
-					req.body.entryType_id != entry.entryType) {
+					req.body.entryType._id != entry.entryType) {
 				entryTypeChanged = true;
 			}
 
@@ -301,115 +300,190 @@ router.put('/id/:id', function(req, res) {
 			}
 		});
 
-		//Next check if we have customFields
-		var customFieldsPromise = new Promise(function(resolve, reject) {
-			if(!req.body.customFields ||
-				req.body.customFields.length <= 0) {
-				//Simply resolve
-				resolve();
-			} else {
-				// Loop through our custom fields
-				var findOrCreatePromises = [];
-				req.body.customFields.forEach(function(customField) {
-					findOrCreatePromises.push(new Promise(function(resolve, reject) {
-						// Try to find the custom field
-						if(customField._id) {
-							CustomField.findOne({ _id: customField._id })
-							.exec(function(err, foundCustomField) {
-								if (err) {
-									reject({
-										status: 500,
-										message: 'Could not find the old custom fields'
-									});
-									return;
-								}
-								if(!foundCustomField) {
-									reject({
-										status: 500,
-										message: 'Custom field not found'
-									});
-									return;
-								}
-								// Update the custom field and save
-								foundCustomField.fields = customField.fields;
+		// After we have finished our entrytype promise, check customFields
+		entryTypePromise.then(function() {
+			//Next check if we have customFields
+			var customFieldsPromise = new Promise(function(resolve, reject) {
+				// Check if we have customFields, or if we changed entry types
+				// If we changed entry types, then the custom fields will be
+				// deleted
+				if(!req.body.customFields ||
+					entryTypeChanged) {
+					//Simply resolve
+					resolve();
+				} else {
+					// Save a copy of the original entry customFields (Used later for updating)
+					var originalEntryCustomFields = entry.customFields.slice()
+					// Promises for actions
+					var actionPromises = [];
 
-								//Save the customField
-								foundCustomField.save(function(err) {
-									if (err) {
-										reject({
+					// DELETE, first delete entry
+					entry.customFields.forEach((entryCustomField) => {
+						var isInRequest = false;
+						req.body.customFields.some((reqCustomField) => {
+							if(reqCustomField._id &&
+								reqCustomField._id == entryCustomField) {
+								isInRequest = true;
+								return true;
+							}
+							return false;
+						});
+
+						if(!isInRequest) {
+							actionPromises.push(new Promise(function(delResolve, delReject) {
+								// Delete the custom field
+								CustomField.remove({ _id: entryCustomField })
+								.exec(function(err) {
+									if(err) {
+										delReject({
 											status: 500,
-											message: 'Could not save the old custom field'
+											message: "Could not find the custom field to delete"
 										});
 										return;
 									}
-									//End of the updating field
-									resolve();
+									entry.customFields.splice(entry.customFields.indexOf(entryCustomField), 1);
+									delResolve();
 								});
-							});
-						} else {
-							console.log('I am stuck here!', customField);
-							console.log(customField.customFieldType._id);
-							//Ensure the custom field type exists
-							CustomFieldType.findOne({ _id: customField.customFieldType._id })
-							.exec(function(err, customFieldType) {
-								if (err || !customFieldType) {
-									reject({
-										status: 500,
-										message: 'Could not find the new customFields customFieldType'
-									});
-									return;
-								}
-
-								console.log('HI!');
-
-								// Create the custom field
-								var newCustomField = new CustomField({
-									customFieldType: customFieldType._id,
-									fields: customField.fields
-								});
-
-								console.log('I got in hurr!');
-
-								newCustomField.save(function(err) {
-									if (err) {
-										reject({
-											status: 500,
-											message: 'Could not save the new custom field'
-										});
-										return;
-									}
-
-									// push the newCustomField onto the entry
-									console.log(newCustomField);
-									entry.customFields.push(newCustomField);
-									resolve();
-								});
-							});
+							}));
 						}
-					}));
-				});
+					});
 
-				Promise.all(findOrCreatePromises).then(function() {
-					//Save the entry
-					console.log(entry);
-					entry.save(function(err) {
+					// CREATE new custom fields if they are not in the request
+					req.body.customFields.forEach(function(reqCustomField) {
+						if(!reqCustomField._id) {
+							// The custom field does not exist, create it
+							actionPromises.push(new Promise(function(createResolve, createReject) {
+								//Ensure the custom field type exists
+								CustomFieldType.findOne({ _id: reqCustomField.customFieldType })
+								.exec(function(err, customFieldType) {
+									if (err || !customFieldType) {
+										createReject({
+											status: 500,
+											message: 'Could not find the new customFields customFieldType'
+										});
+										return;
+									}
+
+									// Create the custom field
+									var newCustomField = new CustomField({
+										customFieldType: customFieldType._id,
+										fields: reqCustomField.fields
+									});
+
+									newCustomField.save(function(err) {
+										if (err) {
+											createReject({
+												status: 500,
+												message: 'Could not save the new custom field'
+											});
+											return;
+										}
+
+										// push the newCustomField onto the entry
+										entry.customFields.push(newCustomField);
+										createResolve();
+									});
+								});
+							}));
+						}
+					});
+
+					// UPDATE custom fields, Could be placed in above loop, but less readable
+					req.body.customFields.forEach(function(reqCustomField) {
+						// Loop through the original entry array, to avoid any race conditions
+						originalEntryCustomFields.forEach(function(originalEntryCustomField) {
+							if(reqCustomField._id &&
+								reqCustomField._id == originalEntryCustomField) {
+								actionPromises.push(new Promise(function(updateResolve, updateReject) {
+									// Find the custom field from the DB
+									CustomField.findOne({ _id: originalEntryCustomField })
+									.exec(function(err, foundCustomField) {
+										if (err) {
+											updateReject({
+												status: 500,
+												message: 'Could not find the old custom field'
+											});
+											return;
+										}
+										if(!foundCustomField) {
+											updateReject({
+												status: 500,
+												message: 'Custom field not found'
+											});
+											return;
+										}
+
+										// TODO: Deep equal check that the fields are not different
+
+										// Update the custom field and save
+										foundCustomField.fields = reqCustomField.fields;
+
+										//Save the customField
+										foundCustomField.save(function(err) {
+											if (err) {
+												updateReject({
+													status: 500,
+													message: 'Could not save the old custom field'
+												});
+												return;
+											}
+											//End of the updating field
+											updateResolve();
+										});
+									});
+								}));
+							}
+						});
+					});
+
+					// Finally save the entry after all promises for custom fields have finished
+					Promise.all(actionPromises).then(function() {
+						//Save the entry
+						entry.save(function(err) {
+							if (err) {
+								res.status(500).json(err);
+								return;
+							}
+							resolve();
+						});
+					}).catch(function(err) {
+						reject(err);
+						return;
+					});
+				}
+			});
+
+			customFieldsPromise.then(function() {
+				// We successfully edited our entry!
+
+				// Populate the custom fields
+				entry.populate('customFields', function(err) {
+					if (err) {
+						res.status(500).json(err);
+						return;
+					}
+					entry.populate({
+						path: 'entryType',
+						model: 'EntryType',
+						populate: {
+							path: 'customFieldTypes',
+							model: 'CustomFieldType'
+						}
+					}, function(err) {
 						if (err) {
 							res.status(500).json(err);
 							return;
 						}
-					});
-					resolve();
-				}).catch(function(err) {
-					res.status(err.status).send(err.message);
-					return;
-				});
-			}
-		});
 
-		Promise.all([entryTypePromise, customFieldsPromise]).then(function() {
-			// We successfully edited our entry!
-			res.status(200).json(entry);
-		}).catch(function(err) {
+						// Respond with the populated entry
+						res.status(200).json(entry);
+					})
+				})
+			}).catch(function(err) {
+				res.status(err.status).send(err.message);
+				return;
+			});
+		}).catch(function() {
 			res.status(err.status).send(err.message);
 			return;
 		});

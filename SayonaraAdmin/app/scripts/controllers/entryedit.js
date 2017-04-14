@@ -66,7 +66,6 @@ angular.module('sayonaraAdminApp')
 		var updateEntry = function(id) {
 
 			//Create our request
-      console.log('Ayyee!', $scope.entry.customFields);
 			var request = {
 				title: $scope.entry.title,
 				content: $scope.entry.content,
@@ -80,6 +79,9 @@ angular.module('sayonaraAdminApp')
 			sayonaraEntryService.updateEntryById(id, request).then(function(success) {
 				//Notify the user
 				adminNotify.showAlert('Entry Updated Successfully!');
+
+        // Set our entry to the response
+        $scope.entry = success;
 			}, function(error) {
 				//Pass to te error handler
 				adminNotify.error(error);
