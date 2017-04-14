@@ -9,7 +9,8 @@ var customFields = new Schema({
 		required: true
 	},
   fields: [{
-		type: String
+		type: String,
+		required: true
 	}]
 });
 
