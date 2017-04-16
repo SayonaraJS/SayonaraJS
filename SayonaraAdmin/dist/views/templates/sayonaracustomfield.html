@@ -1,0 +1,23 @@
+<div class='entryCustomFields'
+  ng-repeat="customFieldType in customFieldTypes">
+  <h1 class="contentHeader">{{customFieldType.title}}</h1>
+
+  <div class="elementDescription">
+    {{customFieldType.description}}
+  </div>
+
+  <!-- Input fields that always have one more if the last has input -->
+  {{customFields}}
+  <md-input-container class="editInput"
+    ng-repeat="field in getFieldInputs(customFieldType._id) track by $index">
+    <label>Field content</label>
+    <!-- Ng-keydown is called before the ng-model,
+      allowing us to create and delete the field as needed
+    -->
+    <input type="text"
+    ng-keydown="createDeleteFieldIfEmpty(customFieldType._id, $event)"
+    ng-keyup="createDeleteFieldIfEmpty(customFieldType._id, $event)"
+    ng-paste="createDeleteFieldIfEmpty(customFieldType._id, $event)"
+    ng-model="getCustomFieldByTypeId(customFieldType._id).fields[$index]" />
+  </md-input-container>
+</div>
