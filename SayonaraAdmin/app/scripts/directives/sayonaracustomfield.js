@@ -20,10 +20,15 @@ angular.module('sayonaraAdminApp')
         $scope.getFieldInputs = function(customFieldTypeId) {
           // Find our key
           var customField = $scope.getCustomFieldByTypeId(customFieldTypeId);
-          if(!customField) {
+          if(!customField || !customField.fields) {
             return new Array(1);
           }
-          //Else return the length of the fields
+
+          // Else return the length of the fields.
+          // Also, ensure we are not adding empty fields
+          if(!customField.fields[customField.fields.length - 1]) {
+              customField.fields.pop();
+          }
           return new Array(customField
             .fields.length + 1);
         }
@@ -46,7 +51,6 @@ angular.module('sayonaraAdminApp')
 
         // Function to create or delete the fields attribute if empty
         $scope.createDeleteFieldIfEmpty = function(customFieldTypeId, event) {
-
           //Only accept character and number keys
           // Inner If check for backspace
           if(event.key &&
@@ -54,8 +58,9 @@ angular.module('sayonaraAdminApp')
             (event.keyCode > 90 &&
             event.keyCode < 96) ||
             event.keyCode > 105) {
-            // Return if the key is not backspace
-            if(event.keyCode != 8) {
+            // Return if the key is not backspace and not key up
+            if(event.keyCode != 8 &&
+              event.type != 'keyup') {
               return;
             }
           }
