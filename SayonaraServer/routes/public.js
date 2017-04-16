@@ -23,7 +23,6 @@ router.get('/', function(req, res) {
         .populate('categories')
         .populate({
             path: 'entryTypes',
-            model: 'EntryType',
             options: {
       				sort: {
       					order: 1
@@ -31,23 +30,13 @@ router.get('/', function(req, res) {
       			},
             populate: {
                 path: 'entries',
-                model: 'Entry',
                 options: {
           				sort: {
           					order: 1
           				}
           			},
                 populate: {
-                    path: 'categories',
-                    model: 'Category'
-                },
-                populate: {
-                    path: 'customFields',
-                    model: 'CustomField',
-                    populate: {
-                      path: 'customFieldType',
-                      model: 'CustomFieldType',
-                    }
+                    path: 'categories customFields',
                 }
             }
         })
