@@ -40,6 +40,14 @@ router.get('/', function(req, res) {
                 populate: {
                     path: 'categories',
                     model: 'Category'
+                },
+                populate: {
+                    path: 'customFields',
+                    model: 'CustomField',
+                    populate: {
+                      path: 'customFieldType',
+                      model: 'CustomFieldType',
+                    }
                 }
             }
         })
