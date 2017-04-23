@@ -73,6 +73,9 @@ angular
 						}
           }
         },
+				imageResize: {
+					displaySize: true
+				},
 				syntax: true
     }, null, 'Sayonara Editor');
 

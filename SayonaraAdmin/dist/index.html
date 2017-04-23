@@ -1,1 +1,134 @@
-<!doctype html> <html> <head> <meta charset="utf-8"> <title></title> <meta name="description" content=""> <meta name="viewport" content="width=device-width">  <link rel="stylesheet" href="admin/styles/vendor.css">  <link href="https://cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">  <link href="bower_components/highlightjs/styles/gruvbox-dark.css" rel="stylesheet"> <link rel="stylesheet" href="admin/styles/main.css"> </head> <body ng-app="sayonaraAdminApp"> <!--[if lte IE 8]><p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->  <div class="header"> <div class="navbar navbar-default" role="navigation"> <div class="container"> <div class="collapse">  <nav-bar></nav-bar> </div> </div> </div> </div> <div class="container"> <div ng-view=""></div> </div> <div class="footer"> Sayonara! </div> <script src="admin/scripts/vendor.js"></script>  <script src="admin/scripts/sayonara_components/sayonara-api.js"></script> <script src="admin/scripts/sayonara_components/sayonara-auth.js"></script> <script src="admin/scripts/sayonara_components/sayonara-pages.js"></script> <script src="admin/scripts/sayonara_components/sayonara-entries.js"></script> <script src="admin/scripts/sayonara_components/sayonara-entryTypes.js"></script> <script src="admin/scripts/sayonara_components/sayonara-categories.js"></script> <script src="admin/scripts/sayonara_components/sayonara-customFieldTypes.js"></script> <script src="admin/scripts/sayonara_components/sayonara-admin.js"></script>  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">  <script src="https://cdn.quilljs.com/1.2.0/quill.js"></script> <script src="scripts/external_libs/ng-quill.js"></script>  <script src="scripts/external_libs/marked.js"></script>  <script src="scripts/external_libs/codemirror_overlay.js"></script> <script src="scripts/external_libs/codemirror_xml.js"></script> <script src="scripts/external_libs/codemirror_markdown.js"></script> <script src="scripts/external_libs/codemirror_gfm.js"></script>  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>  <script src="scripts/sayonaraAdminBuildConfig.js"></script> <script src="admin/scripts/scripts.js"></script> </body> </html>
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
+  <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- CSS required by ngQuill -->
+  <link href="https://cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
+
+  <!-- ngQuill Modules -->
+  <script src="/node_modules/quill-image-resize-module/image-resize.min.js"></script>
+
+  <!-- Stylesheet fo highlight.js for syntax highlighting (not included in above) -->
+  <link href="bower_components/highlightjs/styles/gruvbox-dark.css" rel="stylesheet">
+
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+
+</head>
+
+<body ng-app="sayonaraAdminApp">
+  <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <!-- Add your site or application content here -->
+  <div class="header">
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="collapse">
+          <!-- Include the sayonara nav bar -->
+          <nav-bar></nav-bar>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div ng-view=""></div>
+  </div>
+
+  <div class="footer">
+    Sayonara!
+  </div>
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-material/angular-material.js"></script>
+  <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/to-markdown/dist/to-markdown.js"></script>
+  <script src="bower_components/marked/lib/marked.js"></script>
+  <script src="bower_components/angular-marked/dist/angular-marked.js"></script>
+  <script src="bower_components/highlightjs/highlight.pack.js"></script>
+  <script src="bower_components/codemirror/lib/codemirror.js"></script>
+  <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- Our Sayonara Components -->
+  <script src="scripts/sayonara_components/sayonara-api.js"></script>
+  <script src="scripts/sayonara_components/sayonara-auth.js"></script>
+  <script src="scripts/sayonara_components/sayonara-pages.js"></script>
+  <script src="scripts/sayonara_components/sayonara-entries.js"></script>
+  <script src="scripts/sayonara_components/sayonara-entryTypes.js"></script>
+  <script src="scripts/sayonara_components/sayonara-categories.js"></script>
+  <script src="scripts/sayonara_components/sayonara-customFieldTypes.js"></script>
+  <script src="scripts/sayonara_components/sayonara-admin.js"></script>
+
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- ngQuill required libs -->
+  <script src="https://cdn.quilljs.com/1.2.0/quill.js"></script>
+  <script src="scripts/external_libs/ng-quill.js"></script>
+
+  <!-- Marked markdown parser -->
+    <script src="scripts/external_libs/marked.js"></script>
+
+  <!-- Markdown Code mirror: https://codemirror.net/mode/gfm/index.html -->
+  <script src="scripts/external_libs/codemirror_overlay.js"></script>
+  <script src="scripts/external_libs/codemirror_xml.js"></script>
+  <script src="scripts/external_libs/codemirror_markdown.js"></script>
+  <script src="scripts/external_libs/codemirror_gfm.js"></script>
+
+  <!-- Additional Languages for highlight.js -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+  <!-- Our build config -->
+  <script src="scripts/sayonaraAdminBuildConfig.js"></script>
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/directives/navbar.js"></script>
+  <script src="scripts/controllers/login.js"></script>
+  <script src="scripts/services/adminnotify.js"></script>
+  <script src="scripts/controllers/allpages.js"></script>
+  <script src="scripts/controllers/pageedit.js"></script>
+  <script src="scripts/directives/sayonaracontent.js"></script>
+  <script src="scripts/controllers/allentries.js"></script>
+  <script src="scripts/controllers/entryedit.js"></script>
+  <script src="scripts/directives/sayonaraselector.js"></script>
+  <script src="scripts/controllers/settings.js"></script>
+  <script src="scripts/controllers/admin.js"></script>
+  <script src="scripts/controllers/editusers.js"></script>
+  <script src="scripts/controllers/sayonaraconfig.js"></script>
+  <script src="scripts/directives/sayonaracustomfield.js"></script>
+  <!-- endbuild -->
+</body>
+
+</html>
