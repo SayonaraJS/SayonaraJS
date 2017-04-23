@@ -8,6 +8,9 @@ var entryTypeSchema = new Schema({
 		type: String,
 		required: true
 	},
+	description: {
+		type: String
+	},
 	entries: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Entry'

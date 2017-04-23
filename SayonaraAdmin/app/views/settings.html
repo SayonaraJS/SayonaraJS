@@ -23,6 +23,13 @@
 
     <md-card-content>
 
+      <!-- Description of entryType -->
+      <md-input-container class="editTextArea">
+        <textarea ng-model="entryTypes[$index].description"
+        placeholder="Enter description here...">
+        </textarea>
+      </md-input-container>
+
       <!-- List the Properties of the entry type -->
       <div>
         <md-checkbox ng-model="entryType.hasContent" aria-label="Editable Content" class="md-primary">
@@ -114,7 +121,8 @@
 
       <!-- Description of custom field -->
       <md-input-container class="editTextArea">
-        <textarea ng-model="customFieldTypes[$index].description" >
+        <textarea ng-model="customFieldTypes[$index].description"
+        placeholder="Enter description here...">
         </textarea>
       </md-input-container>
     </md-card-content>

@@ -32,6 +32,7 @@ router.post('/create', function(req, res) {
 
 		//Check for optional parameters
 		//Booleans if the fields are enabled
+		if (req.body.description) newEntryType.description = req.body.description;
 		if (req.body.order) newEntryType.order = req.body.order;
 		if (req.body.hasContent) newEntryType.hasContent = req.body.hasContent;
 		if (req.body.hasEmbedCodes) newEntryType.hasEmbedCodes = req.body.hasEmbedCodes;
@@ -131,6 +132,7 @@ router.put('/id/:id', function(req, res) {
 
 			//Check for optional parameters
 			if (req.body.title) entryType.title = req.body.title;
+			if (req.body.description) entryType.description = req.body.description;
 			if (req.body.order) entryType.order = req.body.order;
 			if (req.body.hasContent) entryType.hasContent = req.body.hasContent;
 			if (req.body.customFieldTypes) entryType.customFieldTypes = req.body.customFieldTypes;
